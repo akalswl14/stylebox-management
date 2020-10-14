@@ -1,7 +1,12 @@
 import React from 'react';
+import WrapPage from '../../Styles/WrapPageStyles';
 
 const Banner = () => {
-  return <div>Banner page</div>;
+  return (
+    <>
+      <WrapPage>Banner page</WrapPage>
+    </>
+  );
 };
 
 export default Banner;

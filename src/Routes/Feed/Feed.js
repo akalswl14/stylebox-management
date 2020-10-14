@@ -1,7 +1,12 @@
 import React from 'react';
+import WrapPage from '../../Styles/WrapPageStyles';
 
 const Feed = () => {
-  return <div>Feed page</div>;
+  return (
+    <>
+      <WrapPage>Feed page</WrapPage>
+    </>
+  );
 };
 
 export default Feed;
