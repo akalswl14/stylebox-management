@@ -1,7 +1,12 @@
 import React from 'react';
+import WrapPage from '../../Styles/WrapPageStyles';
 
 const TagIcon = () => {
-  return <div>TagIcon page</div>;
+  return (
+    <>
+      <WrapPage>TagIcon page</WrapPage>
+    </>
+  );
 };
 
 export default TagIcon;

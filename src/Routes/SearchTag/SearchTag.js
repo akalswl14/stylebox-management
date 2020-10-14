@@ -1,7 +1,12 @@
 import React from 'react';
+import WrapPage from '../../Styles/WrapPageStyles';
 
 const SearchTag = () => {
-  return <div>SearchTag page</div>;
+  return (
+    <>
+      <WrapPage>SearchTag page</WrapPage>
+    </>
+  );
 };
 
 export default SearchTag;
