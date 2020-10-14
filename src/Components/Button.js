@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 const ButtonContainer = styled.button`
-  width: 100%;
+  width: 100px;
   border: 0;
   border-radius: ${(props) => props.theme.borderRadius};
   color: white;
@@ -13,12 +13,16 @@ const ButtonContainer = styled.button`
   font-size: 14px;
   background-color: ${(props) => props.theme.ButtonColor};
   color: white;
+  margin: 4px;
 `;
 
-const Button = ({ text }) => <ButtonContainer>{text}</ButtonContainer>;
+const Button = ({ text, ClickEvent }) => (
+  <ButtonContainer onClick={ClickEvent}>{text}</ButtonContainer>
+);
 
 Button.propTypes = {
   text: PropTypes.string.isRequired,
+  ClickEvent: PropTypes.func,
 };
 
 export default Button;
