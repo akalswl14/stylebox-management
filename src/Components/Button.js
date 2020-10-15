@@ -14,6 +14,7 @@ const ButtonContainer = styled.button`
   background-color: ${(props) => props.theme.ButtonColor};
   color: white;
   margin: 4px;
+  cursor: pointer;
 `;
 
 const Button = ({ text, ClickEvent }) => (

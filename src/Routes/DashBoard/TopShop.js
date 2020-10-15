@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import SectionTitle from "../../Components/SectionTitle";
-import LinkButton from "../../Components/LinkButton";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -26,15 +25,6 @@ const Table = styled.table`
     justify-content: space-around;
     border: 0;
   }
-  .NumCell {
-    padding: 7px 0px;
-  }
-`;
-const Header = styled.header`
-  padding: 15px 0px 15px 0px;
-  display: flex;
-  align-items: center;
-  width: 100%;
 `;
 
 export const DashboardTopShop = ({ data }) => (

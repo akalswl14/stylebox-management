@@ -16,12 +16,6 @@ export default () => {
       periodFilter,
     },
   });
-  console.log(loading);
-  console.log(error);
-  console.log(data);
-  console.log(loading_post);
-  console.log(error_post);
-  console.log(data_post);
   return (
     <DashboardPresenter
       loading={loading}

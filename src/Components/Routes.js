@@ -1,10 +1,10 @@
-import React from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
-import Banner from '../Routes/Banner/Banner';
-import DashBoard from '../Routes/DashBoard/index';
-import Feed from '../Routes/Feed/Feed';
-import Question from '../Routes/Question/Question';
-import TagIcon from '../Routes/TagIcon/TagIcon';
+import React from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
+import Banner from "../Routes/Banner/Banner";
+import DashBoard from "../Routes/DashBoard/index";
+import Feed from "../Routes/Feed/Feed";
+import Question from "../Routes/Question/Question";
+import TagIcon from "../Routes/TagIcon/index";
 import SearchTag from '../Routes/SearchTag/index';
 
 const AppRouter = () => {

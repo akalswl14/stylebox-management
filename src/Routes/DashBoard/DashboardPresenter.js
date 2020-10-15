@@ -1,12 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
-import WrapPage from '../../Styles/WrapPageStyles';
-import Loader from '../../Components/Loader';
-import SectionTitle from '../../Components/SectionTitle';
-import PageTitle from '../../Components/PageTitle';
-import { DashboardBasicStatus } from './BasicStatus';
-import { DashboardTopShop } from './TopShop';
-import { DashboardTopPost } from './TopPost';
+import React from "react";
+import styled from "styled-components";
+import WrapPage from "../../Styles/WrapPageStyles";
+import Loader from "../../Components/Loader";
+import PageTitle from "../../Components/PageTitle";
+import { DashboardBasicStatus } from "./BasicStatus";
+import { DashboardTopShop } from "./TopShop";
+import { DashboardTopPost } from "./TopPost";
 
 const Wrapper = styled.div`
   min-height: 25vh;
