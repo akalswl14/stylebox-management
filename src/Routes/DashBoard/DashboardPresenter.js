@@ -17,21 +17,29 @@ const Wrapper = styled.div`
   padding: 20px;
 `;
 
-export default ({ loading, error, data, setAction }) => {
-  if (error) return `Error! ${error.message}`;
-  if (loading)
+export default ({
+  loading,
+  error,
+  data,
+  setAction,
+  loading_post,
+  error_post,
+  data_post,
+}) => {
+  if (error || error_post) return `Error! ${error.message}`;
+  if (loading || loading_post)
     return (
       <Wrapper>
         <Loader />
       </Wrapper>
     );
-  if (!loading && data)
+  if (!loading && data && data_post)
     return (
       <WrapPage>
         <PageTitle text={"DASH BOARD"} />
         <DashboardBasicStatus data={data.getDashboardBasicStatus} />
         <DashboardTopShop data={data.getTopShops} />
-        <DashboardTopPost data={data.getTopPosts} setAction={setAction} />
+        <DashboardTopPost data={data_post.getTopPosts} setAction={setAction} />
       </WrapPage>
     );
 };

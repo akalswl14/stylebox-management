@@ -1,7 +1,7 @@
 import { gql } from "apollo-boost";
 
 export const DASHBOARD_QUERY = gql`
-  query dashboardBasicStatus($periodFilter: Int) {
+  query dashboardInfo {
     getDashboardBasicStatus {
       AvgEventLikeNum
       AvgEventViewNum
@@ -34,6 +34,24 @@ export const DASHBOARD_QUERY = gql`
       viewNum
       weight
     }
+    # getTopPosts(periodFilter: 1) {
+    #   No
+    #   likeNum
+    #   mainProductName
+    #   postId
+    #   price
+    #   priority
+    #   rankNum
+    #   shopId
+    #   subProductNum
+    #   tagNames
+    #   viewNum
+    # }
+  }
+`;
+
+export const DASHBOARD_TOPPOST_QUERY = gql`
+  query dashboardTopPost($periodFilter: Int) {
     getTopPosts(periodFilter: $periodFilter) {
       No
       likeNum
