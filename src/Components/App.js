@@ -1,9 +1,9 @@
-import React from "react";
-import styled, { ThemeProvider } from "styled-components";
-import Theme from "../Styles/Theme";
-import { BrowserRouter as Router } from "react-router-dom";
-import GlobalStyles from "../Styles/GlobalStyles";
-import Routes from "./Routes";
+import React from 'react';
+import styled, { ThemeProvider } from 'styled-components';
+import Theme from '../Styles/Theme';
+import { BrowserRouter as Router } from 'react-router-dom';
+import GlobalStyles from '../Styles/GlobalStyles';
+import Routes from './Routes';
 import SideBar from './SideBar';
 
 const Wrapper = styled.div`
@@ -16,10 +16,10 @@ export default () => {
     <ThemeProvider theme={Theme}>
       <GlobalStyles />
       <Router>
-          <Wrapper>
-            <Routes />
-            <SideBar />
-          </Wrapper>
+        <Wrapper>
+          <Routes />
+          <SideBar />
+        </Wrapper>
       </Router>
     </ThemeProvider>
   );

@@ -1,12 +1,12 @@
-import React from "react";
-import styled from "styled-components";
-import WrapPage from "../../Styles/WrapPageStyles";
-import Loader from "../../Components/Loader";
-import SectionTitle from "../../Components/SectionTitle";
-import PageTitle from "../../Components/PageTitle";
-import { DashboardBasicStatus } from "./BasicStatus";
-import { DashboardTopShop } from "./TopShop";
-import { DashboardTopPost } from "./TopPost";
+import React from 'react';
+import styled from 'styled-components';
+import WrapPage from '../../Styles/WrapPageStyles';
+import Loader from '../../Components/Loader';
+import SectionTitle from '../../Components/SectionTitle';
+import PageTitle from '../../Components/PageTitle';
+import { DashboardBasicStatus } from './BasicStatus';
+import { DashboardTopShop } from './TopShop';
+import { DashboardTopPost } from './TopPost';
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -36,7 +36,7 @@ export default ({
   if (!loading && data && data_post)
     return (
       <WrapPage>
-        <PageTitle text={"DASH BOARD"} />
+        <PageTitle text={'DASH BOARD'} />
         <DashboardBasicStatus data={data.getDashboardBasicStatus} />
         <DashboardTopShop data={data.getTopShops} />
         <DashboardTopPost data={data_post.getTopPosts} setAction={setAction} />
