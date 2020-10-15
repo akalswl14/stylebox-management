@@ -1,18 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import WrapPage from '../../Styles/WrapPageStyles';
 import PageTitle from '../../Components/PageTitle';
 import SectionTitle from '../../Components/SectionTitle';
 import Loader from '../../Components/Loader';
-import { useQuery } from 'react-apollo-hooks';
-import { GET_CLASS } from './SearchTagQueries';
-
-const Header = styled.header`
-  padding: 15px 0px 15px 0px;
-  display: flex;
-  align-items: center;
-  width: 100%;
-`;
+import Button from '../../Components/Button';
+import SearchTagTable from './SearchTagTable';
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -60,82 +53,20 @@ const Table = styled.table`
   }
 `;
 
-const SearchTagTable = ({
-  order,
-  id,
-  tagName,
-  Category,
-  className,
-  classId,
-  categories,
-  searchTag,
-}) => {
-  const [selects, setSelects] = useState({
-    category: '',
-    classInfo: 0,
-    tagInfo: 0,
-  });
+const TitleBox = styled.div`
+  padding: 15px 0px 15px 0px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
 
-  const { category, classInfo, tagInfo } = selects;
-
-  // console.log(category);
-  // console.log(classInfo);
-  // console.log(tagInfo);
-
-  if (category) {
-    const { data } = useQuery(GET_CLASS, {
-      variables: { category },
-    });
-    console.log(data);
-  }
-
-  const onChange = (e) => {
-    const { value, name } = e.target;
-    // console.log(value);
-    // console.log(name);
-    setSelects({
-      ...selects,
-      [name]: value,
-    });
-  };
-
-  const TagCategories = categories.filter(
-    (category) => category !== 'ShopName'
-  );
-  return (
-    <tr>
-      <td>
-        <input name='order' type='text' value={order} />
-      </td>
-      <td>
-        <select name='category' onChange={onChange}>
-          {TagCategories.map((category) =>
-            category === Category ? (
-              <option value={Category} selected>
-                {Category}
-              </option>
-            ) : (
-              <option value={category}>{category}</option>
-            )
-          )}
-        </select>
-      </td>
-      <td>
-        <select name='classInfo' onChange={onChange}>
-          <option value={classId}>{className}</option>
-          <option value={classInfo}>{className}</option>
-        </select>
-      </td>
-      <td>
-        <select name='tagInfo' onChange={onChange}>
-          <option value={id}>{tagName}</option>
-          <option value={tagInfo}>{tagName}</option>
-        </select>
-      </td>
-      <td>x</td>
-    </tr>
-  );
-};
+const ButtonBox = styled.div`
+  padding: 15px 0px 15px 0px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: flex-end;
+`;
 
 export default ({ loading, data }) => {
   if (loading)
@@ -144,17 +75,18 @@ export default ({ loading, data }) => {
         <Loader />
       </Wrapper>
     );
-  if (!loading && data.getSettingPopularTags && data.getManageCategoryOptions) {
+  if (!loading && data) {
     return (
       <>
         <WrapPage>
-          <Header>
-            <PageTitle text={'Recommendation Tag Management'}></PageTitle>
-          </Header>
-          <Header>
-            <SectionTitle text={'Recommendation Tag Management'}></SectionTitle>
-          </Header>
-          <br />
+          <PageTitle text={'Recommendation Tag Management'} />
+          <TitleBox>
+            <SectionTitle text={'Recommendation Tag Management'} />
+            <ButtonBox>
+              <Button text='Back To Main'></Button>
+              <Button text='Confirm'></Button>
+            </ButtonBox>
+          </TitleBox>
           <Table>
             <th>Order</th>
             <th>Category</th>

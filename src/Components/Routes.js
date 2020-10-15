@@ -5,7 +5,7 @@ import DashBoard from '../Routes/DashBoard/index';
 import Feed from '../Routes/Feed/Feed';
 import Question from '../Routes/Question/Question';
 import TagIcon from '../Routes/TagIcon/TagIcon';
-import SearchTagContainer from '../Routes/SearchTag';
+import SearchTag from '../Routes/SearchTag/index';
 
 const AppRouter = () => {
   return (
@@ -15,7 +15,7 @@ const AppRouter = () => {
       <Route path='/feed' component={Feed} />
       <Route path='/question' component={Question} />
       <Route path='/tagicon' component={TagIcon} />
-      <Route path='/searchtag' component={SearchTagContainer} />
+      <Route path='/searchtag' component={SearchTag} />
       <Redirect path='*' to='/' />
     </Switch>
   );

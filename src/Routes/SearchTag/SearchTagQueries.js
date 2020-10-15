@@ -22,3 +22,12 @@ export const GET_CLASS = gql`
     }
   }
 `;
+
+export const GET_TAG = gql`
+  query GET_TAG($classId: Int!) {
+    getTagOptions(classId: $classId) {
+      id
+      name
+    }
+  }
+`;
