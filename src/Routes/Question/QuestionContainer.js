@@ -21,7 +21,22 @@ export default () => {
     },
   ]);
   const [alreadyGetData, setalreadyGetData] = useState(false);
+
   const { email, pw } = adminState;
+
+  const addRow = () => {
+    const newData = {
+      order: questionState[questionState.length - 1].order + 1,
+      questionType: "",
+    };
+    setQuestionState((prevData) => [...prevData, newData]);
+  };
+
+  const deleteRow = (order) => {
+    setQuestionState(
+      questionState.filter((eachRow) => eachRow.order !== order)
+    );
+  };
 
   const onChange = (e) => {
     const { value, name } = e.target;
@@ -53,10 +68,6 @@ export default () => {
     });
   };
 
-  console.log("parent");
-  console.log(adminState);
-  console.log(questionState);
-
   const onTypeChange = (order, e) => {
     const { value } = e.target;
     setQuestionState(
@@ -78,12 +89,13 @@ export default () => {
       setAdminState={setAdminState}
       setQuestionState={setQuestionState}
       questionState={questionState}
-      updateAdminInfo={updateAdminInfo}
       mutationLoading={mutationLoading}
       mutationError={mutationError}
       onSubmit={onSubmit}
       setalreadyGetData={setalreadyGetData}
       alreadyGetData={alreadyGetData}
+      addRow={addRow}
+      deleteRow={deleteRow}
     />
   );
 };

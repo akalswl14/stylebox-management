@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import WrapPage from "../../Styles/WrapPageStyles";
 import PageTitle from "../../Components/PageTitle";
@@ -6,6 +6,7 @@ import SectionTitle from "../../Components/SectionTitle";
 import Loader from "../../Components/Loader";
 import Button from "../../Components/Button";
 import { Link } from "react-router-dom";
+import { PlusIcon, DeleteIcon } from "../../Components/Icons";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -58,6 +59,13 @@ const ButtonBox = styled.div`
   justify-content: flex-end;
 `;
 
+const RowButton = styled.button`
+  border: none;
+  background: none;
+  cursor: pointer;
+  min-width: fit-content;
+`;
+
 export default ({
   loading,
   data,
@@ -65,19 +73,17 @@ export default ({
   email,
   pw,
   setAdminState,
-  adminState,
-  order,
-  questionType,
   setQuestionState,
   questionState,
   onTypeChange,
   onOrderChange,
-  updateAdminInfo,
   mutationLoading,
   mutationError,
   onSubmit,
   alreadyGetData,
   setalreadyGetData,
+  addRow,
+  deleteRow,
 }) => {
   if (loading)
     return (
@@ -146,7 +152,11 @@ export default ({
             <Table>
               <th>Order</th>
               <th>Question Type</th>
-              <th>+</th>
+              <th>
+                <RowButton onClick={() => addRow()}>
+                  <PlusIcon size={19} />
+                </RowButton>
+              </th>
               {questionState.map((question) => (
                 <tr>
                   <td>
@@ -165,7 +175,11 @@ export default ({
                       onChange={(e) => onTypeChange(question.order, e)}
                     />
                   </td>
-                  <td>+</td>
+                  <td>
+                    <RowButton onClick={() => deleteRow(question.order)}>
+                      <DeleteIcon size={19} />
+                    </RowButton>
+                  </td>
                 </tr>
               ))}
             </Table>
