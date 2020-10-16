@@ -30,7 +30,7 @@ const Table = styled.table`
   }
 `;
 
-export const BestTagIcon = ({ setAction }) => {
+export const BestTagIcon = ({ setAction, data, categoryData }) => {
   return (
     <>
       <SectionTitle text={"Category Tag Icon Management ( in Best Page )"} />

@@ -1,69 +1,63 @@
 import { gql } from "apollo-boost";
 
-export const DASHBOARD_QUERY = gql`
-  query dashboardInfo {
-    getDashboardBasicStatus {
-      AvgEventLikeNum
-      AvgEventViewNum
-      AvgPostLikeNum
-      AvgPostViewNum
-      AvgShopLikeNum
-      AvgShopViewNum
-      PostNum
-      ProductNum
-      ShopNum
-      TotalEventLikeNum
-      TotalPostLikeNum
-      TotalEventViewNum
-      TotalPostViewNum
-      TotalShopLikeNum
-      TotalShopViewNum
-      UserNum
+export const TAGICON_SETTING = gql`
+  query TagIconQuery {
+    getSettingMainBubbles {
+      tagId
+      tagName
+      classId
+      className
+      category
+      order
     }
-    getTopShops {
-      No
-      address
-      likeNum
-      phoneNumber
-      postNum
-      productNum
-      rankNum
-      shopId
-      shopName
-      tagNames
-      viewNum
-      weight
+    getSettingBestBubbles {
+      tagId
+      tagName
+      classId
+      className
+      category
+      order
     }
-    # getTopPosts(periodFilter: 1) {
-    #   No
-    #   likeNum
-    #   mainProductName
-    #   postId
-    #   price
-    #   priority
-    #   rankNum
-    #   shopId
-    #   subProductNum
-    #   tagNames
-    #   viewNum
-    # }
+    getSettingShopBubbles {
+      tagId
+      tagName
+      classId
+      className
+      category
+      order
+    }
   }
 `;
 
-export const DASHBOARD_TOPPOST_QUERY = gql`
-  query dashboardTopPost($periodFilter: Int) {
-    getTopPosts(periodFilter: $periodFilter) {
-      No
-      likeNum
-      mainProductName
-      postId
-      price
-      priority
-      rankNum
-      shopId
-      subProductNum
-      tagNames
-      viewNum
+export const CATEGORY_OPTION = gql`
+  query GetCategoryQuery {
+    getManageCategoryOptions
+  }
+`;
+
+// export const CLASS_OPTION = gql`
+//   query GetClassQuery($category: Category) {
+//     getClassOptions(category: $category) {
+//       id
+//       name
+//     }
+//   }
+// `;
+
+export const TAG_INFO = gql`
+  query GetTagQuery($classId: String) {
+    getTagOptions(classId: $classId) {
+      id
+      name
+    }
+  }
+`;
+
+export const STYLE_CLASS_OPTION = gql`
+  query GetClassQuery {
+    getClassOptions(category: Style) {
+      id
+      name
     }
   }
 `;

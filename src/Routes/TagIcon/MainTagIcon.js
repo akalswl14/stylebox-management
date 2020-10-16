@@ -3,7 +3,8 @@ import styled from "styled-components";
 import SectionTitle from "../../Components/SectionTitle";
 import Button from "../../Components/Button";
 import { PlusIcon, DeleteIcon } from "../../Components/Icons";
-import { VariablesAreInputTypesRule } from "graphql";
+import { useQuery } from "react-apollo-hooks";
+import { STYLE_CLASS_OPTION } from "./TagIconQueries";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -65,21 +66,41 @@ const SelectBox = styled.select`
   text-align: center;
 `;
 
-export const MainTagIcon = ({ setAction }) => {
-  const [RowDatas, setRowDatas] = useState([
-    {
-      id: 1,
-      order: 1,
-      Category: "exampleCategory",
-      Class: "exampleCategory",
-      Tag: "exampleTag",
-    },
-  ]);
+export const MainTagIcon = ({ setAction, data, classData }) => {
+  // {
+  //   "tagId": 4,
+  //   "tagName": "style2",
+  //   "classId": 7,
+  //   "className": "Style2",
+  //   "category": "Style",
+  //   "order": 0
+  // },
+  console.log("ClassDATA");
+  console.log(classData);
+  // const {
+  //   loading: loading_class,
+  //   error: error_class,
+  //   data: data_class,
+  // } = useQuery(STYLE_CLASS_OPTION);
+  let idIdx = 1;
+  const [RowDatas, setRowDatas] = useState(
+    data.map((eachTag) => {
+      let tagData = {
+        id: idIdx,
+        order: idIdx,
+        Category: "Style",
+        Class: eachTag.className,
+        Tag: [{ value: eachTag.tagName, isSelected: true }],
+      };
+      idIdx++;
+      return tagData;
+    })
+  );
   const addRow = () => {
     const newData = {
       id: RowDatas[RowDatas.length - 1].id + 1,
-      order: RowDatas[RowDatas.length - 1].order + 1,
-      Category: "exampleCategory",
+      order: RowDatas[RowDatas.length - 1].id + 1,
+      Category: "Style",
       Class: "exampleCategory",
       Tag: "exampleTag",
     };
@@ -88,7 +109,6 @@ export const MainTagIcon = ({ setAction }) => {
   const deleteRow = (rowId) => {
     setRowDatas(RowDatas.filter((eachRow) => eachRow.id !== rowId));
   };
-  console.log("Here");
   return (
     <>
       <TitleBox>
@@ -120,27 +140,47 @@ export const MainTagIcon = ({ setAction }) => {
               <OrderInputBox placeholder={eachRow.order}></OrderInputBox>
             </td>
             <td>
-              <SelectBox id="CategorySelectBox">
+              <SelectBox name="CategorySelectBox">
                 <option value={eachRow.Category}>{eachRow.Category}</option>
-                <option value="exCategory2">exCategory2</option>
-                <option value="exCategory3">exCategory3</option>
-                <option value="exCategory4">exCategory4</option>
               </SelectBox>
             </td>
             <td>
-              <SelectBox id="CategorySelectBox">
-                <option value={eachRow.Class}>{eachRow.Class}</option>
-                <option value="exClass2">exClass2</option>
-                <option value="exClass3">exClass3</option>
-                <option value="exClass4">exClass4</option>
+              <SelectBox
+                name="ClassSelectBox"
+                onClick={(e) => {
+                  console.log(e.target);
+                }}
+              >
+                {classData.map((eachClass) => {
+                  if (eachClass.name === eachRow.Class) {
+                    return (
+                      <option value={eachClass.name} selected>
+                        {eachClass.name}
+                      </option>
+                    );
+                  } else {
+                    return (
+                      <option value={eachClass.name}>{eachClass.name}</option>
+                    );
+                  }
+                })}
               </SelectBox>
             </td>
             <td>
-              <SelectBox id="CategorySelectBox">
-                <option value={eachRow.Tag}>{eachRow.Tag}</option>
-                <option value="exTag2">exTag2</option>
-                <option value="exTag3">exTag3</option>
-                <option value="exTag4">exTag4</option>
+              <SelectBox name="TagSelectBox">
+                {eachRow.Tag.map((eachTag) => {
+                  if (eachTag.isSelected) {
+                    return (
+                      <option value={eachTag.value} selected>
+                        {eachTag.value}
+                      </option>
+                    );
+                  } else {
+                    return (
+                      <option value={eachTag.value}>{eachTag.value}</option>
+                    );
+                  }
+                })}
               </SelectBox>
             </td>
             <td>

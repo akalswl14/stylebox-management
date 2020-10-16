@@ -16,13 +16,44 @@ const Wrapper = styled.div`
   padding: 20px;
 `;
 
-export default ({ action, setAction }) => {
-  return (
-    <WrapPage>
-      <PageTitle text={"Tag Icon Management"} />
-      <MainTagIcon setAction={setAction} />
-      <BestTagIcon setAction={setAction} />
-      <ShopTagIcon setAction={setAction} />
-    </WrapPage>
-  );
+export default ({
+  action,
+  setAction,
+  loading,
+  error,
+  data,
+  loading_StyleClass,
+  error_StyleClass,
+  data_StyleClass,
+}) => {
+  if (error) return `Error! ${error.message}`;
+  if (error_StyleClass) return `Error! ${error_StyleClass.message}`;
+  if (loading || loading_StyleClass)
+    return (
+      <Wrapper>
+        <Loader />
+      </Wrapper>
+    );
+  if (!loading && data && !loading_StyleClass && data_StyleClass) {
+    return (
+      <WrapPage>
+        <PageTitle text={"Tag Icon Management"} />
+        <MainTagIcon
+          setAction={setAction}
+          data={data.getSettingMainBubbles}
+          classData={data_StyleClass.getClassOptions}
+        />
+        <BestTagIcon
+          setAction={setAction}
+          data={data.getSettingBestBubbles}
+          // categoryData={data.getManageCategoryOptions}
+        />
+        <ShopTagIcon
+          setAction={setAction}
+          data={data.getSettingShopBubbles}
+          // categoryData={data.getManageCategoryOptions}
+        />
+      </WrapPage>
+    );
+  }
 };

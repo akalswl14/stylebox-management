@@ -30,7 +30,7 @@ const Table = styled.table`
   }
 `;
 
-export const ShopTagIcon = ({ setAction }) => {
+export const ShopTagIcon = ({ setAction, data, categoryData }) => {
   return (
     <>
       <SectionTitle text={"Tag Icon Management ( in Shop Page )"} />

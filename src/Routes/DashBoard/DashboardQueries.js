@@ -34,19 +34,6 @@ export const DASHBOARD_QUERY = gql`
       viewNum
       weight
     }
-    # getTopPosts(periodFilter: 1) {
-    #   No
-    #   likeNum
-    #   mainProductName
-    #   postId
-    #   price
-    #   priority
-    #   rankNum
-    #   shopId
-    #   subProductNum
-    #   tagNames
-    #   viewNum
-    # }
   }
 `;
 
