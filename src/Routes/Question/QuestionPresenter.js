@@ -5,6 +5,7 @@ import PageTitle from "../../Components/PageTitle";
 import SectionTitle from "../../Components/SectionTitle";
 import Loader from "../../Components/Loader";
 import Button from "../../Components/Button";
+import { Link } from "react-router-dom";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -69,6 +70,12 @@ export default ({
   questionType,
   setQuestionState,
   questionState,
+  onTypeChange,
+  onOrderChange,
+  updateAdminInfo,
+  mutationLoading,
+  mutationError,
+  onSubmit,
   alreadyGetData,
   setalreadyGetData,
 }) => {
@@ -80,68 +87,91 @@ export default ({
     );
   if (!loading && data) {
     if (!alreadyGetData) {
-      setAdminState(data.getSettingAdminEmail);
-      setQuestionState(data.getSettingQuestionOption);
+      const defaultAdmin = {
+        email: data.getSettingAdminEmail.email,
+        pw: data.getSettingAdminEmail.pw,
+      };
+      setAdminState(defaultAdmin);
+      const question = [];
+      data.getSettingQuestionOption.map((option) =>
+        question.push({
+          order: Number(option.order),
+          questionType: option.questionType,
+        })
+      );
+      setQuestionState(question);
       setalreadyGetData(true);
     }
     return (
       <>
         <WrapPage>
-          <PageTitle text={"Question Management"} />
-          <TitleBox>
-            <SectionTitle text={"Email Information"} />
-            <ButtonBox>
-              <Button text="Back To Main"></Button>
-              <Button text="Confirm"></Button>
-            </ButtonBox>
-          </TitleBox>
-          <Table>
-            <tr>
-              <td>Admin Email</td>
-              <td>
-                <input
-                  name="email"
-                  type="email"
-                  onChange={onChange}
-                  value={email}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>Admin Password</td>
-              <td>
-                <input
-                  name="pw"
-                  type="password"
-                  onChange={onChange}
-                  value={pw}
-                />
-              </td>
-            </tr>
-          </Table>
-          <TitleBox>
-            <SectionTitle text={"Question Type Management"} />
-          </TitleBox>
-          <Table>
-            <th>Order</th>
-            <th>Question Type</th>
-            <th>+</th>
-            {questionState.map((question) => (
+          <form onSubmit={onSubmit}>
+            <PageTitle text={"Question Management"} />
+            <TitleBox>
+              <SectionTitle text={"Email Information"} />
+              <ButtonBox>
+                <Link to="/">
+                  <Button text="Back To Main"></Button>
+                </Link>
+                <Button type="submit" text="Confirm"></Button>
+              </ButtonBox>
+            </TitleBox>
+            <Table>
               <tr>
-                <td>
-                  <input name="order" type="text" value={question.order} />
-                </td>
+                <td>Admin Email</td>
                 <td>
                   <input
-                    name="questionType"
-                    type="text"
-                    value={question.questionType}
+                    name="email"
+                    type="email"
+                    onChange={onChange}
+                    value={email}
                   />
                 </td>
-                <td>+</td>
               </tr>
-            ))}
-          </Table>
+              <tr>
+                <td>Admin Password</td>
+                <td>
+                  <input
+                    name="pw"
+                    type="password"
+                    onChange={onChange}
+                    value={pw}
+                  />
+                </td>
+              </tr>
+            </Table>
+            <TitleBox>
+              <SectionTitle text={"Question Type Management"} />
+            </TitleBox>
+            <Table>
+              <th>Order</th>
+              <th>Question Type</th>
+              <th>+</th>
+              {questionState.map((question) => (
+                <tr>
+                  <td>
+                    <input
+                      name="order"
+                      type="text"
+                      value={question.order}
+                      onChange={(e) => onOrderChange(question.questionType, e)}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      name="questionType"
+                      type="text"
+                      value={question.questionType}
+                      onChange={(e) => onTypeChange(question.order, e)}
+                    />
+                  </td>
+                  <td>+</td>
+                </tr>
+              ))}
+            </Table>
+          </form>
+          {mutationLoading && <p>Loading...</p>}
+          {mutationError && <p>Error :( Please try again</p>}
         </WrapPage>
       </>
     );
