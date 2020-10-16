@@ -61,7 +61,7 @@ const OrderInputBox = styled.input`
 `;
 
 const SelectBox = styled.select`
-  width: 100px;
+  width: 200px;
   text-align: center;
 `;
 

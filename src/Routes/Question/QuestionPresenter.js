@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import WrapPage from '../../Styles/WrapPageStyles';
-import PageTitle from '../../Components/PageTitle';
-import SectionTitle from '../../Components/SectionTitle';
-import Loader from '../../Components/Loader';
-import Button from '../../Components/Button';
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import WrapPage from "../../Styles/WrapPageStyles";
+import PageTitle from "../../Components/PageTitle";
+import SectionTitle from "../../Components/SectionTitle";
+import Loader from "../../Components/Loader";
+import Button from "../../Components/Button";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -69,6 +69,8 @@ export default ({
   questionType,
   setQuestionState,
   questionState,
+  alreadyGetData,
+  setalreadyGetData,
 }) => {
   if (loading)
     return (
@@ -77,22 +79,20 @@ export default ({
       </Wrapper>
     );
   if (!loading && data) {
-    useEffect(() => {
+    if (!alreadyGetData) {
       setAdminState(data.getSettingAdminEmail);
       setQuestionState(data.getSettingQuestionOption);
-      return () => {
-        console.log('컴포넌트가 화면에서 사라짐');
-      };
-    }, []);
+      setalreadyGetData(true);
+    }
     return (
       <>
         <WrapPage>
-          <PageTitle text={'Question Management'} />
+          <PageTitle text={"Question Management"} />
           <TitleBox>
-            <SectionTitle text={'Email Information'} />
+            <SectionTitle text={"Email Information"} />
             <ButtonBox>
-              <Button text='Back To Main'></Button>
-              <Button text='Confirm'></Button>
+              <Button text="Back To Main"></Button>
+              <Button text="Confirm"></Button>
             </ButtonBox>
           </TitleBox>
           <Table>
@@ -100,8 +100,8 @@ export default ({
               <td>Admin Email</td>
               <td>
                 <input
-                  name='email'
-                  type='email'
+                  name="email"
+                  type="email"
                   onChange={onChange}
                   value={email}
                 />
@@ -111,8 +111,8 @@ export default ({
               <td>Admin Password</td>
               <td>
                 <input
-                  name='pw'
-                  type='password'
+                  name="pw"
+                  type="password"
                   onChange={onChange}
                   value={pw}
                 />
@@ -120,7 +120,7 @@ export default ({
             </tr>
           </Table>
           <TitleBox>
-            <SectionTitle text={'Question Type Management'} />
+            <SectionTitle text={"Question Type Management"} />
           </TitleBox>
           <Table>
             <th>Order</th>
@@ -129,12 +129,12 @@ export default ({
             {questionState.map((question) => (
               <tr>
                 <td>
-                  <input name='order' type='text' value={question.order} />
+                  <input name="order" type="text" value={question.order} />
                 </td>
                 <td>
                   <input
-                    name='questionType'
-                    type='text'
+                    name="questionType"
+                    type="text"
                     value={question.questionType}
                   />
                 </td>

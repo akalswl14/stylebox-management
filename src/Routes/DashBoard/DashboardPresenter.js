@@ -32,13 +32,14 @@ export default ({
         <Loader />
       </Wrapper>
     );
-  if (!loading && data && data_post)
+  if (!loading && data && data_post) {
     return (
       <WrapPage>
-        <PageTitle text={'DASH BOARD'} />
+        <PageTitle text={"DASH BOARD"} />
         <DashboardBasicStatus data={data.getDashboardBasicStatus} />
         <DashboardTopShop data={data.getTopShops} />
         <DashboardTopPost data={data_post.getTopPosts} setAction={setAction} />
       </WrapPage>
     );
+  }
 };
