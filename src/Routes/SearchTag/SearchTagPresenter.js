@@ -1,11 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
-import WrapPage from '../../Styles/WrapPageStyles';
-import PageTitle from '../../Components/PageTitle';
-import SectionTitle from '../../Components/SectionTitle';
-import Loader from '../../Components/Loader';
-import Button from '../../Components/Button';
-import SearchTagTable from './SearchTagTable';
+import React from "react";
+import styled from "styled-components";
+import WrapPage from "../../Styles/WrapPageStyles";
+import PageTitle from "../../Components/PageTitle";
+import SectionTitle from "../../Components/SectionTitle";
+import Loader from "../../Components/Loader";
+import Button from "../../Components/Button";
+import SearchTagTable from "./SearchTagTable";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -75,16 +75,17 @@ export default ({ loading, data }) => {
         <Loader />
       </Wrapper>
     );
+  console.log(data.getSettingPopularTags);
   if (!loading && data) {
     return (
       <>
         <WrapPage>
-          <PageTitle text={'Recommendation Tag Management'} />
+          <PageTitle text={"Recommendation Tag Management"} />
           <TitleBox>
-            <SectionTitle text={'Recommendation Tag Management'} />
+            <SectionTitle text={"Recommendation Tag Management"} />
             <ButtonBox>
-              <Button text='Back To Main'></Button>
-              <Button text='Confirm'></Button>
+              <Button text="Back To Main"></Button>
+              <Button text="Confirm"></Button>
             </ButtonBox>
           </TitleBox>
           <Table>
