@@ -5,6 +5,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import GlobalStyles from "../Styles/GlobalStyles";
 import Routes from "./Routes";
 import SideBar from "./SideBar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -33,6 +35,7 @@ export default () => {
       <Router>
         <Wrapper>
           <Routes />
+          <ToastContainer position={toast.POSITION.TOP_RIGHT} />
           <SidebarWrapper>
             <SideBar />
           </SidebarWrapper>

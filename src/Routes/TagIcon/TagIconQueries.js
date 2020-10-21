@@ -35,17 +35,17 @@ export const CATEGORY_OPTION = gql`
   }
 `;
 
-// export const CLASS_OPTION = gql`
-//   query GetClassQuery($category: Category) {
-//     getClassOptions(category: $category) {
-//       id
-//       name
-//     }
-//   }
-// `;
+export const GET_CLASS = gql`
+  query GET_CLASS($category: Category!) {
+    getClassOptions(category: $category) {
+      id
+      name
+    }
+  }
+`;
 
-export const TAG_INFO = gql`
-  query GetTagQuery($classId: String) {
+export const GET_TAG = gql`
+  query GET_TAG($classId: Int!) {
     getTagOptions(classId: $classId) {
       id
       name
@@ -53,11 +53,16 @@ export const TAG_INFO = gql`
   }
 `;
 
-export const STYLE_CLASS_OPTION = gql`
-  query GetClassQuery {
-    getClassOptions(category: Style) {
-      id
-      name
-    }
+export const UPDATE_TAGICON = gql`
+  mutation updateTagIcon(
+    $mainBubbleTags: [IdOrderInputType!]
+    $bestBubbleTags: [IdOrderInputType!]
+    $shopBubbleTags: [IdOrderInputType!]
+  ) {
+    updateSettingBubbles(
+      mainBubbleTags: $mainBubbleTags
+      bestBubbleTags: $bestBubbleTags
+      shopBubbleTags: $shopBubbleTags
+    )
   }
 `;
