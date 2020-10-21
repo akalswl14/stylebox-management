@@ -31,3 +31,13 @@ export const GET_TAG = gql`
     }
   }
 `;
+
+export const POPULAR_TAG_MUTATION= gql`
+  mutation updateSettingPopularTags (
+    $popularTags : [PopularTagInputType!]!
+  ) {
+    updateSettingPopularTags (
+      popularTags : $popularTags ,
+    )
+  }
+`;

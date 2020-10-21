@@ -1,93 +1,188 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useQuery } from "react-apollo-hooks";
 import { GET_CLASS, GET_TAG } from "./SearchTagQueries";
+import { DeleteIcon } from "../../Components/Icons";
+import styled from "styled-components";
+import { SearchTagIconContext } from "./SearchTagContainer";
 
-const SearchTagTable = ({
-  order,
-  id,
-  tagName,
-  Category,
-  className,
-  classId,
-  categories,
-  searchTag,
-}) => {
-  const [classState, setclassState] = useState(Category);
-  const [tagState, setTagState] = useState(Number(classId));
+const OrderInputBox = styled.input`
+	width: 30px;
+	text-align: center;
+`;
 
-  const { loading: classLoading, data: classData } = useQuery(GET_CLASS, {
-    variables: { category: classState },
-  });
-  const { loading: tagLoading, data: tagData } = useQuery(GET_TAG, {
-    variables: { classId: tagState },
-  });
+const SelectBox = styled.select`
+	width: 200px;
+	text-align: center;
+`;
 
-  const TagCategories = categories.filter(
-    (category) => category !== "ShopName"
-  );
+const RowButton = styled.button`
+	border: none;
+	background: none;
+	cursor: pointer;
+	min-width: fit-content;
+`;
 
-  const onChange = (e) => {
-    const { value, name } = e.target;
-    console.log(value);
-    console.log(name);
-    if (name === "category") {
-      setclassState(value);
-    }
-    if (name === "classInfo") {
-      setTagState(Number(value));
-    }
-  };
+const SearchTagTable = ({ categories, data }) => {
+	const { searchTagDispatch } = useContext(SearchTagIconContext);
+	const [classState, setclassState] = useState(data.category);
+	const [tagState, setTagState] = useState(Number(data.classId));
 
-  if (classLoading || tagLoading)
-    return (
-      <tr>
-        <td>
-          <input name="order" type="text" value={order} />
-        </td>
-        <td>
-          <select name="category"></select>
-        </td>
-        <td>
-          <select name="classInfo"></select>
-        </td>
-        <td>
-          <select name="tagInfo" value={id}></select>
-        </td>
-        <td>x</td>
-      </tr>
-    );
+	const { loading: classLoading, data: classData } = useQuery(GET_CLASS, {
+		variables: { category: classState },
+	});
+	const { loading: tagLoading, data: tagData } = useQuery(GET_TAG, {
+		variables: { classId: tagState },
+	});
 
-  if (!classLoading && classData && tagData) {
-    return (
-      <tr>
-        <td>
-          <input name="order" type="text" value={order} />
-        </td>
-        <td>
-          <select name="category" value={classState} onChange={onChange}>
-            {TagCategories.map((category) => (
-              <option value={category}>{category}</option>
-            ))}
-          </select>
-        </td>
-        <td>
-          <select name="classInfo" value={tagState} onChange={onChange}>
-            {classData.getClassOptions.map((item) => (
-              <option value={item.id}>{item.name}</option>
-            ))}
-          </select>
-        </td>
-        <td>
-          <select name="tagInfo" value={id} onChange={onChange}>
-            {tagData.getTagOptions.map((item) => (
-              <option value={item.id}>{item.name}</option>
-            ))}
-          </select>
-        </td>
-        <td>x</td>
-      </tr>
-    );
-  }
+	const onChange = (e) => {
+		const { value, name } = e.target;
+		if (name === "order") {
+			if (Number(value) > 0) {
+				searchTagDispatch({
+					type: "UPDATE_MAINTAG",
+					data: {
+						id: Number(data.id),
+						order: Number(value),
+						category: data.category,
+						classId: Number(data.classId),
+						className: data.className,
+						tagId: Number(data.tagId),
+						tagName: data.tagName,
+					},
+				});
+			}
+		}
+		if (name === "category") {
+			setclassState(value);
+			searchTagDispatch({
+				type: "UPDATE_MAINTAG",
+				data: {
+					id: Number(data.id),
+					order: Number(data.order),
+					category: value,
+					classId: 0,
+					className: "-- CHOOSE DATA --",
+					tagId: 0,
+					tagName: "-- CHOOSE DATA --",
+				},
+			});
+		}
+		if (name === "classInfo") {
+			setTagState(Number(value));
+			searchTagDispatch({
+				type: "UPDATE_MAINTAG",
+				data: {
+					id: Number(data.id),
+					order: Number(data.order),
+					category: data.category,
+					classId: Number(value),
+					className: e.target[e.target.selectedIndex].text,
+					tagId: 0,
+					tagName: "-- CHOOSE DATA --",
+				},
+			});
+		}
+		if (name === "tagInfo") {
+			searchTagDispatch({
+				type: "UPDATE_MAINTAG",
+				data: {
+					id: Number(data.id),
+					order: Number(data.order),
+					category: data.category,
+					classId: Number(data.classId),
+					className: data.className,
+					tagId: Number(value),
+					tagName: e.target[e.target.selectedIndex].text,
+				},
+			});
+		}
+	};
+
+	const deleteRow = (e, rowId) => {
+		e.preventDefault();
+		searchTagDispatch({
+			type: "DELETE_MAINTAG",
+			data: {
+				id: Number(rowId),
+			},
+		});
+	};
+
+	if (classLoading || tagLoading)
+		return (
+			<tr>
+				<td className="orderInputCell">
+					<OrderInputBox type="text" name="order" value={data.order} onChange={onChange} />
+				</td>
+				<td>
+					<select name="category">
+						<option value={"-- LOADING --"}>{"-- LOADING --"}</option>
+					</select>
+				</td>
+				<td>
+					<select name="classInfo">
+						<option value={0}>{"-- LOADING --"}</option>
+					</select>
+				</td>
+				<td>
+					<select name="tagInfo" value={data.tagId}>
+						<option value={0}>{"-- LOADING --"}</option>
+					</select>
+				</td>
+				<td className="buttonCell">
+					<RowButton>
+						<DeleteIcon size={19} />
+					</RowButton>
+				</td>
+			</tr>
+		);
+
+	if (!classLoading && classData && tagData) {
+		return (
+			<tr id={data.id}>
+				<td>
+					<OrderInputBox name="order" type="text" placeholder={data.order} />
+				</td>
+				<td>
+					<SelectBox name="category" value={data.category} onChange={onChange}>
+						{data.category === "-- CHOOSE DATA --" ? (
+							<option value={data.category}>{data.category}</option>
+						) : (
+							<></>
+						)}
+						{categories.map((category) => (
+							<option value={category}>{category}</option>
+						))}
+					</SelectBox>
+				</td>
+				<td>
+					<SelectBox name="classInfo" value={data.classId} onChange={onChange}>
+						{data.classId === 0 ? <option value={data.className}>{data.className}</option> : <></>}
+						{data.category !== "-- CHOOSE DATA --" ? (
+							classData.getClassOptions.map((item) => <option value={item.id}>{item.name}</option>)
+						) : (
+							<></>
+						)}
+					</SelectBox>
+				</td>
+				<td>
+					<SelectBox name="tagInfo" value={data.tagId} onChange={onChange}>
+						{data.tagId === 0 ? <option value={data.tagId}>{data.tagName}</option> : <></>}
+						{data.classId !== 0 ? (
+							tagData.getTagOptions.map((item) => <option value={item.id}>{item.name}</option>)
+						) : (
+							<></>
+						)}
+					</SelectBox>
+				</td>
+				<td>
+					<RowButton onClick={(e) => deleteRow(e, data.id)}>
+						<DeleteIcon size={19} />
+					</RowButton>
+				</td>
+			</tr>
+		);
+	}
 };
 
 export default SearchTagTable;
