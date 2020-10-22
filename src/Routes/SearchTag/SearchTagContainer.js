@@ -47,16 +47,18 @@ export default () => {
 			mutationData = {
 				popularTags: [],
 			};
+
 		for (const eachTag of searchTagState.SearchTagRowData) {
 			if (orderArr.includes(eachTag.order)) {
-				toast.error("Main Page Tag Icon : Order values should not be the same.");
+				toast.error("Recommendation Tag Page  : Order values should not be the same.");
 				return;
 			}
 			if (eachTag.order === 0) {
-				toast.error("Main Page Tag Icon : Order values should be bigger than 0.");
+				toast.error("Recommendation Tag Page : Order values should be bigger than 0.");
+				return;
 			}
 			if (tagIdArr.includes(eachTag.tagId)) {
-				toast.error("Main Page Tag Icon : Tag should not be the same.");
+				toast.error("Recommendation Tag Page : Tag should not be the same.");
 				return;
 			}
 			if (
@@ -65,7 +67,7 @@ export default () => {
 				eachTag.category === "-- CHOOSE DATA --" ||
 				eachTag.category === "-- LOADING --"
 			) {
-				toast.error("Main Page Tag Icon : You have to choose value.");
+				toast.error("Recommendation Tag Page : You have to choose value.");
 				return;
 			}
 			orderArr.push(eachTag.order);

@@ -37,7 +37,7 @@ const SearchTagTable = ({ categories, data }) => {
 	const onChange = (e) => {
 		const { value, name } = e.target;
 		if (name === "order") {
-			if (Number(value) > 0) {
+			if (Number(value) >= 0) {
 				searchTagDispatch({
 					type: "UPDATE_MAINTAG",
 					data: {
@@ -112,7 +112,7 @@ const SearchTagTable = ({ categories, data }) => {
 		return (
 			<tr>
 				<td className="orderInputCell">
-					<OrderInputBox type="text" name="order" value={data.order} onChange={onChange} />
+					<OrderInputBox type="text" name="order" value={data.order} onChange={onChange} required />
 				</td>
 				<td>
 					<select name="category">
@@ -141,7 +141,13 @@ const SearchTagTable = ({ categories, data }) => {
 		return (
 			<tr id={data.id}>
 				<td>
-					<OrderInputBox name="order" type="text" placeholder={data.order} />
+					<OrderInputBox
+						name="order"
+						type="text"
+						placeholder={data.order}
+						onChange={onChange}
+						required
+					/>
 				</td>
 				<td>
 					<SelectBox name="category" value={data.category} onChange={onChange}>
