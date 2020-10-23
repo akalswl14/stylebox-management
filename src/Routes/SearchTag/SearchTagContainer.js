@@ -14,15 +14,15 @@ function reducer(state, action) {
 	switch (action.type) {
 		case "SET_DATA":
 			return action.data;
-		case "CREATE_MAINTAG":
+		case "CREATE_TAG":
 			return {
 				SearchTagRowData: state.SearchTagRowData.concat(action.data),
 			};
-		case "DELETE_MAINTAG":
+		case "DELETE_TAG":
 			return {
 				SearchTagRowData: state.SearchTagRowData.filter((eachTag) => eachTag.id !== action.data.id),
 			};
-		case "UPDATE_MAINTAG":
+		case "UPDATE_TAG":
 			return {
 				SearchTagRowData: state.SearchTagRowData.map((eachData) => {
 					if (eachData.id === action.data.id) {

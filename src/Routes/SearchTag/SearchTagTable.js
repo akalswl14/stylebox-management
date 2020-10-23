@@ -39,7 +39,7 @@ const SearchTagTable = ({ categories, data }) => {
 		if (name === "order") {
 			if (Number(value) >= 0) {
 				searchTagDispatch({
-					type: "UPDATE_MAINTAG",
+					type: "UPDATE_TAG",
 					data: {
 						id: Number(data.id),
 						order: Number(value),
@@ -55,7 +55,7 @@ const SearchTagTable = ({ categories, data }) => {
 		if (name === "category") {
 			setclassState(value);
 			searchTagDispatch({
-				type: "UPDATE_MAINTAG",
+				type: "UPDATE_TAG",
 				data: {
 					id: Number(data.id),
 					order: Number(data.order),
@@ -70,7 +70,7 @@ const SearchTagTable = ({ categories, data }) => {
 		if (name === "classInfo") {
 			setTagState(Number(value));
 			searchTagDispatch({
-				type: "UPDATE_MAINTAG",
+				type: "UPDATE_TAG",
 				data: {
 					id: Number(data.id),
 					order: Number(data.order),
@@ -84,7 +84,7 @@ const SearchTagTable = ({ categories, data }) => {
 		}
 		if (name === "tagInfo") {
 			searchTagDispatch({
-				type: "UPDATE_MAINTAG",
+				type: "UPDATE_TAG",
 				data: {
 					id: Number(data.id),
 					order: Number(data.order),
@@ -101,7 +101,7 @@ const SearchTagTable = ({ categories, data }) => {
 	const deleteRow = (e, rowId) => {
 		e.preventDefault();
 		searchTagDispatch({
-			type: "DELETE_MAINTAG",
+			type: "DELETE_TAG",
 			data: {
 				id: Number(rowId),
 			},
@@ -141,13 +141,7 @@ const SearchTagTable = ({ categories, data }) => {
 		return (
 			<tr id={data.id}>
 				<td>
-					<OrderInputBox
-						name="order"
-						type="text"
-						placeholder={data.order}
-						onChange={onChange}
-						required
-					/>
+					<OrderInputBox name="order" type="text" value={data.order} onChange={onChange} required />
 				</td>
 				<td>
 					<SelectBox name="category" value={data.category} onChange={onChange}>

@@ -127,7 +127,7 @@ export default ({ loading, data, error, onSubmit }) => {
 			};
 			console.log(newData);
 			searchTagDispatch({
-				type: "CREATE_MAINTAG",
+				type: "CREATE_TAG",
 				data: newData,
 			});
 		};
