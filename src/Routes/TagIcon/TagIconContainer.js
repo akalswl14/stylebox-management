@@ -19,8 +19,6 @@ const initialState = {
 function reducer(state, action) {
   switch (action.type) {
     case "SET_DATA":
-      console.log("Setting Context Data to THIS");
-      console.log(action.data);
       return action.data;
     case "CREATE_MAINTAG":
       return {
@@ -35,7 +33,6 @@ function reducer(state, action) {
         ),
       };
     case "UPDATE_MAINTAG":
-      console.log("Update MainTag Data");
       return {
         ...state,
         MainIconRowData: state.MainIconRowData.map((eachData) => {
@@ -57,7 +54,6 @@ function reducer(state, action) {
         ),
       };
     case "UPDATE_BESTTAG":
-      console.log("Update BestTag Data");
       return {
         ...state,
         BestIconRowData: state.BestIconRowData.map((eachData) => {
@@ -79,7 +75,6 @@ function reducer(state, action) {
         ),
       };
     case "UPDATE_SHOPTAG":
-      console.log("Update ShopTag Data");
       return {
         ...state,
         ShopIconRowData: state.ShopIconRowData.map((eachData) => {
@@ -214,7 +209,6 @@ export default () => {
         order: eachTag.order,
       });
     }
-    console.log(mutationData);
     const {
       data: { updateSettingBubbles },
     } = await updateTagIcon({

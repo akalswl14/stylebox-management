@@ -50,7 +50,6 @@ export const MainTagIcon = ({ categories }) => {
   const { TagIconDispatch, TagIconState } = useContext(TagIconContext);
   const addRow = (e) => {
     e.preventDefault();
-    console.log("Adding Data!");
     const PrevMainRowData = TagIconState.MainIconRowData;
     const newData = {
       id:
@@ -67,7 +66,6 @@ export const MainTagIcon = ({ categories }) => {
       tagId: 0,
       tagName: "-- CHOOSE DATA --",
     };
-    console.log(newData);
     TagIconDispatch({
       type: "CREATE_MAINTAG",
       data: newData,

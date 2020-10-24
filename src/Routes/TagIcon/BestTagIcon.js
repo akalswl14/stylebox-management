@@ -50,7 +50,6 @@ export const BestTagIcon = ({ categories }) => {
   const { TagIconDispatch, TagIconState } = useContext(TagIconContext);
   const addRow = (e) => {
     e.preventDefault();
-    console.log("Adding Data!");
     const PrevBestRowData = TagIconState.BestIconRowData;
     const newData = {
       id:
@@ -67,7 +66,6 @@ export const BestTagIcon = ({ categories }) => {
       tagId: 0,
       tagName: "-- CHOOSE DATA --",
     };
-    console.log(newData);
     TagIconDispatch({
       type: "CREATE_BESTTAG",
       data: newData,
