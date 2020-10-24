@@ -93,6 +93,7 @@ export const MainTagIcon = ({ categories }) => {
             data={eachRow}
             categories={categories}
             section={"MainTag"}
+            key={eachRow.id}
           />
         ))}
       </Table>

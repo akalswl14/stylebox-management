@@ -195,7 +195,7 @@ const TagIconDataRow = ({ data, categories, section }) => {
             value={data.classId}
             onChange={onChange}
           >
-            {data.classId == 0 ? (
+            {data.classId === 0 ? (
               <option value={data.className}>{data.className}</option>
             ) : (
               <></>
@@ -211,12 +211,12 @@ const TagIconDataRow = ({ data, categories, section }) => {
         </td>
         <td>
           <SelectBox name="TagSelectBox" value={data.tagId} onChange={onChange}>
-            {data.tagId == 0 ? (
+            {data.tagId === 0 ? (
               <option value={data.tagId}>{data.tagName}</option>
             ) : (
               <></>
             )}
-            {data.classId != 0 ? (
+            {data.classId !== 0 ? (
               tagData.getTagOptions.map((item) => (
                 <option value={item.id}>{item.name}</option>
               ))

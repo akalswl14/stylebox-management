@@ -39,7 +39,7 @@ function reducer(state, action) {
       return {
         ...state,
         MainIconRowData: state.MainIconRowData.map((eachData) => {
-          if (eachData.id == action.data.id) {
+          if (eachData.id === action.data.id) {
             return action.data;
           } else return eachData;
         }),
@@ -61,7 +61,7 @@ function reducer(state, action) {
       return {
         ...state,
         BestIconRowData: state.BestIconRowData.map((eachData) => {
-          if (eachData.id == action.data.id) {
+          if (eachData.id === action.data.id) {
             return action.data;
           } else return eachData;
         }),
@@ -83,7 +83,7 @@ function reducer(state, action) {
       return {
         ...state,
         ShopIconRowData: state.ShopIconRowData.map((eachData) => {
-          if (eachData.id == action.data.id) {
+          if (eachData.id === action.data.id) {
             return action.data;
           } else return eachData;
         }),

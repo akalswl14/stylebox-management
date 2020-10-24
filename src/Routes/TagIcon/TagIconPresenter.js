@@ -53,7 +53,7 @@ export default ({
       </Wrapper>
     );
   if (!loading && data && !loading_CategoryData && data_CategoryData) {
-    const { TagIconDispatch, TagIconState } = useContext(TagIconContext);
+    const { TagIconDispatch } = useContext(TagIconContext);
     useEffect(() => {
       let idIdx = 1;
       let MainIconRowData = data.getSettingMainBubbles.map((eachData) => {
