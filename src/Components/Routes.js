@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import Banner from "../Routes/Banner/Banner";
+import Banner from "../Routes/Banner/index";
 import DashBoard from "../Routes/DashBoard/index";
 import Feed from "../Routes/Feed/index";
 import Question from "../Routes/Question/index";
