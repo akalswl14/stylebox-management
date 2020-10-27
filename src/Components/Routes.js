@@ -8,6 +8,7 @@ import TagIcon from "../Routes/TagIcon/index";
 import SearchTag from "../Routes/SearchTag/index";
 import TagMap from "../Routes/TagMap/index";
 import UserList from "../Routes/UserList/index";
+import TagList from "../Routes/TagList/index";
 
 const AppRouter = () => {
   return (
@@ -19,10 +20,11 @@ const AppRouter = () => {
       <Route path="/tagicon" component={TagIcon} />
       <Route path="/searchtag" component={SearchTag} />
       <Route path="/tagmap" component={TagMap} />
-      <Route path="/userlist" component={UserList} />
+      <Route path="/taglist" component={TagList} />
       <Redirect path="*" to="/" />
     </Switch>
   );
+      <Route path="/userlist" component={UserList} />
 };
 
 export default AppRouter;
