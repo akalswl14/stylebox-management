@@ -4,6 +4,8 @@ const BORDER_RADIUS = "4px";
 export default {
   bgColor: "#000000",
   titleCellColor: "#f2f2f2",
+  SearchButtonColor: "#D8D8D8",
+  SearchButtonBorder: "1px solid #707070",
   linkButtonColor: "#D8D8D8",
   linkButtonBorder: "1px solid #707070",
   ButtonColor: "#DB3D45",
