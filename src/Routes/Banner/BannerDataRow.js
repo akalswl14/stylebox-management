@@ -6,14 +6,10 @@ import { DeleteIcon } from "../../Components/Icons";
 import { BannerContext } from "./BannerContainer";
 import { toast } from "react-toastify";
 import ImageThumbnail from "./ImageThumbnail";
+import AutoSelectBox from "./AutoSelectBox";
 
 const OrderInputBox = styled.input`
   width: 30px;
-  text-align: center;
-`;
-
-const TitleInputBox = styled.input`
-  width: 150px;
   text-align: center;
 `;
 
@@ -37,6 +33,94 @@ const BannerDataRow = ({ data }) => {
   });
 
   if (error_SearchEvent) toast.error("Error Occured while searching events");
+
+  const onEventTitleSelect = (e) => {
+    if (!e.target.querySelector("li>span")) {
+      const value = e.target.value;
+      for (const eachOption of data_SearchEvent.searchEvent) {
+        if (eachOption.title === value) {
+          BannerDispatch({
+            type: "UPDATE_BANNER",
+            data: {
+              id: data.id,
+              order: data.order,
+              title: value,
+              eventId: eachOption.id,
+              bannerImage: eachOption.bannerImage,
+            },
+          });
+          return;
+        }
+      }
+      BannerDispatch({
+        type: "UPDATE_BANNER",
+        data: {
+          id: data.id,
+          order: data.order,
+          title: value,
+          eventId: 0,
+          bannerImage: null,
+        },
+      });
+    } else {
+      const EventId = Number(e.target.querySelector("li>span").textContent);
+      for (const eachOption of data_SearchEvent.searchEvent) {
+        if (eachOption.id === EventId) {
+          BannerDispatch({
+            type: "UPDATE_BANNER",
+            data: {
+              id: data.id,
+              order: data.order,
+              title: eachOption.title,
+              eventId: eachOption.id,
+              bannerImage: eachOption.bannerImage,
+            },
+          });
+          return;
+        }
+      }
+      BannerDispatch({
+        type: "UPDATE_BANNER",
+        data: {
+          id: data.id,
+          order: data.order,
+          title: data.title,
+          eventId: 0,
+          bannerImage: null,
+        },
+      });
+    }
+  };
+
+  const onEventTitleChange = (e) => {
+    const value = e.target.value;
+    for (const eachOption of data_SearchEvent.searchEvent) {
+      if (eachOption.title === value) {
+        BannerDispatch({
+          type: "UPDATE_BANNER",
+          data: {
+            id: data.id,
+            order: data.order,
+            title: value,
+            eventId: eachOption.id,
+            bannerImage: eachOption.bannerImage,
+          },
+        });
+        return;
+      }
+    }
+    BannerDispatch({
+      type: "UPDATE_BANNER",
+      data: {
+        id: data.id,
+        order: data.order,
+        title: value,
+        eventId: 0,
+        bannerImage: null,
+      },
+    });
+  };
+
   const onChange = (e) => {
     const { value, name } = e.target;
     if (name === "order") {
@@ -109,18 +193,16 @@ const BannerDataRow = ({ data }) => {
       </td>
       <td>{data.eventId ? data.eventId : "-"}</td>
       <td>
-        <TitleInputBox
-          name="eventTitle"
-          value={data.title}
-          onChange={onChange}
-          list="searchEvents"
+        <AutoSelectBox
+          defaultValue={{
+            id: data.eventId,
+            title: data.title,
+            bannerImage: data.bannerImage,
+          }}
+          data={data_SearchEvent ? data_SearchEvent.searchEvent : []}
+          onTitleChangeFunc={onEventTitleChange}
+          onTitleSelectFunc={onEventTitleSelect}
         />
-        <datalist id="searchEvents">
-          {data_SearchEvent &&
-            data_SearchEvent.searchEvent.map((eachEvent) => (
-              <option value={eachEvent.title} id={eachEvent.id}></option>
-            ))}
-        </datalist>
       </td>
       <td>
         <ImageThumbnail Key={data.bannerImage} />
