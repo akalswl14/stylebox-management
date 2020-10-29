@@ -4,6 +4,7 @@ import { Route } from "react-router-dom";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import { AiFillSetting, AiFillHome, AiFillTags } from "react-icons/ai";
 import { FaProductHunt } from "react-icons/fa";
+import { BsFilePost } from "react-icons/bs";
 
 const SideBar = () => {
   const style = {
@@ -73,6 +74,15 @@ const SideBar = () => {
                 <NavText>Product Management</NavText>
                 <NavItem eventKey="productlist">
                   <NavText>Product List</NavText>
+                </NavItem>
+              </NavItem>
+              <NavItem eventKey="postlist">
+                <NavIcon>
+                  <BsFilePost size="24" color="#fff" style={style} />
+                </NavIcon>
+                <NavText>Post Management</NavText>
+                <NavItem eventKey="postlist">
+                  <NavText>Post List</NavText>
                 </NavItem>
               </NavItem>
             </SideNav.Nav>

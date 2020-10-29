@@ -10,6 +10,7 @@ import TagMap from "../Routes/TagMap/index";
 import UserList from "../Routes/UserList/index";
 import TagList from "../Routes/TagList/index";
 import ProductList from "../Routes/ProductList/index";
+import PostList from "../Routes/PostList/index";
 
 const AppRouter = () => {
   return (
@@ -24,6 +25,7 @@ const AppRouter = () => {
       <Route path="/taglist" component={TagList} />
       <Route path="/userlist" component={UserList} />
       <Route path="/productlist" component={ProductList} />
+      <Route path="/postList" component={PostList} />
       <Redirect path="*" to="/" />
     </Switch>
   );
