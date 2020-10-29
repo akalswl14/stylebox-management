@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import WrapPage from "../../Styles/WrapPageStyles";
 import PageTitle from "../../Components/PageTitle";
 import Loader from "../../Components/Loader";
-import { TagListContext } from "./TagListContainer";
-import TagListTable from "./TagListTable";
+import { ProductListContext } from "./ProductListContainer";
 import { Link } from "react-router-dom";
 import Button from "../../Components/Button";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import SearchButton from "../../Components/SearchButton";
+import ProductListTable from "./ProductListTable";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -62,10 +62,10 @@ const PaginationBox = styled.div`
 `;
 
 export default ({ loading, data, error, onSubmit }) => {
-  const { tagDispatch, tagState } = useContext(TagListContext);
+  const { productDispatch, productState } = useContext(ProductListContext);
 
   const onChangeCurrentPage = (pageNum) => {
-    tagDispatch({
+    productDispatch({
       type: "UPDATE_PAGENUM",
       data: { pageNum },
     });
@@ -73,7 +73,7 @@ export default ({ loading, data, error, onSubmit }) => {
 
   const ChangeSearch = (e) => {
     const { value, name } = e.target;
-    tagDispatch({
+    productDispatch({
       type: "UPDATE_SEARCH",
       data: {
         name,
@@ -82,16 +82,25 @@ export default ({ loading, data, error, onSubmit }) => {
     });
   };
 
-  const SearchTagList = (e) => {
+  const ChangeButton = (buttonKind) => {
+    productDispatch({
+      type: "CHANGE_BUTTON",
+      data: {
+        buttonKind,
+      },
+    });
+  };
+
+  const SearchProductList = (e) => {
     e.preventDefault();
-    tagDispatch({
+    productDispatch({
       type: "UPDATE_SEARCHOPTION",
       data: {
         searchOption: {
-          ...tagState.searchOption,
+          ...productState.searchOption,
           searchItemBoolean:
-            tagState.searchOption.searchKeyWord !== "" ? true : false,
-          searchItem: tagState.searchOption.searchKeyWord,
+            productState.searchOption.searchKeyWord !== "" ? true : false,
+          searchItem: productState.searchOption.searchKeyWord,
         },
       },
     });
@@ -104,63 +113,78 @@ export default ({ loading, data, error, onSubmit }) => {
       </Wrapper>
     );
   if (!loading && data) {
+    useEffect(() => {
+      let productInfo = data.getProductList.products.map((eachData) => {
+        let productData = {
+          productId: eachData.productId,
+          productName: eachData.productName,
+          price: eachData.price,
+          postNum: eachData.postNum,
+          link: eachData.link,
+        };
+        return productData;
+      });
+      productDispatch({
+        type: "SET_DATA",
+        data: {
+          productInfo,
+        },
+      });
+    }, [data]);
     return (
       <>
         <WrapPage>
-          <PageTitle text={"Tag List"} />
+          <PageTitle text={"Product List"} />
           <TitleBox>
             <form>
               <SearchBox>
                 <SelectBox
                   name="searchSelectBox"
                   onChange={ChangeSearch}
-                  defaultValue={tagState.searchOption.searchSelectBox}
+                  defaultValue={productState.searchOption.searchSelectBox}
                 >
-                  <option value="tagId">tagId</option>
-                  <option value="tagName">tagName</option>
-                  <option value="category">category</option>
-                  <option value="className">className</option>
+                  <option value="productId">productId</option>
+                  <option value="productName">productName</option>
                 </SelectBox>
                 &nbsp;
                 <InputBox
                   type="text"
                   name="searchKeyWord"
-                  value={tagState.searchOption.searchKeyWord}
+                  value={productState.searchOption.searchKeyWord}
                   onChange={ChangeSearch}
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();
-                      SearchTagList(e);
+                      SearchProductList(e);
                     }
                   }}
                 />
                 &nbsp;
-                <SearchButton ClickEvent={SearchTagList} />
+                <SearchButton ClickEvent={SearchProductList} />
               </SearchBox>
             </form>
             <ButtonBox>
               <Link to="/">
-                <Button text="See Tag Map"></Button>
-              </Link>
-              <Link to="/">
-                <Button text="Add New Class"></Button>
-              </Link>
-              <Link to="/">
-                <Button text="Add New Tag"></Button>
+                <Button text="Add New Product"></Button>
               </Link>
               <Button text="Download List"></Button>
             </ButtonBox>
           </TitleBox>
           <form onSubmit={onSubmit}>
-            <TagListTable data={data} />
+            <ProductListTable data={data} />
             <SearchBox>
-              <Button type="submit" text="Delete Selected"></Button>
+              <div onClick={() => ChangeButton("edit")}>
+                <Button type="submit" text="Edit Selected"></Button>
+              </div>
+              <div onClick={() => ChangeButton("delete")}>
+                <Button type="submit" text="Delete Selected"></Button>
+              </div>
             </SearchBox>
           </form>
           <PaginationBox>
             <Pagination
-              currentPage={tagState.pageNum}
-              totalSize={data.getTagList.totalTagNum} //api 에서 전체 수 전달해주기
+              currentPage={productState.pageNum}
+              totalSize={data.getProductList.totalProductNum}
               sizePerPage={13}
               changeCurrentPage={onChangeCurrentPage}
               numberOfPagesNextToActivePage={3}

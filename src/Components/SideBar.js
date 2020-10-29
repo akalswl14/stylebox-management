@@ -3,6 +3,7 @@ import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
 import { Route } from "react-router-dom";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import { AiFillSetting, AiFillHome, AiFillTags } from "react-icons/ai";
+import { FaProductHunt } from "react-icons/fa";
 
 const SideBar = () => {
   const style = {
@@ -63,6 +64,15 @@ const SideBar = () => {
                 </NavItem>
                 <NavItem eventKey="taglist">
                   <NavText>Tag List</NavText>
+                </NavItem>
+              </NavItem>
+              <NavItem eventKey="productlist">
+                <NavIcon>
+                  <FaProductHunt size="24" color="#fff" style={style} />
+                </NavIcon>
+                <NavText>Product Management</NavText>
+                <NavItem eventKey="productlist">
+                  <NavText>Product List</NavText>
                 </NavItem>
               </NavItem>
             </SideNav.Nav>
