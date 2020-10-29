@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import PageTitle from "../../Components/PageTitle";
 import WrapPage from "../../Styles/WrapPageStyles";
@@ -101,7 +101,7 @@ export default ({ onSubmit, loading, error, data }) => {
       userIdAsc: true,
       installationDateAsc: true,
     };
-    if (name == "userId") {
+    if (name === "userId") {
       if (UserListState.SortOption.SortUserId) {
         if (UserListState.SortOption.userIdAsc) {
           SortOption.SortUserId = true;
@@ -114,7 +114,7 @@ export default ({ onSubmit, loading, error, data }) => {
         SortOption.SortUserId = true;
         SortOption.userIdAsc = true;
       }
-    } else if (name == "installationDate") {
+    } else if (name === "installationDate") {
       if (UserListState.SortOption.SortInstallationDate) {
         if (UserListState.SortOption.installationDateAsc) {
           SortOption.SortInstallationDate = true;

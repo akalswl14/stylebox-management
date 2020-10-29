@@ -1,24 +1,5 @@
 import React, { useContext } from "react";
-import styled from "styled-components";
 import { UserListContext } from "./UserListContainer";
-
-const OrderInputBox = styled.input`
-  width: 30px;
-  text-align: center;
-`;
-
-const TitleInputBox = styled.input`
-  width: 150px;
-  text-align: center;
-`;
-
-const RowButton = styled.button`
-  border: none;
-  background: none;
-  cursor: pointer;
-  min-width: fit-content;
-  margin: 0;
-`;
 
 const UserDataRow = ({ data }) => {
   const { UserListState, UserListDispatch } = useContext(UserListContext);
