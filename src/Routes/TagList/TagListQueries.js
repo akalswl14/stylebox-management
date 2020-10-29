@@ -21,13 +21,22 @@ export const GET_TAGLIST = gql`
       tagNameAsc: $tagNameAsc
       categoryAsc: $categoryAsc
     ) {
-      tagId
-      tagName
-      category
-      className
-      postNum
-      shopNum
-      productNum
+      tags {
+        tagId
+        tagName
+        category
+        className
+        postNum
+        shopNum
+        productNum
+      }
+      totalTagNum
     }
+  }
+`;
+
+export const DELETE_TAGS = gql`
+  mutation DELETE_TAGS($tagIds: [Int!]!) {
+    deleteSelectedTags(tagIds: $tagIds)
   }
 `;

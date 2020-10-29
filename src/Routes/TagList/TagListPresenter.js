@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import WrapPage from "../../Styles/WrapPageStyles";
 import PageTitle from "../../Components/PageTitle";
@@ -9,8 +9,7 @@ import { Link } from "react-router-dom";
 import Button from "../../Components/Button";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
-import { GET_TAGLIST } from "./TagListQueries";
-import { useQuery } from "react-apollo-hooks";
+import SearchButton from "../../Components/SearchButton";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -68,7 +67,41 @@ const PaginationBox = styled.div`
   text-align: center;
 `;
 
-export default ({ loading, data, error }) => {
+export default ({ loading, data, error, onSubmit }) => {
+  const { tagDispatch, tagState } = useContext(TagListContext);
+
+  const onChangeCurrentPage = (pageNum) => {
+    tagDispatch({
+      type: "UPDATE_PAGENUM",
+      data: { pageNum },
+    });
+  };
+
+  const ChangeSearch = (e) => {
+    const { value, name } = e.target;
+    tagDispatch({
+      type: "UPDATE_SEARCH",
+      data: {
+        name,
+        value,
+      },
+    });
+  };
+
+  const SearchTagList = (e) => {
+    e.preventDefault();
+    tagDispatch({
+      type: "UPDATE_SEARCHOPTION",
+      data: {
+        searchOption: {
+          ...tagState.searchOption,
+          searchItemBoolean:
+            tagState.searchOption.searchKeyWord !== "" ? true : false,
+          searchItem: tagState.searchOption.searchKeyWord,
+        },
+      },
+    });
+  };
   if (error) return `Error! ${error.message}`;
   if (loading)
     return (
@@ -77,81 +110,18 @@ export default ({ loading, data, error }) => {
       </Wrapper>
     );
   if (!loading && data) {
-    const { tagDispatch, tagstate } = useContext(TagListContext);
-
-    useEffect(() => {
-      let TagListData = data.getTagList.map((eachData) => {
-        let tagData = {
-          tagId: eachData.tagId,
-          tagName: eachData.tagName,
-          category: eachData.category,
-          className: eachData.className,
-          postNum: eachData.postNum,
-          shopNum: eachData.shopNum,
-          productNum: eachData.productNum,
-        };
-        return tagData;
-      });
-
-      const TagSearchItem = { searchItem: "" };
-      const TagSearchKind = { search: "" };
-
-      tagDispatch({
-        type: "SET_DATA",
-        data: {
-          TagListData,
-          TagSearchItem,
-          TagSearchKind,
-        },
-      });
-    }, []);
-
-    const [pageState, setPageState] = useState({
-      currentPage: 1,
-    });
-
-    const onChangeCurrentPage = (numPage) => {
-      setPageState({
-        currentPage: numPage,
-      });
-    };
-
-    const onInputChange = (e) => {
-      const { name, value } = e.target;
-      tagDispatch({
-        type: "CHANGE_SEARCH",
-        name,
-        value,
-      });
-    };
-
-    const onSelectChange = (e) => {
-      const { name, value } = e.target;
-      tagDispatch({
-        type: "CHANGE_SEARCH_KIND",
-        name,
-        value,
-      });
-    };
-
-    const onSearchSubmit = async (e) => {
-      e.preventDefault();
-      // const kind = tagstate.TagSearchKind.search;
-
-      // if (kind === "tagName") {
-      //   const { data: tagNameData } = useQuery(GET_TAGLIST, {
-      //     variables: { tagName: tagstate.TagSearchItem.searchItem },
-      //   });
-      // }
-    };
     return (
       <>
         <WrapPage>
           <PageTitle text={"Tag List"} />
           <TitleBox>
-            <form onSubmit={onSearchSubmit}>
+            <form>
               <SearchBox>
-                <SelectBox name="search" onChange={onSelectChange}>
+                <SelectBox
+                  name="searchSelectBox"
+                  onChange={ChangeSearch}
+                  defaultValue={tagState.searchOption.searchSelectBox}
+                >
                   <option value="tagId">tagId</option>
                   <option value="tagName">tagName</option>
                   <option value="category">category</option>
@@ -160,11 +130,18 @@ export default ({ loading, data, error }) => {
                 &nbsp;
                 <InputBox
                   type="text"
-                  name="searchItem"
-                  onChange={onInputChange}
-                />{" "}
+                  name="searchKeyWord"
+                  value={tagState.searchOption.searchKeyWord}
+                  onChange={ChangeSearch}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      SearchTagList(e);
+                    }
+                  }}
+                />
                 &nbsp;
-                <InputButtonBox type="submit" value="&#128270;" />
+                <SearchButton ClickEvent={SearchTagList} />
               </SearchBox>
             </form>
             <ButtonBox>
@@ -180,18 +157,19 @@ export default ({ loading, data, error }) => {
               <Button text="Download List"></Button>
             </ButtonBox>
           </TitleBox>
-          <form>
-            <TagListTable />
+          <form onSubmit={onSubmit}>
+            <TagListTable data={data} />
             <SearchBox>
               <Button type="submit" text="Delete Selected"></Button>
             </SearchBox>
           </form>
           <PaginationBox>
             <Pagination
-              currentPage={pageState.currentPage}
-              totalSize={100}
-              sizePerPage={10}
+              currentPage={tagState.pageNum}
+              totalSize={data.getTagList.totalTagNum} //api 에서 전체 수 전달해주기
+              sizePerPage={13}
               changeCurrentPage={onChangeCurrentPage}
+              numberOfPagesNextToActivePage={3}
               theme="bootstrap"
             />
           </PaginationBox>

@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { TagListContext } from "./TagListContainer";
 import Button from "../../Components/Button";
+import SortButton from "../../Components/SortButton";
+import { Link } from "react-router-dom";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -32,23 +34,172 @@ const Table = styled.table`
   }
 `;
 
-const TagListTable = () => {
-  const { tagState } = useContext(TagListContext);
+const SortText = styled.span`
+  line-height: 30px;
+`;
+
+const TagListTable = ({ data }) => {
+  const { tagState, tagDispatch } = useContext(TagListContext);
+
+  const CheckAllCheckBox = (e) => {
+    let saveList = tagState.selectedTagIdList.slice();
+    if (e.target.checked) {
+      for (const eachtag of data.getTagList.tags) {
+        if (!saveList.includes(eachtag.tagId)) {
+          saveList.push(eachtag.tagId);
+        }
+      }
+    } else {
+      for (const eachtag of data.getTagList.tags) {
+        const idx = saveList.indexOf(eachtag.tagId);
+        if (idx > -1) {
+          saveList.splice(idx, 1);
+        }
+      }
+    }
+    tagDispatch({
+      type: "UPDATE_BATCH_SELECTTAG",
+      data: { saveList },
+    });
+  };
+
+  const onCheckBoxChange = (tagId) => {
+    tagDispatch({
+      type: "UPDATE_SELECTTAG",
+      data: { tagId },
+    });
+  };
+
+  const AllCheckBoxStatus = () => {
+    for (const eachTag of data.getTagList.tags) {
+      if (!tagState.selectedTagIdList.includes(eachTag.tagId)) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const SortClick = (e, name) => {
+    e.preventDefault();
+    let sortOption = {
+      sortTagId: false,
+      sortTagName: false,
+      sortCategory: false,
+      tagIdAsc: true,
+      tagNameAsc: true,
+      categoryAsc: true,
+    };
+    if (name === "tagId") {
+      if (tagState.sortOption.sortTagId) {
+        if (tagState.sortOption.tagIdAsc) {
+          sortOption.sortTagId = true;
+          sortOption.tagIdAsc = false;
+        } else {
+          sortOption.sortTagId = false;
+          sortOption.tagIdAsc = true;
+        }
+      } else {
+        sortOption.sortTagId = true;
+        sortOption.tagIdAsc = true;
+      }
+    } else if (name === "tagName") {
+      if (tagState.sortOption.sortTagName) {
+        if (tagState.sortOption.tagNameAsc) {
+          sortOption.sortTagName = true;
+          sortOption.tagNameAsc = false;
+        } else {
+          sortOption.sortTagName = false;
+          sortOption.tagNameAsc = true;
+        }
+      } else {
+        sortOption.sortTagName = true;
+        sortOption.tagNameAsc = true;
+      }
+    } else if (name === "category") {
+      if (tagState.sortOption.sortCategory) {
+        if (tagState.sortOption.categoryAsc) {
+          sortOption.sortCategory = true;
+          sortOption.categoryAsc = false;
+        } else {
+          sortOption.sortCategory = false;
+          sortOption.categoryAsc = true;
+        }
+      } else {
+        sortOption.sortCategory = true;
+        sortOption.categoryAsc = true;
+      }
+    }
+    tagDispatch({
+      type: "UPDATE_SORTOPTION",
+      data: {
+        sortOption,
+      },
+    });
+  };
   return (
     <Table>
-      <th>select box</th>
-      <th>Tag Id</th>
-      <th>Tag Name</th>
-      <th>Category</th>
+      <th>
+        <input
+          type="checkbox"
+          onChange={CheckAllCheckBox}
+          checked={AllCheckBoxStatus()}
+        />
+      </th>
+      <th>
+        <SortText>Tag Id</SortText>
+        <SortButton
+          type={
+            !tagState.sortOption.sortTagId
+              ? 0
+              : tagState.sortOption.tagIdAsc
+              ? 1
+              : 2
+          }
+          func={(e) => SortClick(e, "tagId")}
+        />
+      </th>
+      <th>
+        <SortText>Tag Name</SortText>
+        <SortButton
+          type={
+            !tagState.sortOption.sortTagName
+              ? 0
+              : tagState.sortOption.tagNameAsc
+              ? 1
+              : 2
+          }
+          func={(e) => SortClick(e, "tagName")}
+        />
+      </th>
+      <th>
+        <SortText>Category</SortText>
+        <SortButton
+          type={
+            !tagState.sortOption.sortCategory
+              ? 0
+              : tagState.sortOption.categoryAsc
+              ? 1
+              : 2
+          }
+          func={(e) => SortClick(e, "category")}
+        />
+      </th>
       <th>Class</th>
       <th>Shops</th>
       <th>Posts</th>
       <th>Product</th>
       <th>Edit</th>
-      {tagState.TagListData.map((tag) => (
+      {data.getTagList.tags.map((tag) => (
         <tr>
           <td>
-            <input type="checkbox" name="tagId" value={tag.tagId} />
+            <input
+              type="checkbox"
+              name="tagId"
+              onChange={() => onCheckBoxChange(tag.tagId)}
+              checked={
+                tagState.selectedTagIdList.includes(tag.tagId) ? true : false
+              }
+            />
           </td>
           <td>{tag.tagId}</td>
           <td>{tag.tagName}</td>
@@ -58,7 +209,9 @@ const TagListTable = () => {
           <td>{tag.shopNum}</td>
           <td>{tag.productNum}</td>
           <td>
-            <Button text="Edit"></Button>
+            <Link to="/">
+              <Button text="Edit"></Button>
+            </Link>
           </td>
         </tr>
       ))}

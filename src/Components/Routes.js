@@ -21,10 +21,10 @@ const AppRouter = () => {
       <Route path="/searchtag" component={SearchTag} />
       <Route path="/tagmap" component={TagMap} />
       <Route path="/taglist" component={TagList} />
+      <Route path="/userlist" component={UserList} />
       <Redirect path="*" to="/" />
     </Switch>
   );
-      <Route path="/userlist" component={UserList} />
 };
 
 export default AppRouter;
