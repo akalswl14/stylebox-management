@@ -1,0 +1,249 @@
+import React, { useReducer } from "react";
+import EventListPresenter from "./EventListPresenter";
+import { useMutation, useQuery } from "react-apollo-hooks";
+import {
+  GET_EVENTLIST,
+  DELETE_EVENTS,
+  UPDATE_EVENTS,
+} from "./EventListQueries";
+import { toast } from "react-toastify";
+
+export const EventListContext = React.createContext(null);
+
+const initialState = {
+  selectedEventIdList: [],
+  pageNum: 1,
+  sortOption: {
+    sortEventId: false,
+    sortEventTitle: false,
+    sortStartDate: false,
+    sortEndDate: false,
+    eventIdAsc: true,
+    eventTitleAsc: true,
+    startDateAsc: true,
+    endDateAsc: true,
+  },
+  searchOption: {
+    searchSelectBox: "eventId",
+    searchKeyWord: "",
+    searchItemBoolean: false,
+    searchItem: "",
+  },
+  eventInfo: [],
+  confirmButton: "delete",
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_DATA":
+      return {
+        ...state,
+        eventInfo: action.data.eventInfo,
+      };
+    case "UPDATE_EVENT":
+      if (action.data.name === "eventStart") {
+        let eventInfo = state.eventInfo.map((eachEvent) =>
+          eachEvent.eventId === action.data.eventId
+            ? { ...eachEvent, eventStart: action.data.value + "T00:00:00.000Z" }
+            : eachEvent
+        );
+        return {
+          ...state,
+          eventInfo,
+        };
+      }
+      if (action.data.name === "eventEnd") {
+        let eventInfo = state.eventInfo.map((eachEvent) =>
+          eachEvent.eventId === action.data.eventId
+            ? { ...eachEvent, eventEnd: action.data.value + "T00:00:00.000Z" }
+            : eachEvent
+        );
+        return {
+          ...state,
+          eventInfo,
+        };
+      }
+      if (action.data.name === "isOnList") {
+        let eventInfo = state.eventInfo.map((eachEvent) =>
+          eachEvent.eventId === action.data.eventId
+            ? { ...eachEvent, isOnList: action.data.checked }
+            : eachEvent
+        );
+        return {
+          ...state,
+          eventInfo,
+        };
+      }
+    case "UPDATE_PAGENUM":
+      return { ...state, pageNum: action.data.pageNum };
+    case "UPDATE_SEARCH":
+      const { name, value } = action.data;
+      if (name === "searchSelectBox") {
+        return {
+          ...state,
+          searchOption: {
+            ...state.searchOption,
+            [name]: value,
+            searchKeyWord: "",
+            searchItemBoolean: false,
+            searchItem: "",
+          },
+        };
+      }
+      return {
+        ...state,
+        searchOption: {
+          ...state.searchOption,
+          [name]: value,
+        },
+      };
+    case "UPDATE_SORTOPTION":
+      return {
+        ...state,
+        pageNum: 1,
+        sortOption: action.data.sortOption,
+      };
+    case "UPDATE_SELECTEVENT":
+      if (state.selectedEventIdList.includes(action.data.eventId)) {
+        let selectedEventIdList = state.selectedEventIdList.filter(
+          (eachEventId) => eachEventId !== action.data.eventId
+        );
+        return { ...state, selectedEventIdList };
+      } else {
+        let selectedEventIdList = state.selectedEventIdList;
+        selectedEventIdList.push(action.data.eventId);
+        return { ...state, selectedEventIdList };
+      }
+    case "UPDATE_BATCH_SELECTEVENT":
+      return {
+        ...state,
+        selectedEventIdList: action.data.saveList,
+      };
+    case "UPDATE_SEARCHOPTION":
+      return {
+        ...state,
+        selectedEventIdList: [],
+        pageNum: 1,
+        searchOption: action.data.searchOption,
+        sortOption: {
+          sortEventId: false,
+          sortEventTitle: false,
+          sortStartDate: false,
+          sortEndDate: false,
+          eventIdAsc: true,
+          eventTitleAsc: true,
+          startDateAsc: true,
+          endDateAsc: true,
+        },
+      };
+    case "CHANGE_BUTTON":
+      return {
+        ...state,
+        confirmButton: action.data.buttonKind,
+      };
+    default:
+      return state;
+  }
+}
+
+export default () => {
+  const [eventState, eventDispatch] = useReducer(reducer, initialState);
+  const [deleteEvents, { error: mutationError }] = useMutation(DELETE_EVENTS);
+  const [updateEvents, { error: updateError }] = useMutation(UPDATE_EVENTS);
+
+  const { loading, error, data } = useQuery(GET_EVENTLIST, {
+    variables: {
+      pageNum: eventState.pageNum,
+      eventId:
+        eventState.searchOption.searchSelectBox === "eventId" &&
+        eventState.searchOption.searchItemBoolean
+          ? Number(eventState.searchOption.searchItem)
+          : null,
+      eventTitle:
+        eventState.searchOption.searchSelectBox === "eventTitle" &&
+        eventState.searchOption.searchItemBoolean
+          ? eventState.searchOption.searchItem
+          : null,
+      eventIdAsc: eventState.sortOption.sortEventId
+        ? eventState.sortOption.eventIdAsc
+        : null,
+      eventTitleAsc: eventState.sortOption.sortEventTitle
+        ? eventState.sortOption.eventTitleAsc
+        : null,
+      eventStartAsc: eventState.sortOption.sortStartDate
+        ? eventState.sortOption.startDateAsc
+        : null,
+      eventEndAsc: eventState.sortOption.sortEndDate
+        ? eventState.sortOption.endDateAsc
+        : null,
+    },
+  });
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    if (eventState.confirmButton === "delete") {
+      const {
+        data: { deleteEventList },
+      } = await deleteEvents({
+        variables: {
+          eventIds: eventState.selectedEventIdList,
+        },
+      });
+
+      if (!deleteEventList || mutationError) {
+        toast.error("Error occured while delete data.");
+        return;
+      }
+      if (deleteEventList) {
+        toast.success("Sucessfully Delete Data!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 5000);
+        return;
+      }
+    }
+
+    if (eventState.confirmButton === "edit") {
+      let events = [];
+      for (const id of eventState.selectedEventIdList) {
+        for (const eachData of eventState.eventInfo) {
+          if (id === eachData.eventId) {
+            events.push({
+              eventId: eachData.eventId,
+              eventStart: eachData.eventStart,
+              eventEnd: eachData.eventEnd,
+            });
+          }
+        }
+      }
+      const {
+        data: { updateEventList },
+      } = await updateEvents({
+        variables: { events },
+      });
+      if (!updateEventList || updateError) {
+        toast.error("Error occured while edit data.");
+        return;
+      }
+      if (updateEventList) {
+        toast.success("Sucessfully Edit Data!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 5000);
+        return;
+      }
+    }
+  };
+
+  return (
+    <EventListContext.Provider value={{ eventState, eventDispatch }}>
+      <EventListPresenter
+        loading={loading}
+        data={data}
+        error={error}
+        onSubmit={onSubmit}
+      />
+    </EventListContext.Provider>
+  );
+};
