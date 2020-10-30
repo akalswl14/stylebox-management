@@ -168,6 +168,10 @@ export default () => {
     e.preventDefault();
 
     if (postState.confirmButton === "delete") {
+      if (postState.selectedPostIdList.length === 0) {
+        toast.error("Please select at least one.");
+        return;
+      }
       const {
         data: { deletePostList },
       } = await deletePosts({
@@ -200,6 +204,10 @@ export default () => {
             });
           }
         }
+      }
+      if (posts.length === 0) {
+        toast.error("Please edit at least one.");
+        return;
       }
       const {
         data: { updatePostList },

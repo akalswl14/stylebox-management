@@ -182,6 +182,11 @@ export default () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    if (eventState.selectedEventIdList.length === 0) {
+      toast.error("Please select at least one.");
+      return;
+    }
+
     if (eventState.confirmButton === "delete") {
       const {
         data: { deleteEventList },
@@ -216,6 +221,10 @@ export default () => {
             });
           }
         }
+      }
+      if (events.length === 0) {
+        toast.error("Please edit at least one.");
+        return;
       }
       const {
         data: { updateEventList },

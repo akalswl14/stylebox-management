@@ -4,6 +4,7 @@ import { ProductListContext } from "./ProductListContainer";
 import Button from "../../Components/Button";
 import SortButton from "../../Components/SortButton";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -89,6 +90,9 @@ const ProductListTable = ({ data }) => {
           productId,
         },
       });
+    } else {
+      toast.error("please edit after select at least one.");
+      return;
     }
   };
 

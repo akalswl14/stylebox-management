@@ -154,6 +154,11 @@ export default () => {
     e.preventDefault();
 
     if (productState.confirmButton === "delete") {
+      if (productState.selectedProductIdList.length === 0) {
+        toast.error("Please select at least one.");
+        return;
+      }
+
       const {
         data: { deleteProductList },
       } = await deleteProducts({
@@ -186,6 +191,10 @@ export default () => {
             });
           }
         }
+      }
+      if (products.length === 0) {
+        toast.error("Please edit at least one.");
+        return;
       }
       const {
         data: { updateProductList },

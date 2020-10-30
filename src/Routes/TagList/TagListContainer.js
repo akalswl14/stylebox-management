@@ -132,6 +132,11 @@ export default () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    if (tagState.selectedTagIdList.length === 0) {
+      toast.error("Please select at least one.");
+      return;
+    }
+
     const {
       data: { deleteSelectedTags },
     } = await deleteTags({
@@ -143,11 +148,11 @@ export default () => {
     console.log(deleteSelectedTags);
 
     if (!deleteSelectedTags || mutationError) {
-      toast.error("Error occured while update data.");
+      toast.error("Error occured while delete data.");
       return;
     }
     if (deleteSelectedTags) {
-      toast.success("Sucessfully Update Data!");
+      toast.success("Sucessfully delete Data!");
       setTimeout(() => {
         window.location.reload();
       }, 5000);
