@@ -86,25 +86,26 @@ export const DashboardTopPost = ({ data, setAction }) => {
           <th>likeNum</th>
           <th>viewNum</th>
         </tr>
-        {data.map((eachPost) => (
-          <tr>
-            <td>{eachPost.No}</td>
-            <td>{eachPost.postId}</td>
-            <td>{eachPost.mainProductName}</td>
-            <td>{eachPost.price}</td>
-            <td>{eachPost.shopId}</td>
-            <td>{eachPost.priority}</td>
-            <td className="tagNameCell">
-              {eachPost.tagNames.map((eachTagName) => (
-                <div>{eachTagName}</div>
-              ))}
-            </td>
-            <td>{eachPost.subProductNum}</td>
-            <td>{eachPost.rankNum}</td>
-            <td>{eachPost.likeNum}</td>
-            <td>{eachPost.viewNum}</td>
-          </tr>
-        ))}
+        {data &&
+          data.map((eachPost) => (
+            <tr>
+              <td>{eachPost.No}</td>
+              <td>{eachPost.postId}</td>
+              <td>{eachPost.mainProductName}</td>
+              <td>{eachPost.price}</td>
+              <td>{eachPost.shopId}</td>
+              <td>{eachPost.priority}</td>
+              <td className="tagNameCell">
+                {eachPost.tagNames.map((eachTagName) => (
+                  <div>{eachTagName}</div>
+                ))}
+              </td>
+              <td>{eachPost.subProductNum}</td>
+              <td>{eachPost.rankNum}</td>
+              <td>{eachPost.likeNum}</td>
+              <td>{eachPost.viewNum}</td>
+            </tr>
+          ))}
       </Table>
     </>
   );

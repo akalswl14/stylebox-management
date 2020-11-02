@@ -17,13 +17,21 @@ const ButtonContainer = styled.button`
   cursor: pointer;
 `;
 
-const Button = ({ text, ClickEvent }) => (
-  <ButtonContainer onClick={ClickEvent}>{text}</ButtonContainer>
+const Button = ({ text, ClickEvent, isButtonType, name }) => (
+  <ButtonContainer
+    onClick={ClickEvent}
+    type={isButtonType && "button"}
+    name={name}
+  >
+    {text}
+  </ButtonContainer>
 );
 
 Button.propTypes = {
   text: PropTypes.string.isRequired,
   ClickEvent: PropTypes.func,
+  isButtonType: PropTypes.bool,
+  name: PropTypes.string,
 };
 
 export default Button;

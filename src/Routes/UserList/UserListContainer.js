@@ -96,6 +96,10 @@ export default () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (UserListState.SelectedUserList <= 0) {
+      toast.error("You have to choose 1 item at least.");
+      return;
+    }
     const {
       data: { deleteUsers },
     } = await DeleteUsersMutation({

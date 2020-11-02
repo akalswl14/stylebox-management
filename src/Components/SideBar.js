@@ -2,7 +2,12 @@ import React from "react";
 import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
 import { Route } from "react-router-dom";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
-import { AiFillSetting, AiFillHome, AiFillTags } from "react-icons/ai";
+import {
+  AiFillSetting,
+  AiFillHome,
+  AiFillTags,
+  AiFillShop,
+} from "react-icons/ai";
 import { FaProductHunt } from "react-icons/fa";
 import { BsFilePost } from "react-icons/bs";
 import { BiCalendarEvent } from "react-icons/bi";
@@ -66,6 +71,15 @@ const SideBar = () => {
                 </NavItem>
                 <NavItem eventKey="taglist">
                   <NavText>Tag List</NavText>
+                </NavItem>
+              </NavItem>
+              <NavItem eventKey="shoplist">
+                <NavIcon>
+                  <AiFillShop size="24" color="#fff" style={style} />
+                </NavIcon>
+                <NavText>Shop Management</NavText>
+                <NavItem eventKey="shoplist">
+                  <NavText>Shop List</NavText>
                 </NavItem>
               </NavItem>
               <NavItem eventKey="productlist">

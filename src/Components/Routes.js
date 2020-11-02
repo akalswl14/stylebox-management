@@ -8,6 +8,7 @@ import TagIcon from "../Routes/TagIcon/index";
 import SearchTag from "../Routes/SearchTag/index";
 import TagMap from "../Routes/TagMap/index";
 import UserList from "../Routes/UserList/index";
+import ShopList from "../Routes/ShopList/index";
 import TagList from "../Routes/TagList/index";
 import ProductList from "../Routes/ProductList/index";
 import PostList from "../Routes/PostList/index";
@@ -25,6 +26,7 @@ const AppRouter = () => {
       <Route path="/tagmap" component={TagMap} />
       <Route path="/taglist" component={TagList} />
       <Route path="/userlist" component={UserList} />
+      <Route path="/shoplist" component={ShopList} />
       <Route path="/productlist" component={ProductList} />
       <Route path="/postList" component={PostList} />
       <Route path="/eventlist" component={EventList} />

@@ -50,6 +50,10 @@ export default () => {
     let orderArr = [],
       eventIdArr = [],
       mutationData = [];
+    if (BannerState.BannerData.length <= 0) {
+      toast.error("You have to choose 1 item at least.");
+      return;
+    }
     for (const eachBanner of BannerState.BannerData) {
       if (orderArr.includes(eachBanner.order)) {
         toast.error("Order values should not be the same.");
@@ -85,7 +89,7 @@ export default () => {
       return;
     }
     if (updateSettingEventBanner) {
-      toast.success("Sucessfullly Update Data!");
+      toast.success("Sucessfully Update Data!");
       setTimeout(() => {
         window.location.reload();
       }, 5000);

@@ -35,6 +35,10 @@ const ButtonBox = styled.div`
   justify-content: flex-end;
 `;
 
+const DeleteButtonBox = styled(ButtonBox)`
+  justify-content: flex-start;
+`;
+
 const Form = styled.form``;
 
 const Table = styled.table`
@@ -72,7 +76,6 @@ const PaginationWrapper = styled.div`
 `;
 
 const SelectedUserContainer = styled.div`
-  padding-top: 15px;
   font-weight: 500;
   font-size: 17px;
 `;
@@ -221,13 +224,21 @@ export default ({ onSubmit, loading, error, data }) => {
       return true;
     };
 
+    const ExportToExcel = (e) => {
+      e.preventDefault();
+      console.log("Export to Excel");
+    };
     return (
       <WrapPage>
-        <Form onSubmit={onSubmit}>
+        <Form>
           <TitleBox>
             <PageTitle text={"User List"} />
             <ButtonBox>
-              <Button text="Delete Selected"></Button>
+              <Button
+                text="Export to Excel"
+                ClickEvent={ExportToExcel}
+                isButtonType={true}
+              ></Button>
             </ButtonBox>
           </TitleBox>
           <SearchContainer>
@@ -296,10 +307,13 @@ export default ({ onSubmit, loading, error, data }) => {
               <UserDataRow data={eachUser} />
             ))}
           </Table>
+          <DeleteButtonBox>
+            <Button text="Delete Selected" ClickEvent={onSubmit}></Button>
+          </DeleteButtonBox>
+          <SelectedUserContainer>
+            Selected User : {UserListState.SelectedUserList.toString()}
+          </SelectedUserContainer>
         </Form>
-        <SelectedUserContainer>
-          Selected User : {UserListState.SelectedUserList.toString()}
-        </SelectedUserContainer>
         <PaginationWrapper>
           <Pagination
             currentPage={UserListState.pageNum}
