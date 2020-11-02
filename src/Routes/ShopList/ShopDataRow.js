@@ -36,7 +36,6 @@ const ShopDataRow = ({ data }) => {
   };
 
   const ChangeWeight = (shopId, e) => {
-    console.log("Change Weight");
     ShopListDispatch({
       type: "UPDATE_WEIGHT",
       data: {

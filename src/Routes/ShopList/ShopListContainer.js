@@ -101,7 +101,6 @@ function reducer(state, action) {
           value: action.data.value,
         });
       }
-      console.log("WeightData : ", ReturnWeightData);
       return { ...state, WeightData: ReturnWeightData };
     case "UPDATE_BATCH_WEIGHT":
       return { ...state, WeightData: action.data.WeightData };
