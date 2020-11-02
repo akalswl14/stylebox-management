@@ -3,6 +3,9 @@ import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
 import { Route } from "react-router-dom";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import { AiFillSetting, AiFillHome, AiFillTags } from "react-icons/ai";
+import { FaProductHunt } from "react-icons/fa";
+import { BsFilePost } from "react-icons/bs";
+import { BiCalendarEvent } from "react-icons/bi";
 
 const SideBar = () => {
   const style = {
@@ -61,9 +64,36 @@ const SideBar = () => {
                 <NavItem eventKey="tagmap">
                   <NavText>Tag Map</NavText>
                 </NavItem>
-                {/* <NavItem eventKey="taglist">
-									<NavText>Tag List</NavText>
-								</NavItem> */}
+                <NavItem eventKey="taglist">
+                  <NavText>Tag List</NavText>
+                </NavItem>
+              </NavItem>
+              <NavItem eventKey="productlist">
+                <NavIcon>
+                  <FaProductHunt size="24" color="#fff" style={style} />
+                </NavIcon>
+                <NavText>Product Management</NavText>
+                <NavItem eventKey="productlist">
+                  <NavText>Product List</NavText>
+                </NavItem>
+              </NavItem>
+              <NavItem eventKey="postlist">
+                <NavIcon>
+                  <BsFilePost size="24" color="#fff" style={style} />
+                </NavIcon>
+                <NavText>Post Management</NavText>
+                <NavItem eventKey="postlist">
+                  <NavText>Post List</NavText>
+                </NavItem>
+              </NavItem>
+              <NavItem eventKey="eventlist">
+                <NavIcon>
+                  <BiCalendarEvent size="24" color="#fff" style={style} />
+                </NavIcon>
+                <NavText>Event Management</NavText>
+                <NavItem eventKey="eventlist">
+                  <NavText>Event List</NavText>
+                </NavItem>
               </NavItem>
             </SideNav.Nav>
           </SideNav>
