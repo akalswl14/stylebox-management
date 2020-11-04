@@ -117,7 +117,7 @@ export default ({ loading, data, error, onSubmit }) => {
           <form onSubmit={onSubmit}>
             <PageTitle text={"Tag Class Management"} />
             <TitleBox>
-              <SectionTitle text={"Main(Home) Feed"} />
+              <SectionTitle text={"Tag Class Information"} />
               <ButtonBox>
                 <Link to="/">
                   <Button text="Back To Main"></Button>
