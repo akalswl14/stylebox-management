@@ -17,6 +17,7 @@ import ClassManagement from "../Routes/ClassManagement/index";
 import TagManagement from "../Routes/TagManagement/index";
 import CreateShop from "../Routes/CreateShop/index";
 import CreateClass from "../Routes/CreateClass/index";
+import CreateTag from "../Routes/CreateTag/index";
 
 const AppRouter = () => {
   return (
@@ -30,6 +31,7 @@ const AppRouter = () => {
       <Route path="/tagmap" component={TagMap} />
       <Route path="/taglist" component={TagList} />
       <Route path="/taginfo/:tagId" component={TagManagement} />
+      <Route path="/createtag" component={CreateTag} />
       <Route path="/classinfo/:classId" component={ClassManagement} />
       <Route path="/createclass" component={CreateClass} />
       <Route path="/userlist" component={UserList} />

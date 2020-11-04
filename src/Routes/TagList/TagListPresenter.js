@@ -145,7 +145,7 @@ export default ({ loading, data, error, onSubmit }) => {
               <Link to="/createclass">
                 <Button text="Add New Class"></Button>
               </Link>
-              <Link to="/">
+              <Link to="/createtag">
                 <Button text="Add New Tag"></Button>
               </Link>
               <Button text="Download List"></Button>
