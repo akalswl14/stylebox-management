@@ -85,10 +85,10 @@ const Tags = () => {
       <TitleBox>
         <SectionTitle text={"Location Tags"} />
         <ButtonBox>
-          <Link to="/">
+          <Link to="/taglist">
             <Button text="See Tag List"></Button>
           </Link>
-          <Link to="/">
+          <Link to="/createclass">
             <Button text="Add New Class"></Button>
           </Link>
           <Link to="/">

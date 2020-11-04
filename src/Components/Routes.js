@@ -15,8 +15,8 @@ import PostList from "../Routes/PostList/index";
 import EventList from "../Routes/EventList/index";
 import ClassManagement from "../Routes/ClassManagement/index";
 import TagManagement from "../Routes/TagManagement/index";
-import ImageUpload from "../Routes/TagManagement/ImageUpload";
 import CreateShop from "../Routes/CreateShop/index";
+import CreateClass from "../Routes/CreateClass/index";
 
 const AppRouter = () => {
   return (
@@ -31,6 +31,7 @@ const AppRouter = () => {
       <Route path="/taglist" component={TagList} />
       <Route path="/taginfo/:tagId" component={TagManagement} />
       <Route path="/classinfo/:classId" component={ClassManagement} />
+      <Route path="/createclass" component={CreateClass} />
       <Route path="/userlist" component={UserList} />
       <Route path="/shoplist" component={ShopList} />
       <Route path="/productlist" component={ProductList} />
