@@ -71,7 +71,6 @@ const ShopDataRow = ({ data }) => {
         <WeightInputBox
           type="text"
           name="WeightInputBox"
-          // style={CheckInUpdate(data.shopId) && { border: "#DB3D45 solid 1px" }}
           onChange={(e) => ChangeWeight(data.shopId, e)}
           value={ReturnWeight(data.shopId)}
           className={
@@ -79,11 +78,11 @@ const ShopDataRow = ({ data }) => {
           }
         />
       </td>
-      <td>{data.rankNum}</td>
       <td>{data.postNum}</td>
       <td>{data.productNum}</td>
       <td>{data.likeNum}</td>
       <td>{data.viewNum}</td>
+      <td>Button Here</td>
     </tr>
   );
 };

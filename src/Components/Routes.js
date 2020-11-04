@@ -16,6 +16,7 @@ import EventList from "../Routes/EventList/index";
 import ClassManagement from "../Routes/ClassManagement/index";
 import TagManagement from "../Routes/TagManagement/index";
 import ImageUpload from "../Routes/TagManagement/ImageUpload";
+import CreateShop from "../Routes/CreateShop/index";
 
 const AppRouter = () => {
   return (
@@ -36,6 +37,7 @@ const AppRouter = () => {
       <Route path="/postList" component={PostList} />
       <Route path="/eventlist" component={EventList} />
       <Route path="/example" component={ImageUpload} />
+      <Route path="/createshop" component={CreateShop} />
       <Redirect path="*" to="/" />
     </Switch>
   );
