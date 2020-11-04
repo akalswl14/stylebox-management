@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-apollo-hooks";
-import { GET_CLASS, GET_TAG } from "./TagIconQueries";
-import { DeleteIcon } from "../../Components/Icons";
-import { TagIconContext } from "./TagIconContainer";
+import { GET_CLASS, GET_TAG } from "../CreateShopQueries";
+import { DeleteIcon } from "../../../Components/Icons";
+import { ShopInfoContext } from "../CreateShopContainer";
 
 const OrderInputBox = styled.input`
   width: 30px;
@@ -22,8 +22,8 @@ const RowButton = styled.button`
   margin: 0;
 `;
 
-const TagIconDataRow = ({ data, categories, section }) => {
-  const { TagIconDispatch } = useContext(TagIconContext);
+export default ({ data, categories }) => {
+  const { ShopInfoState, ShopInfoDispatch } = useContext(ShopInfoContext);
   const [categoryInputState, setCategoryInputState] = useState(data.category);
   const [classIdInputState, setClassIdInputState] = useState(
     Number(data.classId)
@@ -39,102 +39,105 @@ const TagIconDataRow = ({ data, categories, section }) => {
     const { value, name } = e.target;
     if (name === "order") {
       if (Number(value) > 0) {
-        TagIconDispatch({
-          type:
-            section === "MainTag"
-              ? "UPDATE_MAINTAG"
-              : section === "BestTag"
-              ? "UPDATE_BESTTAG"
-              : "UPDATE_SHOPTAG",
-          data: {
-            id: Number(data.id),
-            order: Number(value),
-            category: data.category,
-            classId: Number(data.classId),
-            className: data.className,
-            tagId: Number(data.tagId),
-            tagName: data.tagName,
-          },
+        const rtnData = ShopInfoState.TagInformation.map((eachData) => {
+          if (eachData.id === Number(data.id)) {
+            return {
+              id: Number(data.id),
+              order: Number(value),
+              category: data.category,
+              classId: Number(data.classId),
+              className: data.className,
+              tagId: Number(data.tagId),
+              tagName: data.tagName,
+            };
+          }
+          return eachData;
+        });
+        ShopInfoDispatch({
+          type: "UPDATE_TAGINFO",
+          data: { TagInformation: rtnData },
         });
       }
     }
     if (name === "CategorySelectBox") {
       setCategoryInputState(value);
-      TagIconDispatch({
-        type:
-          section === "MainTag"
-            ? "UPDATE_MAINTAG"
-            : section === "BestTag"
-            ? "UPDATE_BESTTAG"
-            : "UPDATE_SHOPTAG",
-        data: {
-          id: Number(data.id),
-          order: Number(data.order),
-          category: value,
-          classId: 0,
-          className: "-- CHOOSE DATA --",
-          tagId: 0,
-          tagName: "-- CHOOSE DATA --",
-        },
+      const rtnData = ShopInfoState.TagInformation.map((eachData) => {
+        if (eachData.id === Number(data.id)) {
+          return {
+            id: Number(data.id),
+            order: Number(data.order),
+            category: value,
+            classId: 0,
+            className: "-- CHOOSE DATA --",
+            tagId: 0,
+            tagName: "-- CHOOSE DATA --",
+          };
+        }
+        return eachData;
+      });
+      ShopInfoDispatch({
+        type: "UPDATE_TAGINFO",
+        data: { TagInformation: rtnData },
       });
     }
     if (name === "ClassSelectBox") {
       setClassIdInputState(Number(value));
-      TagIconDispatch({
-        type:
-          section === "MainTag"
-            ? "UPDATE_MAINTAG"
-            : section === "BestTag"
-            ? "UPDATE_BESTTAG"
-            : "UPDATE_SHOPTAG",
-        data: {
-          id: Number(data.id),
-          order: Number(data.order),
-          category: data.category,
-          classId: Number(value),
-          className: e.target[e.target.selectedIndex].text,
-          tagId: 0,
-          tagName: "-- CHOOSE DATA --",
-        },
+      const rtnData = ShopInfoState.TagInformation.map((eachData) => {
+        if (eachData.id === Number(data.id)) {
+          return {
+            id: Number(data.id),
+            order: Number(data.order),
+            category: data.category,
+            classId: Number(value),
+            className: e.target[e.target.selectedIndex].text,
+            tagId: 0,
+            tagName: "-- CHOOSE DATA --",
+          };
+        }
+        return eachData;
+      });
+      ShopInfoDispatch({
+        type: "UPDATE_TAGINFO",
+        data: { TagInformation: rtnData },
       });
     }
     if (name === "TagSelectBox") {
-      TagIconDispatch({
-        type:
-          section === "MainTag"
-            ? "UPDATE_MAINTAG"
-            : section === "BestTag"
-            ? "UPDATE_BESTTAG"
-            : "UPDATE_SHOPTAG",
-        data: {
-          id: Number(data.id),
-          order: Number(data.order),
-          category: data.category,
-          classId: Number(data.classId),
-          className: data.className,
-          tagId: Number(value),
-          tagName: e.target[e.target.selectedIndex].text,
-        },
+      const rtnData = ShopInfoState.TagInformation.map((eachData) => {
+        if (eachData.id === Number(data.id)) {
+          return {
+            id: Number(data.id),
+            order: Number(data.order),
+            category: data.category,
+            classId: Number(data.classId),
+            className: data.className,
+            tagId: Number(value),
+            tagName: e.target[e.target.selectedIndex].text,
+          };
+        }
+        return eachData;
+      });
+      ShopInfoDispatch({
+        type: "UPDATE_TAGINFO",
+        data: { TagInformation: rtnData },
       });
     }
   };
 
   const deleteRow = (e, rowId) => {
     e.preventDefault();
-    TagIconDispatch({
-      type:
-        section === "MainTag"
-          ? "DELETE_MAINTAG"
-          : section === "BestTag"
-          ? "DELETE_BESTTAG"
-          : "DELETE_SHOPTAG",
+    let PrevData = ShopInfoState.TagInformation;
+    const idx = PrevData.findIndex((item) => item.id === Number(rowId));
+    if (idx > -1) PrevData.splice(idx, 1);
+    console.log(PrevData);
+    ShopInfoDispatch({
+      type: "UPDATE_TAGINFO",
       data: {
-        id: Number(rowId),
+        TagInformation: PrevData,
       },
     });
   };
 
-  if (classLoading || tagLoading)
+  if (classLoading || tagLoading) {
     return (
       <tr>
         <td className="orderInputCell">
@@ -162,6 +165,7 @@ const TagIconDataRow = ({ data, categories, section }) => {
         </td>
       </tr>
     );
+  }
 
   if (!classLoading && classData && tagData) {
     return (
@@ -230,5 +234,3 @@ const TagIconDataRow = ({ data, categories, section }) => {
     );
   }
 };
-
-export default TagIconDataRow;

@@ -8,8 +8,8 @@ import { ShopListContext } from "./ShopListContainer";
 import ShopDataRow from "./ShopDataRow";
 import SortButton from "../../Components/SortButton";
 import Pagination from "react-pagination-js";
-import "react-pagination-js/dist/styles.css";
 import SearchButton from "../../Components/SearchButton";
+import PageChangeButton from "../../Components/PageChangeButton";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -297,11 +297,12 @@ export default ({ onSubmit, loading, error, data }) => {
           <TitleBox>
             <PageTitle text={"Shop List"} />
             <ButtonBox>
+              <PageChangeButton text="Add New Shop" href="/createshop" />
               <Button
                 text="Export to Excel"
                 ClickEvent={ExportToExcel}
                 isButtonType={true}
-              ></Button>
+              />
             </ButtonBox>
           </TitleBox>
           <SearchContainer>

@@ -7,7 +7,7 @@ const s3 = new AWS.S3({
 
 export const getPresignedUrl = ({ Key }) => {
   const params = { Bucket: BUCKET_NAME, Key };
-  const url = s3.getSignedUrl("getObject", params);
+  const url = s3.getSignedUrl("putObejct", params);
   console.log("This is a presigned Url! : ", url);
   return url;
 };

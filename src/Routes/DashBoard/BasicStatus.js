@@ -43,7 +43,10 @@ export const DashboardBasicStatus = ({ data }) => (
         <td colSpan="3">
           <div className="linkCell">
             <div className="NumCell">{data.UserNum} Users</div>
-            <LinkButton link={"/example"} text={"Go to User List"}></LinkButton>
+            <LinkButton
+              link={"/userlist"}
+              text={"Go to User List"}
+            ></LinkButton>
           </div>
         </td>
       </tr>
@@ -52,7 +55,10 @@ export const DashboardBasicStatus = ({ data }) => (
         <td colSpan="3">
           <div className="linkCell">
             <div className="NumCell">{data.PostNum} Posts</div>
-            <LinkButton link={"/example"} text={"Go to Post List"}></LinkButton>
+            <LinkButton
+              link={"/postlist"}
+              text={"Go to Post List"}
+            ></LinkButton>
           </div>
         </td>
         <td className="tableTitle">Total Number of Products</td>
@@ -60,7 +66,7 @@ export const DashboardBasicStatus = ({ data }) => (
           <div className="linkCell">
             <div className="NumCell">{data.ProductNum} Products</div>
             <LinkButton
-              link={"/example"}
+              link={"/productlist"}
               text={"Go to Product List"}
             ></LinkButton>
           </div>

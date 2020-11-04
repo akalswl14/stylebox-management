@@ -17,8 +17,8 @@ const LinkButtonContainer = styled.a`
   justify-content: space-around;
 `;
 
-const LinkButton = ({ text, link }) => (
-  <LinkButtonContainer href={link}>
+const LinkButton = ({ text, href }) => (
+  <LinkButtonContainer href={href}>
     <div>{text}</div>
     <Arrow size={12} />
   </LinkButtonContainer>
