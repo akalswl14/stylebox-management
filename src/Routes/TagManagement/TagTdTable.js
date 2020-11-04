@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { useQuery } from "react-apollo-hooks";
 import { TagInfoContext } from "./TagInfoContainer";
 import { GET_CLASS } from "./TagInfoQueries";

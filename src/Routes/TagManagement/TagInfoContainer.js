@@ -36,15 +36,6 @@ function reducer(state, action) {
         ...state,
         tagInfo: action.data.tagInfo,
       };
-    case "UPLOAD_IMAGE":
-      console.log("dispatch 후");
-      console.log(action.data.imageInput);
-      return {
-        ...state,
-        imageInput: {
-          current: action.data.imageInput.current,
-        },
-      };
     case "TAGINFO_CHANGE":
       const { name, value } = action.data;
       if (name === "classId") {
@@ -75,12 +66,27 @@ function reducer(state, action) {
           },
         };
       }
-
     case "UPDATE_IMAGE":
       return {
         ...state,
+        isTagImageChange: true,
         tagLogoFile: action.data.tagLogoFile,
         tagLogoPreviewUrl: action.data.tagLogoPreviewUrl,
+        imageInput: {
+          current: action.data.imageInput.current,
+        },
+      };
+    case "DELETE_IMAGE":
+      return {
+        ...state,
+        tagInfo: {
+          ...state.tagInfo,
+          tagImage: "",
+        },
+        isTagImageChange: true,
+        tagLogoFile: "",
+        tagLogoPreviewUrl: "",
+        imageInput: { current: null },
       };
     default:
       return state;
@@ -90,38 +96,65 @@ function reducer(state, action) {
 export default ({ match }) => {
   const [tagState, tagDispatch] = useReducer(reducer, initialState);
   const { loading, error, data } = useQuery(GET_TAG, {
-    variables: { id: 18 },
+    variables: { id: Number(match.params.tagId) },
   });
-  //   Number(match.params.tagId)
   const [updateTag, { error: updateError }] = useMutation(UPDATE_TAG);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (tagState.isTagImageChange && tagState.imageInput.current) {
-      const { imageInput } = tagState;
-      const file = imageInput.current.files[0];
-      const fileName = file.name;
-      const preSignedUrl = await getPreSignedUrl(fileName);
-      uploadToBucket(preSignedUrl, file);
+    let tagUpdateInfo;
+
+    if (tagState.tagInfo.classId === 0) {
+      toast.error("Please Select Class");
+      return;
     }
 
-    const tagUpdateInfo = {
-      tagId: tagState.tagInfo.tagId,
-      tagName: tagState.tagInfo.tagName,
-      tagCategory: tagState.tagInfo.category,
-      tagImage: tagState.tagInfo.tagImage,
-      isTagImageChange: tagState.isTagImageChange,
-      classId: tagState.tagInfo.classId,
-    };
+    if (tagState.isTagImageChange) {
+      if (tagState.imageInput.current) {
+        const { imageInput } = tagState;
+        const file = imageInput.current.files[0];
+        const fileName = file.name;
+
+        const preSignedUrl = await getPreSignedUrl(fileName);
+        uploadToBucket(preSignedUrl, file);
+        tagUpdateInfo = {
+          tagId: tagState.tagInfo.tagId,
+          tagName: tagState.tagInfo.tagName,
+          tagCategory: tagState.tagInfo.category,
+          tagImage: "Tag/" + fileName,
+          isTagImageChange: tagState.isTagImageChange,
+          classId: tagState.tagInfo.classId,
+        };
+      } else {
+        tagUpdateInfo = {
+          tagId: tagState.tagInfo.tagId,
+          tagName: tagState.tagInfo.tagName,
+          tagCategory: tagState.tagInfo.category,
+          tagImage: tagState.tagInfo.tagImage,
+          isTagImageChange: tagState.isTagImageChange,
+          classId: tagState.tagInfo.classId,
+        };
+      }
+    } else {
+      tagUpdateInfo = {
+        tagId: tagState.tagInfo.tagId,
+        tagName: tagState.tagInfo.tagName,
+        tagCategory: tagState.tagInfo.category,
+        tagImage: tagState.tagInfo.tagImage,
+        isTagImageChange: tagState.isTagImageChange,
+        classId: tagState.tagInfo.classId,
+      };
+    }
 
     const {
-      data: { updatetagInfo },
+      data: { updateTagInfo },
     } = await updateTag({ variables: tagUpdateInfo });
-    if (!updatetagInfo || updateError) {
+
+    if (!updateTagInfo || updateError) {
       toast.error("Error occured while update data.");
       return;
     }
-    if (updatetagInfo) {
+    if (updateTagInfo) {
       toast.success("Sucessfullly Update Data!");
       setTimeout(() => {
         window.location.reload();
@@ -133,7 +166,7 @@ export default ({ match }) => {
   const getPreSignedUrl = async (fileName) => {
     const params = {
       Bucket: BUCKET_NAME,
-      Key: "PostExample/" + fileName,
+      Key: "Tag/" + fileName,
       ContentType: "image/*",
       ACL: "public-read",
       Expires: signedUrlExpireSeconds,

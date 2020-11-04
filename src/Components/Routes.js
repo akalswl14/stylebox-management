@@ -29,14 +29,13 @@ const AppRouter = () => {
       <Route path="/searchtag" component={SearchTag} />
       <Route path="/tagmap" component={TagMap} />
       <Route path="/taglist" component={TagList} />
-      <Route path="/taginfo" component={TagManagement} />
+      <Route path="/taginfo/:tagId" component={TagManagement} />
       <Route path="/classinfo/:classId" component={ClassManagement} />
       <Route path="/userlist" component={UserList} />
       <Route path="/shoplist" component={ShopList} />
       <Route path="/productlist" component={ProductList} />
       <Route path="/postList" component={PostList} />
       <Route path="/eventlist" component={EventList} />
-      <Route path="/example" component={ImageUpload} />
       <Route path="/createshop" component={CreateShop} />
       <Redirect path="*" to="/" />
     </Switch>

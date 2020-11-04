@@ -210,7 +210,7 @@ const TagListTable = ({ data }) => {
           <td>{tag.shopNum}</td>
           <td>{tag.productNum}</td>
           <td>
-            <Link to="/">
+            <Link to={{ pathname: `/taginfo/${tag.tagId}` }}>
               <Button text="Edit"></Button>
             </Link>
           </td>

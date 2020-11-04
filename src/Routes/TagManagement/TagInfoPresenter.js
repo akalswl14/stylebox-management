@@ -91,9 +91,6 @@ export default ({ loading, data, error, onSubmit }) => {
       tagId,
       tagName,
       category,
-      tagImage,
-      className,
-      classId,
       postNum,
       shopNum,
       productNum,
@@ -137,25 +134,26 @@ export default ({ loading, data, error, onSubmit }) => {
     };
 
     const ChangeImage = (e) => {
-      tagDispatch({
-        type: "UPLOAD_IMAGE",
-        data: {
-          imageInput,
-        },
-      });
-
       let reader = new FileReader();
       let file = e.target.files[0];
       reader.onloadend = () => {
         tagDispatch({
           type: "UPDATE_IMAGE",
           data: {
+            imageInput,
             tagLogoFile: file,
             tagLogoPreviewUrl: reader.result,
           },
         });
       };
       reader.readAsDataURL(file);
+    };
+
+    const onClick = (e) => {
+      e.preventDefault();
+      tagDispatch({
+        type: "DELETE_IMAGE",
+      });
     };
 
     let RegistrationDate = String(createdAt).split("T");
@@ -200,11 +198,12 @@ export default ({ loading, data, error, onSubmit }) => {
                       onChange={(e) => ChangeImage(e)}
                       ref={imageInput}
                     />
-                    {tagState.tagLogoFile === "" ? (
+                    {tagState.tagLogoFile === "" &&
+                    tagState.tagInfo.tagImage ? (
                       <PreviewImage
                         className="TagLogo_Preview"
                         src={
-                          "https://appdata-stylebox.s3-ap-southeast-1.amazonaws.com/" +
+                          "https://myapp-testbucket.s3-ap-southeast-1.amazonaws.com/" +
                           tagState.tagInfo.tagImage
                         }
                       />
@@ -213,6 +212,9 @@ export default ({ loading, data, error, onSubmit }) => {
                     )}
                     {TagLogo_Preview}
                   </ImageInputBox>
+                  <ButtonBox onClick={onClick}>
+                    <Button text="Delete"></Button>
+                  </ButtonBox>
                 </td>
               </tr>
               <tr>
