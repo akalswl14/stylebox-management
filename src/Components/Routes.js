@@ -14,7 +14,9 @@ import ProductList from "../Routes/ProductList/index";
 import PostList from "../Routes/PostList/index";
 import EventList from "../Routes/EventList/index";
 import ClassManagement from "../Routes/ClassManagement/index";
+import TagManagement from "../Routes/TagManagement/index";
 import CreateShop from "../Routes/CreateShop/index";
+import CreateClass from "../Routes/CreateClass/index";
 
 const AppRouter = () => {
   return (
@@ -27,7 +29,9 @@ const AppRouter = () => {
       <Route path="/searchtag" component={SearchTag} />
       <Route path="/tagmap" component={TagMap} />
       <Route path="/taglist" component={TagList} />
+      <Route path="/taginfo/:tagId" component={TagManagement} />
       <Route path="/classinfo/:classId" component={ClassManagement} />
+      <Route path="/createclass" component={CreateClass} />
       <Route path="/userlist" component={UserList} />
       <Route path="/shoplist" component={ShopList} />
       <Route path="/productlist" component={ProductList} />

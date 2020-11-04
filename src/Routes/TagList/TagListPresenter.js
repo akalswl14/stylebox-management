@@ -139,10 +139,10 @@ export default ({ loading, data, error, onSubmit }) => {
               </SearchBox>
             </form>
             <ButtonBox>
-              <Link to="/">
+              <Link to="/tagmap">
                 <Button text="See Tag Map"></Button>
               </Link>
-              <Link to="/">
+              <Link to="/createclass">
                 <Button text="Add New Class"></Button>
               </Link>
               <Link to="/">
