@@ -28,7 +28,6 @@ const Table = styled.table`
     background-color: #f2f2f2;
     font-weight: 500;
     width: ${(props) => {
-      console.log(props);
       if (props.CellWidth) {
         return props.CellWidth.toString() + "px";
       } else {

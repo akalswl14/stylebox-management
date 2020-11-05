@@ -34,7 +34,9 @@ export const CREATE_SHOP = gql`
       shopVideos: $shopVideos
       tags: $tags
       YoutubeLink: $YoutubeLink
-    )
+    ) {
+      shopId
+    }
   }
 `;
 

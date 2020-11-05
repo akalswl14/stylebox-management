@@ -128,7 +128,6 @@ export default ({ data, categories }) => {
     let PrevData = ShopInfoState.TagInformation;
     const idx = PrevData.findIndex((item) => item.id === Number(rowId));
     if (idx > -1) PrevData.splice(idx, 1);
-    console.log(PrevData);
     ShopInfoDispatch({
       type: "UPDATE_TAGINFO",
       data: {

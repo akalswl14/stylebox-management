@@ -7,6 +7,7 @@ import {
   GET_LINKTYPE,
 } from "./CreateShopQueries";
 import { toast } from "react-toastify";
+import putImagetoS3 from "./putImagetoS3";
 
 export const ShopInfoContext = React.createContext(null);
 
@@ -86,26 +87,6 @@ export default () => {
     data: data_LinkTypeData,
   } = useQuery(GET_LINKTYPE);
 
-  //   const { loading, error, data } = useQuery(CREATE_SHOP, {
-  //     variables: {
-  //       shopName: ShopInfoState.BasicInformation.shopName,
-  // logoUrl:ShopInfoState.BasicInformation.ShopLogoFile,
-  // phoneNumber: ShopInfoState.BasicInformation.phoneNumber,
-  // mainBranchAddress: ShopInfoState.BasicInformation.MainAddress,
-  // mainBranchMapUrl: ShopInfoState.BasicInformation.MainMapUrl,
-  // weight: ShopInfoState.BasicStatus.weight,
-  // tags: ShopInfoState.TagInformation,
-  // FacebookLink: ShopInfoState.SocialMediaLink.FacebookLink === "" ? null : ShopInfoState.SocialMediaLink.FacebookLink,
-  // InstagramLink: ShopInfoState.SocialMediaLink.InstagramLink === "" ? null : ShopInfoState.SocialMediaLink.InstagramLink,
-  // YoutubeLink: ShopInfoState.SocialMediaLink.YoutubeLink === "" ? null : ShopInfoState.SocialMediaLink.YoutubeLink,
-  // externalLinks: ShopInfoState.ExternalLink,
-  // shopImages: ShopInfoState.ShopImagesManagement,
-  // shopVideos: ShopInfoState.ShopVideoManagement,
-  // description: ShopInfoState.ShopDescription === "" ? null : ShopInfoState.ShopDescription,
-  // branches: ShopInfoState.BranchManagement
-  //     },
-  //   });
-
   const [
     CreateShopMutaion,
     { loading: CreateLoading, error: CreateError },
@@ -113,47 +94,258 @@ export default () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    // if (ShopListState.SelectedShopList <= 0) {
-    //   toast.error("You have to choose 1 item at least.");
-    //   return;
-    // }
-    // if (e.target.name === "EditButton") {
-    //   let rtnShops = [];
-    //   for (var i = 0; i < ShopListState.WeightData.length; i++) {
-    //     let eachData = ShopListState.WeightData[i];
-    //     if (isNaN(Number(eachData.value))) {
-    //       toast.error("Weight Value should be number.");
-    //       return;
-    //     }
-    //     ShopListState.WeightData[i].value = Number(eachData.value);
-    //     eachData = ShopListState.WeightData[i];
-    //     if (eachData.value < 0) {
-    //       toast.error("Weight Value can't be smaller than 0.");
-    //       return;
-    //     }
-    //     if (ShopListState.SelectedShopList.includes(eachData.id)) {
-    //       rtnShops.push(eachData);
-    //     }
-    //   }
-    //   const {
-    //     data: { updateShops },
-    //   } = await EditShopMutation({
-    //     variables: {
-    //       shops: rtnShops,
-    //     },
-    //   });
-    //   if (!updateShops || EditError) {
-    //     toast.error("Error occured while edit data.");
-    //     return;
-    //   }
-    //   if (updateShops) {
-    //     toast.success("Sucessfullly Edit Data!");
-    //     setTimeout(() => {
-    //       window.location.reload();
-    //     }, 5000);
-    //     return;
-    //   }
-    // }
+    if (ShopInfoState.BasicInformation.shopName === "") {
+      toast.error("Please enter Shop Name.");
+      return;
+    }
+    if (ShopInfoState.BasicInformation.phoneNumber === "") {
+      toast.error("Please enter Shop Phone Number.");
+      return;
+    }
+    if (ShopInfoState.BasicInformation.MainAddress === "") {
+      toast.error("Please enter Shop Main Address.");
+      return;
+    }
+    if (
+      ShopInfoState.BasicInformation.MainMapUrl === "http://" ||
+      ShopInfoState.BasicInformation.MainMapUrl === "" ||
+      ShopInfoState.BasicInformation.MainMapUrl === "https://"
+    ) {
+      toast.error("Invalid Shop Main Map URL.");
+      return;
+    }
+    if (isNaN(Number(ShopInfoState.BasicStatus.RankingWeight))) {
+      toast.error("Invalid Weight Value.");
+      return;
+    }
+    if (Number(ShopInfoState.BasicStatus.RankingWeight) < 0) {
+      toast.error("Weight Value should be 0 and/or more.");
+      return;
+    }
+    let TagOrderList = [];
+    let TagIdList = [];
+    let rtnTagList = [];
+    for (const eachTag of ShopInfoState.TagInformation) {
+      if (TagOrderList.includes(Number(eachTag.order))) {
+        toast.error("Tag Order values should not be the same.");
+        return;
+      }
+      if (isNaN(Number(eachTag.order))) {
+        toast.error("Invalid Tag Order Value.");
+        return;
+      }
+      if (Number(eachTag.order) <= 0) {
+        toast.error("Tag Order Value should be bigger than 0");
+      }
+      if (
+        Number(eachTag.tagId) === 0 ||
+        Number(eachTag.classId) === 0 ||
+        eachTag.category === "-- CHOOSE DATA --" ||
+        eachTag.category === "-- LOADING --"
+      ) {
+        toast.error("Please choose Tag.");
+        return;
+      }
+      if (TagIdList.includes(Number(eachTag.tagId))) {
+        toast.error("Tag should not be the same.");
+        return;
+      }
+      TagOrderList.push(Number(eachTag.order));
+      TagIdList.push(Number(eachTag.tagId));
+      rtnTagList.push({
+        id: Number(eachTag.tagId),
+        order: Number(eachTag.order),
+      });
+    }
+    let LinkOrderList = [];
+    let rtnExternalLinkList = [];
+    for (const eachLink of ShopInfoState.ExternalLink) {
+      if (LinkOrderList.includes(Number(eachLink.order))) {
+        toast.error("External Link Order values should not be the same.");
+        return;
+      }
+      if (isNaN(Number(eachLink.order))) {
+        toast.error("Invalid External Link Order value.");
+        return;
+      }
+      if (Number(eachLink.order) <= 0) {
+        toast.error("External Link Order values should be bigger than 0.");
+        return;
+      }
+      if (eachLink.linkType === "-- CHOOSE DATA --") {
+        toast.error("Please choose Link Type on External Link.");
+        return;
+      }
+      if (
+        eachLink.url === "http://" ||
+        eachLink.url === "" ||
+        eachLink.url === "https://"
+      ) {
+        toast.error("Invalid External Link URL.");
+        return;
+      }
+      LinkOrderList.push(Number(eachLink.order));
+      rtnExternalLinkList.push({
+        order: Number(eachLink.order),
+        linkType: eachLink.linkType,
+        url: eachLink.url,
+        isShown: eachLink.isShown,
+      });
+    }
+    let ImageOrderList = [];
+    let rtnImageList = [];
+    let s3ImageList = [];
+    for (const eachImage of ShopInfoState.ShopImagesManagement) {
+      if (ImageOrderList.includes(Number(eachImage.order))) {
+        toast.error("Image Order values should not be the same.");
+        return;
+      }
+      if (isNaN(Number(eachImage.order))) {
+        toast.error("Invalid Image Order value.");
+        return;
+      }
+      if (Number(eachImage.order) <= 0) {
+        toast.error("Image Order values should be bigger than 0.");
+        return;
+      }
+      if (eachImage.ImageFile === "") {
+        toast.error("Please choose Shop Image.");
+        return;
+      }
+      const ImageType = eachImage.ImageFile.type.substring(6);
+      const fileName = eachImage.order + "." + ImageType;
+      ImageOrderList.push(Number(eachImage.order));
+      rtnImageList.push({ order: Number(eachImage.order), url: fileName });
+      s3ImageList.push({ fileName, ImageFile: eachImage.ImageFile });
+    }
+    let VideoOrderList = [];
+    let rtnVideoList = [];
+    for (const eachVideo of ShopInfoState.ShopVideoManagement) {
+      if (VideoOrderList.includes(Number(eachVideo.order))) {
+        toast.error("Video Order values should not be the same.");
+        return;
+      }
+      if (isNaN(Number(eachVideo.order))) {
+        toast.error("Invalid Video Order value.");
+        return;
+      }
+      if (Number(eachVideo.order) <= 0) {
+        toast.error("Video Order values should be bigger than 0.");
+        return;
+      }
+      if (
+        eachVideo.url === "http://" ||
+        eachVideo.url === "" ||
+        eachVideo.url === "https://"
+      ) {
+        toast.error("Invalid Video URL value.");
+        return;
+      }
+      VideoOrderList.push(Number(eachVideo.order));
+      rtnVideoList.push({ order: Number(eachVideo.order), url: eachVideo.url });
+    }
+    let rtnBranchList = [];
+    for (const eachBranch of ShopInfoState.BranchManagement) {
+      if (eachBranch.BranchName === "") {
+        toast.error("Please enter Branch Name.");
+        return;
+      }
+      if (eachBranch.PhoneNumber === "") {
+        toast.error("Please enter Branch Phone Number.");
+        return;
+      }
+      if (eachBranch.Address === "") {
+        toast.error("Please enter Branch Address.");
+        return;
+      }
+      if (
+        eachBranch.MapUrl === "http://" ||
+        eachBranch.MapUrl === "" ||
+        eachBranch.MapUrl === "https://"
+      ) {
+        toast.error("Invalid Branch Map URL.");
+        return;
+      }
+      rtnBranchList.push({
+        branchName: eachBranch.BranchName,
+        branchPhoneNumber: eachBranch.PhoneNumber,
+        branchAddress: eachBranch.Address,
+        branchGoogleMapUrl: eachBranch.MapUrl,
+      });
+    }
+    let rtnLogoFileName = null;
+    if (ShopInfoState.BasicInformation.ShopLogoFile !== "") {
+      const LogoImageType = ShopInfoState.BasicInformation.ShopLogoFile.type.substring(
+        6
+      );
+      rtnLogoFileName = "ShopLogo" + "." + LogoImageType;
+    }
+
+    const mutationData = {
+      shopName: ShopInfoState.BasicInformation.shopName,
+      logoUrl: rtnLogoFileName,
+      phoneNumber: ShopInfoState.BasicInformation.phoneNumber,
+      mainBranchAddress: ShopInfoState.BasicInformation.MainAddress,
+      mainBranchMapUrl: ShopInfoState.BasicInformation.MainMapUrl,
+      weight: Number(ShopInfoState.BasicStatus.RankingWeight),
+      tags: rtnTagList,
+      FacebookLink:
+        ShopInfoState.SocialMediaLink.FacebookLink === ""
+          ? null
+          : ShopInfoState.SocialMediaLink.FacebookLink,
+      InstagramLink:
+        ShopInfoState.SocialMediaLink.InstagramLink === ""
+          ? null
+          : ShopInfoState.SocialMediaLink.InstagramLink,
+      YoutubeLink:
+        ShopInfoState.SocialMediaLink.YoutubeLink === ""
+          ? null
+          : ShopInfoState.SocialMediaLink.YoutubeLink,
+      externalLinks: rtnExternalLinkList,
+      shopImages: rtnImageList,
+      shopVideos: rtnVideoList,
+      description:
+        ShopInfoState.ShopDescription === ""
+          ? null
+          : ShopInfoState.ShopDescription,
+      branches: rtnBranchList,
+    };
+
+    const {
+      data: { createShop },
+    } = await CreateShopMutaion({
+      variables: mutationData,
+    });
+    if (!createShop || CreateError) {
+      toast.error("Error occured while create data.");
+      return;
+    }
+
+    if (createShop && createShop.shopId) {
+      const ShopId = createShop.shopId;
+      try {
+        for (const eachImage of s3ImageList) {
+          let s3Result = await putImagetoS3({
+            file: eachImage.ImageFile,
+            fileName: "Post/" + ShopId + "/" + eachImage.fileName,
+          });
+        }
+        if (rtnLogoFileName) {
+          let s3Result = await putImagetoS3({
+            file: ShopInfoState.BasicInformation.ShopLogoFile,
+            fileName: "Post/" + ShopId + "/" + rtnLogoFileName,
+          });
+        }
+      } catch (e) {
+        toast.error("Error occured while create data.");
+        return;
+      }
+      toast.success("Sucessfullly create Data!");
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
+      return;
+    }
   };
 
   return (

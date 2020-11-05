@@ -184,6 +184,21 @@ export default () => {
     });
   };
 
+  const DeleteImage = (e) => {
+    ShopInfoDispatch({
+      type: "UPDATE_BASICINFO",
+      data: {
+        BasicInformation: {
+          ...ShopInfoState.BasicInformation,
+          ShopLogoFile: "",
+          ShopLogoPreviewUrl: "",
+        },
+      },
+    });
+    ShopLogo_Preview = null;
+    document.getElementsByName("ShopLogoInput")[0].value = null;
+  };
+
   return (
     <>
       <SectionTitle text="Basic Information" />
@@ -198,12 +213,17 @@ export default () => {
             <ImageInputBox>
               <Input
                 type="file"
-                accept="image/jpg,impge/png,image/jpeg"
+                accept="image/jpg,image/png,image/jpeg"
                 name="ShopLogoInput"
                 onChange={(e) => ChangeImage(e)}
               />
               {ShopLogo_Preview}
             </ImageInputBox>
+            <Button
+              text={"Delete Photo"}
+              isButtonType={true}
+              ClickEvent={(e) => DeleteImage(e)}
+            />
           </td>
         </tr>
         <tr>

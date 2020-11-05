@@ -136,7 +136,7 @@ export default ({ data }) => {
       <td>
         <Input
           type="file"
-          accept="image/jpg,impge/png,image/jpeg"
+          accept="image/jpg,image/png,image/jpeg"
           name="ShopLogoInput"
           onChange={(e) => ChangeImage(e)}
         />
