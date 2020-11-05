@@ -1,21 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import WrapPage from "../../Styles/WrapPageStyles";
 import PageTitle from "../../Components/PageTitle";
-import Loader from "../../Components/Loader";
 import { ClassInfoContext } from "./CreateClassContainer";
 import { Link } from "react-router-dom";
 import SectionTitle from "../../Components/SectionTitle";
 import Button from "../../Components/Button";
-
-const Wrapper = styled.div`
-  min-height: 25vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 20px;
-`;
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -94,7 +84,7 @@ export default ({ onSubmit }) => {
                   required
                 >
                   {category === "" ? (
-                    <option value="==choose==">==choose==</option>
+                    <option value="==choose==">{"-- CHOOSE --"}</option>
                   ) : (
                     <></>
                   )}
