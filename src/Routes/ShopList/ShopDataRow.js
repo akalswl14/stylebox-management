@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
+import PageChangeButton from "../../Components/PageChangeButton";
 import { ShopListContext } from "./ShopListContainer";
 
 const WeightInputBox = styled.input`
@@ -82,7 +83,13 @@ const ShopDataRow = ({ data }) => {
       <td>{data.productNum}</td>
       <td>{data.likeNum}</td>
       <td>{data.viewNum}</td>
-      <td>Button Here</td>
+      <td>
+        <PageChangeButton
+          text="edit"
+          href={"/shopdetail/" + data.shopId}
+          width={50}
+        />
+      </td>
     </tr>
   );
 };

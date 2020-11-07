@@ -248,7 +248,8 @@ export default ({ onSubmit, loading, error, data }) => {
     });
   };
 
-  if (error) return `Error! ${error.message}`;
+  if (error) return <WrapPage>`Error! ${error.message}`</WrapPage>;
+
   if (loading)
     return (
       <Wrapper>
