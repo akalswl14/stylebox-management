@@ -4,10 +4,9 @@ import PropTypes from "prop-types";
 import { Arrow } from "./Icons";
 
 const PageChangeButtonContainer = styled.a`
-  width: 120px;
+  width: ${(props) => (props.width ? props.width + "px" : "120px")};
   border: 0;
   border-radius: ${(props) => props.theme.borderRadius};
-  color: white;
   font-weight: 600;
   text-align: center;
   padding: 7px 0px;
@@ -16,10 +15,11 @@ const PageChangeButtonContainer = styled.a`
   color: white;
   margin: 4px;
   cursor: pointer;
+  display: block;
 `;
 
-const PageChangeButton = ({ text, href }) => (
-  <PageChangeButtonContainer href={href}>
+const PageChangeButton = ({ text, href, width }) => (
+  <PageChangeButtonContainer href={href} width={width}>
     <div>{text}</div>
   </PageChangeButtonContainer>
 );
@@ -27,6 +27,7 @@ const PageChangeButton = ({ text, href }) => (
 PageChangeButton.propTypes = {
   href: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
+  width: PropTypes.number,
 };
 
 export default PageChangeButton;
