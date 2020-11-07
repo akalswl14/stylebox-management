@@ -161,7 +161,7 @@ export default ({ data }) => {
       <td className="orderInputCell">{data.id}</td>
       <td>
         <Input
-          InputWidth={200}
+          InputWidth={170}
           type="text"
           name="BranchNameInput"
           value={data.BranchName}
@@ -170,7 +170,7 @@ export default ({ data }) => {
       </td>
       <td>
         <Input
-          InputWidth={200}
+          InputWidth={170}
           type="text"
           name="BranchPhoneNumberInput"
           value={data.PhoneNumber}
@@ -179,7 +179,7 @@ export default ({ data }) => {
       </td>
       <td className="AddressCell">
         <Input
-          InputWidth={400}
+          InputWidth={300}
           type="text"
           name="BranchAddressInput"
           value={data.Address}
@@ -191,7 +191,7 @@ export default ({ data }) => {
           <MapUrlWrapper>
             <TitleSpan>Map URL</TitleSpan>
             <Input
-              InputWidth={500}
+              InputWidth={350}
               type="text"
               name="BranchMapUrl"
               value={data.MapUrl}

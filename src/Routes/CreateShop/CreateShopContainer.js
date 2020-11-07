@@ -94,6 +94,9 @@ export default () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    var TimeNumber = new Date();
+
     if (ShopInfoState.BasicInformation.shopName === "") {
       toast.error("Please enter Shop Name.");
       return;
@@ -213,7 +216,9 @@ export default () => {
         return;
       }
       const ImageType = eachImage.ImageFile.type.substring(6);
-      const fileName = eachImage.order + "." + ImageType;
+      TimeNumber = new Date();
+      const fileName =
+        TimeNumber.getTime() + "_" + eachImage.order + "." + ImageType;
       ImageOrderList.push(Number(eachImage.order));
       rtnImageList.push({ order: Number(eachImage.order), url: fileName });
       s3ImageList.push({ fileName, ImageFile: eachImage.ImageFile });
@@ -278,7 +283,9 @@ export default () => {
       const LogoImageType = ShopInfoState.BasicInformation.ShopLogoFile.type.substring(
         6
       );
-      rtnLogoFileName = "ShopLogo" + "." + LogoImageType;
+      TimeNumber = new Date();
+      rtnLogoFileName =
+        TimeNumber.getTime() + "_ShopLogo" + "." + LogoImageType;
     }
 
     const mutationData = {
@@ -327,13 +334,13 @@ export default () => {
         for (const eachImage of s3ImageList) {
           let s3Result = await putImagetoS3({
             file: eachImage.ImageFile,
-            fileName: "Post/" + ShopId + "/" + eachImage.fileName,
+            fileName: "Shop/" + ShopId + "/" + eachImage.fileName,
           });
         }
         if (rtnLogoFileName) {
           let s3Result = await putImagetoS3({
             file: ShopInfoState.BasicInformation.ShopLogoFile,
-            fileName: "Post/" + ShopId + "/" + rtnLogoFileName,
+            fileName: "Shop/" + ShopId + "/" + rtnLogoFileName,
           });
         }
       } catch (e) {
