@@ -1,230 +1,422 @@
-// import React, { useReducer } from "react";
-// import ShopListPresenter from "./ShopDetailPresenter";
-// import { useMutation, useQuery } from "react-apollo-hooks";
-// import { GET_SHOPS, DELETE_SHOPS, UPDATE_SHOPS } from "./ShopDetailQueries";
-// import { toast } from "react-toastify";
+import React, { useReducer } from "react";
+import ShopDetailPresenter from "./ShopDetailPresenter";
+import { useMutation, useQuery } from "react-apollo-hooks";
+import { GET_SHOP, UPDATE_SHOP } from "./ShopDetailQueries";
+import { toast } from "react-toastify";
+import putImagetoS3 from "./putImagetoS3";
+import deleteImagefromS3 from "./deleteImagefromS3";
 
-// export const ShopListContext = React.createContext(null);
+export const ShopInfoContext = React.createContext(null);
 
-// const initialState = {
-//   WeightData: [],
-//   SelectedShopList: [],
-//   pageNum: 1,
-//   SortOption: {
-//     SortShopId: false,
-//     SortShopName: false,
-//     SortWeight: false,
-//     SortRank: false,
-//     shopIdAsc: true,
-//     ShopNameAsc: true,
-//     WeightAsc: true,
-//     RankAsc: true,
-//   },
-//   SearchOption: {
-//     SearchSelectBox: "ShopID",
-//     SearchKeyWord: "",
-//     SearchShopId: false,
-//     SearchShopName: false,
-//     SeacrchPhoneNumber: false,
-//     SearchAddress: false,
-//     SearchTag: false,
-//     ShopId: 0,
-//     ShopName: "",
-//     PhoneNumber: "",
-//     Address: "",
-//     Tag: "",
-//   },
-// };
+const initialState = {
+  BasicInformation: {
+    shopId: "-",
+    shopName: { value: "", isChange: false },
+    phoneNumber: { value: "", isChange: false },
+    MainAddress: { value: "", isChange: false },
+    MainMapUrl: { value: "", isChange: false },
+    ShopLogo: { File: "", PreviewUrl: "", isChange: false },
+  },
+  BasicStatus: {
+    ShopRank: "-",
+    TotalNumberofPosts: 0,
+    TotalLikes: 0,
+    RegistrationData: "--/--/----",
+    RankingWeight: { value: 0, isChange: false },
+    TotalNumberofProducts: 0,
+    TotalViews: 0,
+    LastUpdated: "--/--/--- --:--:--",
+  },
+  TagInformation: { value: [], isChange: false },
+  SocialMediaLink: {
+    FacebookLink: { value: "", isChange: false },
+    InstagramLink: { value: "", isChange: false },
+    YoutubeLink: { value: "", isChange: false },
+  },
+  ExternalLink: { value: [], isChange: false },
+  ShopImagesManagement: { value: [], isChange: false },
+  ShopVideoManagement: { value: [], isChange: false },
+  ShopDescription: { value: "", isChange: false },
+  BranchManagement: { value: [], isChange: false },
+  CategoryData: [],
+  LinkTypeData: [],
+  DeleteImageList: [],
+};
 
-// function reducer(state, action) {
-//   switch (action.type) {
-//     case "UPDATE_PAGENUM":
-//       return { ...state, pageNum: action.data.pageNum };
-//     case "UPDATE_SORTOPTION":
-//       return { ...state, pageNum: 1, SortOption: action.data.SortOption };
-//     case "UPDATE_SELECTSHOP":
-//       if (state.SelectedShopList.includes(action.data.shopId)) {
-//         let SelectedShopList = state.SelectedShopList.filter(
-//           (eachShopId) => eachShopId !== action.data.shopId
-//         );
-//         return { ...state, SelectedShopList };
-//       } else {
-//         let SelectedShopList = state.SelectedShopList;
-//         SelectedShopList.push(action.data.shopId);
-//         return { ...state, SelectedShopList };
-//       }
-//     case "UPDATE_BATCH_SELECTSHOP":
-//       return { ...state, SelectedShopList: action.data.BatchShopList };
-//     case "UPDATE_SEARCH_SELECTBOX":
-//       let SearchOption = {
-//         ...state.SearchOption,
-//         SearchSelectBox: action.data.SearchSelectBox,
-//       };
-//       return { ...state, SearchOption };
+function reducer(state, action) {
+  switch (action.type) {
+    case "UPDATE_BASICINFO":
+      return { ...state, BasicInformation: action.data.BasicInformation };
+    case "UPDATE_BASICSTATUS":
+      return { ...state, BasicStatus: action.data.BasicStatus };
+    case "UPDATE_TAGINFO":
+      return { ...state, TagInformation: action.data.TagInformation };
+    case "UPDATE_SNSLINK":
+      return { ...state, SocialMediaLink: action.data.SocialMediaLink };
+    case "UPDATE_EXTERNALLINK":
+      return { ...state, ExternalLink: action.data.ExternalLink };
+    case "UPDATE_SHOPIMAGE":
+      return {
+        ...state,
+        ShopImagesManagement: action.data.ShopImagesManagement,
+      };
+    case "UPDATE_SHOPVIDEO":
+      return { ...state, ShopVideoManagement: action.data.ShopVideoManagement };
+    case "UPDATE_DESCRIPTION":
+      return { ...state, ShopDescription: action.data.ShopDescription };
+    case "UPDATE_BRANCH":
+      return { ...state, BranchManagement: action.data.BranchManagement };
+    case "UPDATE_BATCH":
+      return action.data;
+    default:
+      return state;
+  }
+}
 
-//     case "UPDATE_SEARCH_KEYWORD":
-//       let UpdateSearchOption = {
-//         ...state.SearchOption,
-//         SearchKeyWord: action.data.SearchKeyWord,
-//       };
-//       return { ...state, SearchOption: UpdateSearchOption };
+export default ({ match }) => {
+  const shopId = Number(match.params.shopId);
+  const [ShopInfoState, ShopInfoDispatch] = useReducer(reducer, initialState);
 
-//     case "UPDATE_SEARCHOPTION":
-//       return {
-//         WeightData: [],
-//         SelectedShopList: [],
-//         pageNum: 1,
-//         SearchOption: action.data.SearchOption,
-//         SortOption: {
-//           SortShopId: false,
-//           SortShopName: false,
-//           SortWeight: false,
-//           SortRank: false,
-//           shopIdAsc: true,
-//           ShopNameAsc: true,
-//           WeightAsc: true,
-//           RankAsc: true,
-//         },
-//       };
-//     case "UPDATE_WEIGHT":
-//       let IsNewData = true;
-//       let ReturnWeightData = state.WeightData.map((eachShop) => {
-//         if (eachShop.id === action.data.shopId) {
-//           IsNewData = false;
-//           return { id: action.data.shopId, value: action.data.value };
-//         }
-//         return eachShop;
-//       });
-//       if (IsNewData) {
-//         ReturnWeightData.push({
-//           id: action.data.shopId,
-//           value: action.data.value,
-//         });
-//       }
-//       return { ...state, WeightData: ReturnWeightData };
-//     case "UPDATE_BATCH_WEIGHT":
-//       return { ...state, WeightData: action.data.WeightData };
-//     default:
-//       return state;
-//   }
-// }
+  const { loading, error, data } = useQuery(GET_SHOP, {
+    variables: { shopId },
+  });
 
-// export default () => {
-//   const [ShopListState, ShopListDispatch] = useReducer(reducer, initialState);
-//   const { loading, error, data } = useQuery(GET_SHOPS, {
-//     variables: {
-//       address: ShopListState.SearchOption.SearchAddress
-//         ? ShopListState.SearchOption.Address
-//         : null,
-//       pageNum: ShopListState.pageNum,
-//       phoneNumber: ShopListState.SearchOption.PhoneNumber
-//         ? ShopListState.SearchOption.PhoneNumber
-//         : null,
-//       shopId: ShopListState.SearchOption.SearchShopId
-//         ? ShopListState.SearchOption.ShopId
-//         : null,
-//       shopIdAsc: ShopListState.SortOption.SortShopId
-//         ? ShopListState.SortOption.shopIdAsc
-//         : null,
-//       shopName: ShopListState.SearchOption.SearchShopName
-//         ? ShopListState.SearchOption.ShopName
-//         : null,
-//       shopNameAsc: ShopListState.SortOption.SortShopName
-//         ? ShopListState.SortOption.ShopNameAsc
-//         : null,
-//       tagName: ShopListState.SearchOption.SearchTag
-//         ? ShopListState.SearchOption.Tag
-//         : null,
-//       weightAsc: ShopListState.SortOption.SortWeight
-//         ? ShopListState.SortOption.WeightAsc
-//         : null,
-//       rankAsc: ShopListState.SortOption.SortRank
-//         ? ShopListState.SortOption.RankAsc
-//         : null,
-//     },
-//   });
-//   const [
-//     DeleteShopsMutation,
-//     { loading: DeleteLoading, error: DeleteError },
-//   ] = useMutation(DELETE_SHOPS);
+  const [
+    UpdateShopMutation,
+    { loading: UpdateLoading, error: UpdateError },
+  ] = useMutation(UPDATE_SHOP);
 
-//   const [
-//     EditShopMutation,
-//     { loading: EditLoading, error: EditError },
-//   ] = useMutation(UPDATE_SHOPS);
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    console.log(ShopInfoState);
+    var TimeNumber = new Date();
 
-//   const onSubmit = async (e) => {
-//     e.preventDefault();
-//     if (ShopListState.SelectedShopList <= 0) {
-//       toast.error("You have to choose 1 item at least.");
-//       return;
-//     }
-//     if (e.target.name === "DeleteButton") {
-//       const {
-//         data: { deleteShops },
-//       } = await DeleteShopsMutation({
-//         variables: {
-//           shopIds: ShopListState.SelectedShopList,
-//         },
-//       });
-//       if (!deleteShops || DeleteError) {
-//         toast.error("Error occured while delete data.");
-//         return;
-//       }
-//       if (deleteShops) {
-//         toast.success("Sucessfullly Delete Data!");
-//         setTimeout(() => {
-//           window.location.reload();
-//         }, 5000);
-//         return;
-//       }
-//     } else if (e.target.name === "EditButton") {
-//       let rtnShops = [];
-//       for (var i = 0; i < ShopListState.WeightData.length; i++) {
-//         let eachData = ShopListState.WeightData[i];
-//         if (isNaN(Number(eachData.value))) {
-//           toast.error("Weight Value should be number.");
-//           return;
-//         }
-//         ShopListState.WeightData[i].value = Number(eachData.value);
-//         eachData = ShopListState.WeightData[i];
-//         if (eachData.value < 0) {
-//           toast.error("Weight Value can't be smaller than 0.");
-//           return;
-//         }
-//         if (ShopListState.SelectedShopList.includes(eachData.id)) {
-//           rtnShops.push(eachData);
-//         }
-//       }
-//       const {
-//         data: { updateShops },
-//       } = await EditShopMutation({
-//         variables: {
-//           shops: rtnShops,
-//         },
-//       });
-//       if (!updateShops || EditError) {
-//         toast.error("Error occured while edit data.");
-//         return;
-//       }
-//       if (updateShops) {
-//         toast.success("Sucessfullly Edit Data!");
-//         setTimeout(() => {
-//           window.location.reload();
-//         }, 5000);
-//         return;
-//       }
-//     }
-//   };
+    if (ShopInfoState.BasicInformation.shopName.value === "") {
+      toast.error("Please enter Shop Name.");
+      return;
+    }
+    if (ShopInfoState.BasicInformation.phoneNumber.value === "") {
+      toast.error("Please enter Shop Phone Number.");
+      return;
+    }
+    if (ShopInfoState.BasicInformation.MainAddress.value === "") {
+      toast.error("Please enter Shop Main Address.");
+      return;
+    }
+    if (
+      ShopInfoState.BasicInformation.MainMapUrl.value === "http://" ||
+      ShopInfoState.BasicInformation.MainMapUrl.value === "" ||
+      ShopInfoState.BasicInformation.MainMapUrl.value === "https://"
+    ) {
+      toast.error("Invalid Shop Main Map URL.");
+      return;
+    }
+    if (isNaN(Number(ShopInfoState.BasicStatus.RankingWeight.value))) {
+      toast.error("Invalid Weight Value.");
+      return;
+    }
+    if (Number(ShopInfoState.BasicStatus.RankingWeight.value) < 0) {
+      toast.error("Weight Value should be 0 and/or more.");
+      return;
+    }
+    let TagOrderList = [];
+    let TagIdList = [];
+    let rtnTagList = [];
+    if (ShopInfoState.TagInformation.isChange) {
+      for (const eachTag of ShopInfoState.TagInformation.value) {
+        if (TagOrderList.includes(Number(eachTag.order))) {
+          toast.error("Tag Order values should not be the same.");
+          return;
+        }
+        if (isNaN(Number(eachTag.order))) {
+          toast.error("Invalid Tag Order Value.");
+          return;
+        }
+        if (Number(eachTag.order) <= 0) {
+          toast.error("Tag Order Value should be bigger than 0");
+        }
+        if (
+          Number(eachTag.tagId) === 0 ||
+          Number(eachTag.classId) === 0 ||
+          eachTag.category === "-- CHOOSE DATA --" ||
+          eachTag.category === "-- LOADING --"
+        ) {
+          toast.error("Please choose Tag.");
+          return;
+        }
+        if (TagIdList.includes(Number(eachTag.tagId))) {
+          toast.error("Tag should not be the same.");
+          return;
+        }
+        TagOrderList.push(Number(eachTag.order));
+        TagIdList.push(Number(eachTag.tagId));
+        rtnTagList.push({
+          id: Number(eachTag.tagId),
+          order: Number(eachTag.order),
+        });
+      }
+    }
+    let LinkOrderList = [];
+    let rtnExternalLinkList = [];
+    if (ShopInfoState.ExternalLink.isChange) {
+      for (const eachLink of ShopInfoState.ExternalLink.value) {
+        if (LinkOrderList.includes(Number(eachLink.order))) {
+          toast.error("External Link Order values should not be the same.");
+          return;
+        }
+        if (isNaN(Number(eachLink.order))) {
+          toast.error("Invalid External Link Order value.");
+          return;
+        }
+        if (Number(eachLink.order) <= 0) {
+          toast.error("External Link Order values should be bigger than 0.");
+          return;
+        }
+        if (eachLink.linkType === "-- CHOOSE DATA --") {
+          toast.error("Please choose Link Type on External Link.");
+          return;
+        }
+        if (
+          eachLink.url === "http://" ||
+          eachLink.url === "" ||
+          eachLink.url === "https://"
+        ) {
+          toast.error("Invalid External Link URL.");
+          return;
+        }
+        LinkOrderList.push(Number(eachLink.order));
+        rtnExternalLinkList.push({
+          order: Number(eachLink.order),
+          linkType: eachLink.linkType,
+          url: eachLink.url,
+          isShown: eachLink.isShown,
+        });
+      }
+    }
+    let ImageOrderList = [];
+    let rtnImageList = [];
+    let s3ImageList = [];
+    if (ShopInfoState.ShopImagesManagement.isChange) {
+      for (const eachImage of ShopInfoState.ShopImagesManagement.value) {
+        if (ImageOrderList.includes(Number(eachImage.order))) {
+          toast.error("Image Order values should not be the same.");
+          return;
+        }
+        if (isNaN(Number(eachImage.order))) {
+          toast.error("Invalid Image Order value.");
+          return;
+        }
+        if (Number(eachImage.order) <= 0) {
+          toast.error("Image Order values should be bigger than 0.");
+          return;
+        }
+        if (eachImage.ImageFile === "" && eachImage.isNewImage) {
+          toast.error("Please choose Shop Image.");
+          return;
+        }
+        let fileName = "";
+        if (eachImage.isNewImage) {
+          const ImageType = eachImage.ImageFile.type.substring(6);
+          TimeNumber = new Date();
+          fileName =
+            "Shop/" +
+            ShopInfoState.BasicInformation.shopId +
+            "/" +
+            TimeNumber.getTime() +
+            "_" +
+            eachImage.order +
+            "." +
+            ImageType;
+          s3ImageList.push({ fileName, ImageFile: eachImage.ImageFile });
+        } else {
+          fileName = eachImage.s3Key;
+        }
+        ImageOrderList.push(Number(eachImage.order));
+        rtnImageList.push({ order: Number(eachImage.order), url: fileName });
+      }
+    }
+    let VideoOrderList = [];
+    let rtnVideoList = [];
+    if (ShopInfoState.ShopVideoManagement.isChange) {
+      for (const eachVideo of ShopInfoState.ShopVideoManagement.value) {
+        if (VideoOrderList.includes(Number(eachVideo.order))) {
+          toast.error("Video Order values should not be the same.");
+          return;
+        }
+        if (isNaN(Number(eachVideo.order))) {
+          toast.error("Invalid Video Order value.");
+          return;
+        }
+        if (Number(eachVideo.order) <= 0) {
+          toast.error("Video Order values should be bigger than 0.");
+          return;
+        }
+        if (
+          eachVideo.url === "http://" ||
+          eachVideo.url === "" ||
+          eachVideo.url === "https://"
+        ) {
+          toast.error("Invalid Video URL value.");
+          return;
+        }
+        VideoOrderList.push(Number(eachVideo.order));
+        rtnVideoList.push({
+          order: Number(eachVideo.order),
+          url: eachVideo.url,
+        });
+      }
+    }
+    let rtnBranchList = [];
+    if (ShopInfoState.BranchManagement.isChange) {
+      for (const eachBranch of ShopInfoState.BranchManagement.value) {
+        if (eachBranch.BranchName === "") {
+          toast.error("Please enter Branch Name.");
+          return;
+        }
+        if (eachBranch.PhoneNumber === "") {
+          toast.error("Please enter Branch Phone Number.");
+          return;
+        }
+        if (eachBranch.Address === "") {
+          toast.error("Please enter Branch Address.");
+          return;
+        }
+        if (
+          eachBranch.MapUrl === "http://" ||
+          eachBranch.MapUrl === "" ||
+          eachBranch.MapUrl === "https://"
+        ) {
+          toast.error("Invalid Branch Map URL.");
+          return;
+        }
+        rtnBranchList.push({
+          id: eachBranch.BranchId,
+          branchName: eachBranch.BranchName,
+          branchPhoneNumber: eachBranch.PhoneNumber,
+          branchAddress: eachBranch.Address,
+          branchGoogleMapUrl: eachBranch.MapUrl,
+        });
+      }
+    }
+    let rtnShopLogo = { isLogoUrlChange: false, logoUrl: null };
+    if (ShopInfoState.BasicInformation.ShopLogo.PreviewUrl === "") {
+      if (ShopInfoState.BasicInformation.ShopLogo.isChange) {
+        rtnShopLogo.isLogoUrlChange = true;
+        rtnShopLogo.logoUrl = null;
+      }
+    } else {
+      if (ShopInfoState.BasicInformation.ShopLogo.isNewImage) {
+        const LogoImageType = ShopInfoState.BasicInformation.ShopLogo.File.type.substring(
+          6
+        );
+        TimeNumber = new Date();
+        const LogoFileName =
+          "Shop/" +
+          ShopInfoState.BasicInformation.shopId +
+          "/" +
+          TimeNumber.getTime() +
+          "_ShopLogo." +
+          LogoImageType;
+        s3ImageList.push({
+          fileName: LogoFileName,
+          ImageFile: ShopInfoState.BasicInformation.ShopLogo.File,
+        });
+        rtnShopLogo.isLogoUrlChange = true;
+        rtnShopLogo.logoUrl = LogoFileName;
+      }
+    }
 
-//   return (
-//     <ShopListContext.Provider value={{ ShopListState, ShopListDispatch }}>
-//       <ShopListPresenter
-//         onSubmit={onSubmit}
-//         loading={loading}
-//         error={error}
-//         data={data}
-//       />
-//     </ShopListContext.Provider>
-//   );
-// };
+    const mutationData = {
+      shopId: ShopInfoState.BasicInformation.shopId,
+      shopName: ShopInfoState.BasicInformation.shopName.isChange
+        ? ShopInfoState.BasicInformation.shopName.value
+        : null,
+      isLogoUrlChange: rtnShopLogo.isLogoUrlChange,
+      logoUrl: rtnShopLogo.logoUrl,
+      phoneNumber: ShopInfoState.BasicInformation.phoneNumber.isChange
+        ? ShopInfoState.BasicInformation.phoneNumber.value
+        : null,
+      weight: ShopInfoState.BasicStatus.RankingWeight.isChange
+        ? Number(ShopInfoState.BasicStatus.RankingWeight.value)
+        : null,
+      isDescriptionChange: ShopInfoState.ShopDescription.isChange,
+      description: ShopInfoState.ShopDescription.value,
+      tags: ShopInfoState.TagInformation.isChange ? rtnTagList : null,
+      externalLinks: ShopInfoState.ExternalLink.isChange
+        ? rtnExternalLinkList
+        : null,
+      isFacebookLinkChage: ShopInfoState.SocialMediaLink.FacebookLink.isChange,
+      FacebookLink: ShopInfoState.SocialMediaLink.FacebookLink.value,
+      isInstagramLinkChage:
+        ShopInfoState.SocialMediaLink.InstagramLink.isChange,
+      InstagramLink: ShopInfoState.SocialMediaLink.InstagramLink.value,
+      isYoutubeLinkChage: ShopInfoState.SocialMediaLink.YoutubeLink.isChange,
+      YoutubeLink: ShopInfoState.SocialMediaLink.YoutubeLink.value,
+      shopImages: ShopInfoState.ShopImagesManagement.isChange
+        ? rtnImageList
+        : null,
+      shopVideos: ShopInfoState.ShopVideoManagement.isChange
+        ? rtnVideoList
+        : null,
+      branches: ShopInfoState.BranchManagement.isChange ? rtnBranchList : null,
+      mainBranchAddress: ShopInfoState.BasicInformation.MainAddress.isChange
+        ? ShopInfoState.BasicInformation.MainAddress.value
+        : null,
+      mainBranchMapUrl: ShopInfoState.BasicInformation.MainMapUrl.isChange
+        ? ShopInfoState.BasicInformation.MainMapUrl.value
+        : null,
+    };
+
+    console.log("MUTATION DATA : ", mutationData);
+    console.log("DELETE IMAGES : ", ShopInfoState.DeleteImageList);
+    console.log("NEW IMAGE : ", s3ImageList);
+    const {
+      data: { updateShop },
+    } = await UpdateShopMutation({
+      variables: mutationData,
+    });
+    if (!updateShop || UpdateError) {
+      toast.error("Error occured while update data.");
+      return;
+    }
+
+    if (updateShop) {
+      const ShopId = ShopInfoState.BasicInformation.shopId;
+      try {
+        for (const eachImage of s3ImageList) {
+          await putImagetoS3({
+            file: eachImage.ImageFile,
+            fileName: eachImage.fileName,
+          });
+        }
+      } catch (e) {
+        toast.error("Error occured while update data.");
+        return;
+      }
+      try {
+        await deleteImagefromS3({
+          keys: ShopInfoState.DeleteImageList,
+        });
+      } catch (e) {
+        toast.error("Error occured while update data.");
+        return;
+      }
+      toast.success("Sucessfullly update Data!");
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
+      return;
+    }
+  };
+
+  return (
+    <ShopInfoContext.Provider value={{ ShopInfoState, ShopInfoDispatch }}>
+      <ShopDetailPresenter
+        onSubmit={onSubmit}
+        loading={loading}
+        data={data}
+        error={error}
+      />
+    </ShopInfoContext.Provider>
+  );
+};

@@ -18,6 +18,7 @@ import TagManagement from "../Routes/TagManagement/index";
 import CreateShop from "../Routes/CreateShop/index";
 import CreateClass from "../Routes/CreateClass/index";
 import CreateTag from "../Routes/CreateTag/index";
+import ShopDetail from "../Routes/ShopDetail/index";
 
 const AppRouter = () => {
   return (
@@ -40,6 +41,7 @@ const AppRouter = () => {
       <Route path="/postList" component={PostList} />
       <Route path="/eventlist" component={EventList} />
       <Route path="/createshop" component={CreateShop} />
+      <Route path="/shopdetail/:shopId" component={ShopDetail} />
       <Redirect path="*" to="/" />
     </Switch>
   );

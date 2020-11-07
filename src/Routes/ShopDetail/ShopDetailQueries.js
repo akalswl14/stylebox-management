@@ -1,57 +1,142 @@
-// import { gql } from "apollo-boost";
+import { gql } from "apollo-boost";
 
-// export const GET_SHOPS = gql`
-//   query getShopList(
-//     $address: String
-//     $pageNum: Int
-//     $phoneNumber: String
-//     $shopId: Int
-//     $shopIdAsc: Boolean
-//     $shopName: String
-//     $shopNameAsc: Boolean
-//     $tagName: String
-//     $weightAsc: Boolean
-//     $rankAsc: Boolean
-//   ) {
-//     getShopList(
-//       address: $address
-//       pageNum: $pageNum
-//       phoneNumber: $phoneNumber
-//       shopId: $shopId
-//       shopIdAsc: $shopIdAsc
-//       shopName: $shopName
-//       shopNameAsc: $shopNameAsc
-//       tagName: $tagName
-//       weightAsc: $weightAsc
-//       rankAsc: $rankAsc
-//     ) {
-//       totalShopNum
-//       shops {
-//         No
-//         address
-//         likeNum
-//         phoneNumber
-//         postNum
-//         productNum
-//         rankNum
-//         shopId
-//         shopName
-//         tagNames
-//         viewNum
-//         weight
-//       }
-//     }
-//   }
-// `;
+export const GET_SHOP = gql`
+  query ShopInformationQuery($shopId: Int!) {
+    __typename
+    getShopBasicInfo(id: $shopId) {
+      id
+      logoUrl
+      mainBranchAddress
+      mainBranchMapUrl
+      phoneNumber
+      shopName
+    }
+    getShopBasicStatus(id: $shopId) {
+      RegistrationDate
+      UpdateDate
+      likeNum
+      monthlyRankNum
+      postNum
+      productNum
+      viewNum
+      weight
+    }
+    getShopTagInfo(id: $shopId) {
+      category
+      classId
+      className
+      order
+      tagId
+      tagName
+    }
+    getShopSNSLink(id: $shopId) {
+      FacebookLink
+      InstagramLink
+      YoutubeLink
+    }
+    getShopExternalLink(id: $shopId) {
+      isShown
+      linkType
+      order
+      url
+    }
+    getShopImages(id: $shopId) {
+      order
+      url
+    }
+    getShopVideos(id: $shopId) {
+      order
+      url
+    }
+    getShopDescription(id: $shopId)
+    getShopToBranch(id: $shopId) {
+      address
+      branchName
+      googleMapUrl
+      id
+      phoneNumber
+    }
+    getManageCategoryOptions
+    getLinkTypeOption
+  }
+`;
 
-// export const DELETE_SHOPS = gql`
-//   mutation DeleteShops($shopIds: [Int!]!) {
-//     deleteShops(shopIds: $shopIds)
-//   }
-// `;
+export const UPDATE_SHOP = gql`
+  mutation UpdateShop(
+    $shopId: Int!
+    $shopName: String
+    $isLogoUrlChange: Boolean!
+    $logoUrl: String
+    $phoneNumber: String
+    $weight: Int
+    $isDescriptionChange: Boolean!
+    $description: String
+    $tags: [IdOrderInputType!]
+    $externalLinks: [LinkInputType!]
+    $isFacebookLinkChage: Boolean!
+    $FacebookLink: String
+    $isInstagramLinkChage: Boolean!
+    $InstagramLink: String
+    $isYoutubeLinkChage: Boolean!
+    $YoutubeLink: String
+    $shopImages: [ImageInputType!]
+    $shopVideos: [ImageInputType!]
+    $branches: [branchUpdateInputType!]
+    $mainBranchAddress: String
+    $mainBranchMapUrl: String
+  ) {
+    updateShop(
+      shopId: $shopId
+      shopName: $shopName
+      isLogoUrlChange: $isLogoUrlChange
+      logoUrl: $logoUrl
+      phoneNumber: $phoneNumber
+      weight: $weight
+      isDescriptionChange: $isDescriptionChange
+      description: $description
+      tags: $tags
+      externalLinks: $externalLinks
+      isFacebookLinkChage: $isFacebookLinkChage
+      FacebookLink: $FacebookLink
+      isInstagramLinkChage: $isInstagramLinkChage
+      InstagramLink: $InstagramLink
+      isYoutubeLinkChage: $isYoutubeLinkChage
+      YoutubeLink: $YoutubeLink
+      shopImages: $shopImages
+      shopVideos: $shopVideos
+      branches: $branches
+      mainBranchAddress: $mainBranchAddress
+      mainBranchMapUrl: $mainBranchMapUrl
+    )
+  }
+`;
 
-// export const UPDATE_SHOPS = gql`
-//   mutation UpdateShops($shops: [IdValueInputType!]) {
-//     updateShops(shops: $shops)
-//   }
-// `;
+export const CATEGORY_OPTION = gql`
+  query GetCategoryQuery {
+    getManageCategoryOptions
+  }
+`;
+
+export const GET_CLASS = gql`
+  query GET_CLASS($category: Category!) {
+    getClassOptions(category: $category) {
+      id
+      name
+    }
+  }
+`;
+
+export const GET_TAG = gql`
+  query GET_TAG($classId: Int!) {
+    getTagOptions(classId: $classId) {
+      id
+      name
+    }
+  }
+`;
+
+export const GET_LINKTYPE = gql`
+  query GET_LINKTYPE {
+    getLinkTypeOption
+  }
+`;

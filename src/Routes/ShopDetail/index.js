@@ -1,2 +1,2 @@
-// import ShopListContainer from "./ShopDetailContainer";
-// export default ShopListContainer;
+import ShopDetailContainer from "./ShopDetailContainer";
+export default ShopDetailContainer;
