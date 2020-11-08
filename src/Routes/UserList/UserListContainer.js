@@ -89,10 +89,9 @@ export default () => {
         : null,
     },
   });
-  const [
-    DeleteUsersMutation,
-    { loading: mutationLoading, error: mutationError },
-  ] = useMutation(DELETE_USERS);
+  const [DeleteUsersMutation, { error: mutationError }] = useMutation(
+    DELETE_USERS
+  );
 
   const onSubmit = async (e) => {
     e.preventDefault();

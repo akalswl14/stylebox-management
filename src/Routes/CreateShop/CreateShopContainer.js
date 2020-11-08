@@ -87,10 +87,7 @@ export default () => {
     data: data_LinkTypeData,
   } = useQuery(GET_LINKTYPE);
 
-  const [
-    CreateShopMutaion,
-    { loading: CreateLoading, error: CreateError },
-  ] = useMutation(CREATE_SHOP);
+  const [CreateShopMutaion, { error: CreateError }] = useMutation(CREATE_SHOP);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -284,8 +281,7 @@ export default () => {
         6
       );
       TimeNumber = new Date();
-      rtnLogoFileName =
-        TimeNumber.getTime() + "_ShopLogo" + "." + LogoImageType;
+      rtnLogoFileName = TimeNumber.getTime() + "_ShopLogo." + LogoImageType;
     }
 
     const mutationData = {
@@ -332,13 +328,18 @@ export default () => {
       const ShopId = createShop.shopId;
       try {
         for (const eachImage of s3ImageList) {
-          let s3Result = await putImagetoS3({
+          await putImagetoS3({
             file: eachImage.ImageFile,
             fileName: "Shop/" + ShopId + "/" + eachImage.fileName,
           });
         }
+      } catch (e) {
+        toast.error("Error occured while create data.");
+        return;
+      }
+      try {
         if (rtnLogoFileName) {
-          let s3Result = await putImagetoS3({
+          await putImagetoS3({
             file: ShopInfoState.BasicInformation.ShopLogoFile,
             fileName: "Shop/" + ShopId + "/" + rtnLogoFileName,
           });

@@ -5,16 +5,6 @@ import Button from "../../Components/Button";
 import SectionTitle from "../../Components/SectionTitle";
 import { ShopInfoContext } from "./CreateShopContainer";
 
-const ButtonBox = styled.div`
-  padding: 15px 0px 15px 0px;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: flex-end;
-`;
-
-const Form = styled.form``;
-
 const Table = styled.table`
   border-collapse: collapse;
   border: 1px solid black;

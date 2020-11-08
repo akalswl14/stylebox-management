@@ -81,14 +81,10 @@ export default ({ match }) => {
     variables: { shopId },
   });
 
-  const [
-    UpdateShopMutation,
-    { loading: UpdateLoading, error: UpdateError },
-  ] = useMutation(UPDATE_SHOP);
+  const [UpdateShopMutation, { error: UpdateError }] = useMutation(UPDATE_SHOP);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(ShopInfoState);
     var TimeNumber = new Date();
 
     if (ShopInfoState.BasicInformation.shopName.value === "") {
@@ -367,9 +363,6 @@ export default ({ match }) => {
         : null,
     };
 
-    console.log("MUTATION DATA : ", mutationData);
-    console.log("DELETE IMAGES : ", ShopInfoState.DeleteImageList);
-    console.log("NEW IMAGE : ", s3ImageList);
     const {
       data: { updateShop },
     } = await UpdateShopMutation({

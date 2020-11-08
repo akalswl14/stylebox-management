@@ -54,22 +54,4 @@ const AutoSelectBox = ({
   );
 };
 
-const banners = [
-  {
-    bannerImage: "1.png",
-    id: 2,
-    title: "EventTitle2",
-  },
-  {
-    bannerImage: "3.jpg",
-    id: 4,
-    title: "EventTitle",
-  },
-  {
-    bannerImage: "2.jpg",
-    id: 3,
-    title: "EventTitle",
-  },
-];
-
 export default AutoSelectBox;

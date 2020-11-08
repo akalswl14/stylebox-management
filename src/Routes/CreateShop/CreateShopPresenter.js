@@ -1,10 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import Loader from "../../Components/Loader";
 import PageTitle from "../../Components/PageTitle";
 import WrapPage from "../../Styles/WrapPageStyles";
 import Button from "../../Components/Button";
-import { ShopInfoContext } from "./CreateShopContainer";
 import PageChangeButton from "../../Components/PageChangeButton";
 import BasicInformation from "./BasicInformation";
 import BasicStatus from "./BasicStatus";
@@ -55,8 +54,6 @@ export default ({
   error_LinkTypeData,
   data_LinkTypeData,
 }) => {
-  const { ShopInfoState, ShopInfoDispatch } = useContext(ShopInfoContext);
-
   if (error_CategoryData) {
     return `Error! ${error_CategoryData.message}`;
   }
