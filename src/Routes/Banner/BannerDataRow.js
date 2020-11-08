@@ -7,6 +7,7 @@ import { BannerContext } from "./BannerContainer";
 import { toast } from "react-toastify";
 import ImageThumbnail from "./ImageThumbnail";
 import AutoSelectBox from "./AutoSelectBox";
+import { S3_URL } from "../../AWS_IAM";
 
 const OrderInputBox = styled.input`
   width: 30px;
@@ -176,8 +177,7 @@ const BannerDataRow = ({ data }) => {
 
   const OpenImage = (e, Key) => {
     e.preventDefault();
-    const url =
-      "https://appdata-stylebox.s3-ap-southeast-1.amazonaws.com/" + Key;
+    const url = S3_URL + Key;
     const img = new Image();
     img.src = url;
     const ImageWidth = img.width;
