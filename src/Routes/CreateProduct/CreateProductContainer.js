@@ -81,10 +81,10 @@ export default () => {
       toast.error("Price Value should be 0 and/or more.");
       return;
     }
-    if (ProductInfoState.BasicInformation.productImage.File === "") {
-      toast.error("Please add Product Image.");
-      return;
-    }
+    // if (ProductInfoState.BasicInformation.productImage.File === "") {
+    //   toast.error("Please add Product Image.");
+    //   return;
+    // }
     if (
       ProductInfoState.BasicInformation.externalLink.value === "http://" ||
       ProductInfoState.BasicInformation.externalLink.value === "" ||
@@ -135,10 +135,12 @@ export default () => {
       File: ProductInfoState.BasicInformation.productImage.File,
       fileName: null,
     };
-    const ShopImageType = rtnShopImage.File.type.substring(6);
-    var TimeNumber = new Date();
-    const ShopImageFileName = TimeNumber.getTime() + "." + ShopImageType;
-    rtnShopImage.fileName = ShopImageFileName;
+    if (rtnShopImage.File || rtnShopImage.File !== "") {
+      const ShopImageType = rtnShopImage.File.type.substring(6);
+      var TimeNumber = new Date();
+      const ShopImageFileName = TimeNumber.getTime() + "." + ShopImageType;
+      rtnShopImage.fileName = ShopImageFileName;
+    }
 
     const mutationData = {
       productName: ProductInfoState.BasicInformation.productName.value,
@@ -168,18 +170,20 @@ export default () => {
     if (createProduct) {
       const ProductId = createProduct.productId;
       try {
-        await putImagetoS3({
-          file: rtnShopImage.File,
-          fileName: "Product/" + ProductId + "/" + rtnShopImage.fileName,
-        });
+        if (rtnShopImage.File) {
+          await putImagetoS3({
+            file: rtnShopImage.File,
+            fileName: "Product/" + ProductId + "/" + rtnShopImage.fileName,
+          });
+        }
       } catch (e) {
         toast.error("Error occured while create data.");
         return;
       }
       toast.success("Sucessfullly create Data!");
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 5000);
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
       return;
     }
   };
