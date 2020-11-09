@@ -20,6 +20,7 @@ import CreateClass from "../Routes/CreateClass/index";
 import CreateTag from "../Routes/CreateTag/index";
 import ShopDetail from "../Routes/ShopDetail/index";
 import CreateProduct from "../Routes/CreateProduct/index";
+import ProductDetail from "../Routes/ProductDetail/index";
 
 const AppRouter = () => {
   return (
@@ -44,6 +45,7 @@ const AppRouter = () => {
       <Route path="/createshop" component={CreateShop} />
       <Route path="/shopdetail/:shopId" component={ShopDetail} />
       <Route path="/createproduct" component={CreateProduct} />
+      <Route path="/productdetail/:productId" component={ProductDetail} />
       <Redirect path="*" to="/" />
     </Switch>
   );
