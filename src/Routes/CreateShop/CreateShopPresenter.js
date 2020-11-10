@@ -115,6 +115,10 @@ export default ({
           <SectionWrapper>
             <BranchInfoContainer />
           </SectionWrapper>
+          <ButtonBox>
+            <PageChangeButton text="Back to List" href="/shoplist" />
+            <Button text="Confirm" ClickEvent={onSubmit} />
+          </ButtonBox>
         </Form>
       </WrapPage>
     );

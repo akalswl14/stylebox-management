@@ -8,6 +8,14 @@ const WeightInputBox = styled.input`
   text-align: center;
 `;
 
+const TagSpan = styled.span`
+  font-weight: 500;
+  .commanSpan {
+    font-weight: 100;
+    color: red;
+  }
+`;
+
 const ShopDataRow = ({ data }) => {
   const { ShopListState, ShopListDispatch } = useContext(ShopListContext);
 
@@ -63,9 +71,18 @@ const ShopDataRow = ({ data }) => {
       <td>{data.phoneNumber}</td>
       <td>{data.address}</td>
       <td className="tagNameCell">
-        {data.tagNames.map((eachTagName) => (
-          <div key={eachTagName}>{eachTagName}</div>
-        ))}
+        {data.tagNames.map((eachTagName, index) => {
+          if (index === data.tagNames.length - 1) {
+            return <TagSpan key={index}>{eachTagName}</TagSpan>;
+          } else {
+            return (
+              <TagSpan key={index}>
+                {eachTagName}
+                <TagSpan className="commanSpan">{" / "}</TagSpan>
+              </TagSpan>
+            );
+          }
+        })}
       </td>
       <td>{data.rankNum}</td>
       <td>

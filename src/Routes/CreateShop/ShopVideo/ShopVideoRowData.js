@@ -112,7 +112,7 @@ export default ({ data }) => {
   };
 
   return (
-    <tr id={data.id}>
+    <tr id={data.id} key={data.id}>
       <td className="orderInputCell">
         <OrderInputBox name="order" value={data.order} onChange={onChange} />
       </td>

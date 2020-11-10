@@ -43,17 +43,11 @@ const Form = styled.form``;
 
 const Table = styled.table`
   border-collapse: collapse;
-  border: 1px solid black;
   width: 100%;
   text-align: center;
-  tr,
   td,
   th {
-    border: ${(props) => props.theme.tableBorder};
-  }
-  td,
-  th {
-    padding: 5px;
+    padding: 8px;
     vertical-align: middle;
   }
   th {
@@ -63,6 +57,10 @@ const Table = styled.table`
   .SortCell {
     justify-content: center;
     border: 0;
+  }
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
 `;
 
@@ -86,7 +84,8 @@ const SearchContainer = styled.div`
   select,
   option,
   input {
-    font-size: 16px;
+    font-size: 14px;
+    height: 30px;
   }
   input {
     margin-left: 10px;
@@ -264,48 +263,52 @@ export default ({ onSubmit, loading, error, data }) => {
             <SearchButton ClickEvent={SearchUserList} />
           </SearchContainer>
           <Table>
-            <tr>
-              <th className="CheckBoxCell">
-                <input
-                  type="checkbox"
-                  onClick={(e) => CheckAllCheckBox(e)}
-                  checked={AllCheckBoxStatus()}
-                />
-              </th>
-              <th>
-                <SortText>User ID</SortText>
-                <SortButton
-                  type={
-                    !UserListState.SortOption.SortUserId
-                      ? 0
-                      : UserListState.SortOption.userIdAsc
-                      ? 1
-                      : 2
-                  }
-                  func={(e) => SortClick(e, "userId")}
-                />
-              </th>
+            <thead>
+              <tr>
+                <th className="CheckBoxCell">
+                  <input
+                    type="checkbox"
+                    onClick={(e) => CheckAllCheckBox(e)}
+                    checked={AllCheckBoxStatus()}
+                  />
+                </th>
+                <th>
+                  <SortText>User ID</SortText>
+                  <SortButton
+                    type={
+                      !UserListState.SortOption.SortUserId
+                        ? 0
+                        : UserListState.SortOption.userIdAsc
+                        ? 1
+                        : 2
+                    }
+                    func={(e) => SortClick(e, "userId")}
+                  />
+                </th>
 
-              <th>
-                <SortText>Installation Date</SortText>
-                <SortButton
-                  type={
-                    !UserListState.SortOption.SortInstallationDate
-                      ? 0
-                      : UserListState.SortOption.installationDateAsc
-                      ? 1
-                      : 2
-                  }
-                  func={(e) => SortClick(e, "installationDate")}
-                />
-              </th>
-              <th>Total # of Like (Post)</th>
-              <th>Total # of Like (Shop)</th>
-              <th>Total # of Like (Event)</th>
-            </tr>
-            {data.getUserList.users.map((eachUser) => (
-              <UserDataRow data={eachUser} />
-            ))}
+                <th>
+                  <SortText>Installation Date</SortText>
+                  <SortButton
+                    type={
+                      !UserListState.SortOption.SortInstallationDate
+                        ? 0
+                        : UserListState.SortOption.installationDateAsc
+                        ? 1
+                        : 2
+                    }
+                    func={(e) => SortClick(e, "installationDate")}
+                  />
+                </th>
+                <th>Total # of Like (Post)</th>
+                <th>Total # of Like (Shop)</th>
+                <th>Total # of Like (Event)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.getUserList.users.map((eachUser, index) => (
+                <UserDataRow data={eachUser} key={index} />
+              ))}
+            </tbody>
           </Table>
           <DeleteButtonBox>
             <Button text="Delete Selected" ClickEvent={onSubmit}></Button>

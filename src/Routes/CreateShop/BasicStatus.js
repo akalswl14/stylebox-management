@@ -67,48 +67,50 @@ export default () => {
     <>
       <SectionTitle text="Basic Status" />
       <Table>
-        <tr>
-          <th>Shop Rank</th>
-          <td className="smallerCell">
-            # {ShopInfoState.BasicStatus.ShopRank}
-          </td>
-          <th>Ranking Weight</th>
-          <td>
-            <Input
-              InputWidth={100}
-              type="text"
-              name="WeightInput"
-              value={ShopInfoState.BasicStatus.RankingWeight}
-              onChange={(e) => onChange(e)}
-            />{" "}
-          </td>
-        </tr>
-        <tr>
-          <th>Total Number of Posts</th>
-          <td className="smallerCell">
-            {ShopInfoState.BasicStatus.TotalNumberofPosts} Posts
-          </td>
-          <th>Total Number of Products</th>
-          <td className="smallerCell">
-            {ShopInfoState.BasicStatus.TotalNumberofProducts} Products
-          </td>
-        </tr>
-        <tr>
-          <th>Total Likes</th>
-          <td className="smallerCell">
-            {ShopInfoState.BasicStatus.TotalLikes} Likes
-          </td>
-          <th>Total Views</th>
-          <td className="smallerCell">
-            {ShopInfoState.BasicStatus.TotalViews} Likes
-          </td>
-        </tr>
-        <tr>
-          <th>Registration Date</th>
-          <td>{ShopInfoState.BasicStatus.RegistrationData}</td>
-          <th>Last Updated</th>
-          <td>{ShopInfoState.BasicStatus.LastUpdated}</td>
-        </tr>
+        <tbody>
+          <tr>
+            <th>Shop Rank</th>
+            <td className="smallerCell">
+              # {ShopInfoState.BasicStatus.ShopRank}
+            </td>
+            <th>Ranking Weight</th>
+            <td>
+              <Input
+                InputWidth={100}
+                type="text"
+                name="WeightInput"
+                value={ShopInfoState.BasicStatus.RankingWeight}
+                onChange={(e) => onChange(e)}
+              />{" "}
+            </td>
+          </tr>
+          <tr>
+            <th>Total Number of Posts</th>
+            <td className="smallerCell">
+              {ShopInfoState.BasicStatus.TotalNumberofPosts} Posts
+            </td>
+            <th>Total Number of Products</th>
+            <td className="smallerCell">
+              {ShopInfoState.BasicStatus.TotalNumberofProducts} Products
+            </td>
+          </tr>
+          <tr>
+            <th>Total Likes</th>
+            <td className="smallerCell">
+              {ShopInfoState.BasicStatus.TotalLikes} Likes
+            </td>
+            <th>Total Views</th>
+            <td className="smallerCell">
+              {ShopInfoState.BasicStatus.TotalViews} Likes
+            </td>
+          </tr>
+          <tr>
+            <th>Registration Date</th>
+            <td>{ShopInfoState.BasicStatus.RegistrationData}</td>
+            <th>Last Updated</th>
+            <td>{ShopInfoState.BasicStatus.LastUpdated}</td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );

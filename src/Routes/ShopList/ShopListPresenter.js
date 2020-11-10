@@ -43,22 +43,19 @@ const Form = styled.form``;
 
 const Table = styled.table`
   border-collapse: collapse;
-  border: 1px solid black;
   width: 100%;
   text-align: center;
-  tr,
   td,
   th {
-    border: ${(props) => props.theme.tableBorder};
-  }
-  td,
-  th {
-    padding: 5px;
-    vertical-align: middle;
+    padding: 8px 2px;
   }
   th {
     background-color: #f2f2f2;
     font-weight: 500;
+    font-size: 13px;
+  }
+  td {
+    font-size: 12px;
   }
   .SortCell {
     justify-content: center;
@@ -66,11 +63,15 @@ const Table = styled.table`
   }
   .tagNameCell {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     border: 0;
   }
   input.InUpdateList {
     border-color: #db3d45;
+  }
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
 `;
 
@@ -94,7 +95,8 @@ const SearchContainer = styled.div`
   select,
   option,
   input {
-    font-size: 16px;
+    font-size: 14px;
+    height: 30px;
   }
   input {
     margin-left: 10px;
@@ -312,11 +314,21 @@ export default ({ onSubmit, loading, error, data }) => {
               defaultValue={ShopListState.SearchOption.SearchSelectBox}
               onChange={(e) => ChangeSearchSelectBox(e)}
             >
-              <option value="ShopID">ShopID</option>
-              <option value="ShopName">Shop Name</option>
-              <option value="PhoneNumber">PhoneNumber</option>
-              <option value="Address">Address</option>
-              <option value="Tag">Tag</option>
+              <option value="ShopID" key={0}>
+                ShopID
+              </option>
+              <option value="ShopName" key={1}>
+                Shop Name
+              </option>
+              <option value="PhoneNumber" key={2}>
+                PhoneNumber
+              </option>
+              <option value="Address" key={3}>
+                Address
+              </option>
+              <option value="Tag" key={4}>
+                Tag
+              </option>
             </select>
             <input
               type="text"
@@ -333,78 +345,82 @@ export default ({ onSubmit, loading, error, data }) => {
             <SearchButton ClickEvent={SearchShopList} />
           </SearchContainer>
           <Table>
-            <tr>
-              <th className="CheckBoxCell">
-                <input
-                  type="checkbox"
-                  onClick={(e) => CheckAllCheckBox(e)}
-                  checked={AllCheckBoxStatus()}
-                />
-              </th>
-              <th>
-                <SortText>Shop ID</SortText>
-                <SortButton
-                  type={
-                    !ShopListState.SortOption.SortShopId
-                      ? 0
-                      : ShopListState.SortOption.shopIdAsc
-                      ? 1
-                      : 2
-                  }
-                  func={(e) => SortClick(e, "ShopId")}
-                />
-              </th>
-              <th>
-                <SortText>Shop Name</SortText>
-                <SortButton
-                  type={
-                    !ShopListState.SortOption.SortShopName
-                      ? 0
-                      : ShopListState.SortOption.ShopNameAsc
-                      ? 1
-                      : 2
-                  }
-                  func={(e) => SortClick(e, "ShopName")}
-                />
-              </th>
-              <th>PhoneNumber</th>
-              <th>Address</th>
-              <th>Thumbnail Tags</th>
-              <th>
-                <SortText>Rank</SortText>
-                <SortButton
-                  type={
-                    !ShopListState.SortOption.SortRank
-                      ? 0
-                      : ShopListState.SortOption.RankAsc
-                      ? 1
-                      : 2
-                  }
-                  func={(e) => SortClick(e, "Rank")}
-                />
-              </th>
-              <th>
-                <SortText>Weight</SortText>
-                <SortButton
-                  type={
-                    !ShopListState.SortOption.SortWeight
-                      ? 0
-                      : ShopListState.SortOption.WeightAsc
-                      ? 1
-                      : 2
-                  }
-                  func={(e) => SortClick(e, "Weight")}
-                />
-              </th>
-              <th>Posts</th>
-              <th>Products</th>
-              <th>Likes</th>
-              <th>Views</th>
-              <th>Edit</th>
-            </tr>
-            {data.getShopList.shops.map((eachShop) => (
-              <ShopDataRow data={eachShop} key={eachShop.shopId} />
-            ))}
+            <thead>
+              <tr>
+                <th className="CheckBoxCell">
+                  <input
+                    type="checkbox"
+                    onClick={(e) => CheckAllCheckBox(e)}
+                    checked={AllCheckBoxStatus()}
+                  />
+                </th>
+                <th>
+                  <SortText>Shop ID</SortText>
+                  <SortButton
+                    type={
+                      !ShopListState.SortOption.SortShopId
+                        ? 0
+                        : ShopListState.SortOption.shopIdAsc
+                        ? 1
+                        : 2
+                    }
+                    func={(e) => SortClick(e, "ShopId")}
+                  />
+                </th>
+                <th>
+                  <SortText>Shop Name</SortText>
+                  <SortButton
+                    type={
+                      !ShopListState.SortOption.SortShopName
+                        ? 0
+                        : ShopListState.SortOption.ShopNameAsc
+                        ? 1
+                        : 2
+                    }
+                    func={(e) => SortClick(e, "ShopName")}
+                  />
+                </th>
+                <th>PhoneNumber</th>
+                <th>Address</th>
+                <th>Thumbnail Tags</th>
+                <th>
+                  <SortText>Rank</SortText>
+                  <SortButton
+                    type={
+                      !ShopListState.SortOption.SortRank
+                        ? 0
+                        : ShopListState.SortOption.RankAsc
+                        ? 1
+                        : 2
+                    }
+                    func={(e) => SortClick(e, "Rank")}
+                  />
+                </th>
+                <th>
+                  <SortText>Weight</SortText>
+                  <SortButton
+                    type={
+                      !ShopListState.SortOption.SortWeight
+                        ? 0
+                        : ShopListState.SortOption.WeightAsc
+                        ? 1
+                        : 2
+                    }
+                    func={(e) => SortClick(e, "Weight")}
+                  />
+                </th>
+                <th>Posts</th>
+                <th>Products</th>
+                <th>Likes</th>
+                <th>Views</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.getShopList.shops.map((eachShop) => (
+                <ShopDataRow data={eachShop} key={eachShop.shopId} />
+              ))}
+            </tbody>
           </Table>
           <DeleteButtonBox>
             <Button
