@@ -33,28 +33,49 @@ const TitleBox = styled.div`
   width: 100%;
 `;
 
-const ButtonBox = styled.div`
-  padding: 15px 0px 15px 0px;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: flex-end;
-`;
-
 const PostBasicStatus = () => {
   const { postDispatch, postState } = useContext(PostInfoContext);
+
+  const {
+    weeklyRank,
+    monthlyRank,
+    totalRank,
+    priority,
+    likesNum,
+    viewsNum,
+    createdAt,
+    updatedAt,
+  } = postState.basicStatus;
+
+  let RegistrationDate = String(createdAt).split("T");
+  let UpdatedDate = String(updatedAt).split("T");
+  let UpdatedTime = String(UpdatedDate[1]).split(".");
+
+  const onChange = (e) => {
+    const { value } = e.target;
+    postDispatch({
+      type: "CHANGE_BASICSTATUS",
+      data: {
+        value,
+      },
+    });
+  };
+
   return (
     <>
       <TitleBox>
-        <SectionTitle text={"Basic Information"} />
+        <SectionTitle text={"Basic Status"} />
       </TitleBox>
       <Table>
         <tr>
           <td>Post Rank</td>
-          <td>포스트 랭크 자리!</td>
+          <td>
+            Weekly:#{weeklyRank}&nbsp; Monthly:#{monthlyRank}&nbsp; Total:#
+            {totalRank}
+          </td>
           <td>Post Priority</td>
           <td>
-            <select>
+            <select value={priority} onChange={onChange}>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -65,15 +86,17 @@ const PostBasicStatus = () => {
         </tr>
         <tr>
           <td>Total Likes</td>
-          <td>라이크개수 Likes</td>
+          <td>{likesNum} Likes</td>
           <td>Total Views</td>
-          <td>뷰 수 Views</td>
+          <td>{viewsNum} Views</td>
         </tr>
         <tr>
           <td>Registration Date</td>
-          <td>날짜 자리</td>
+          <td>{RegistrationDate[0]}</td>
           <td>Last Updated</td>
-          <td>날짜 자리</td>
+          <td>
+            {UpdatedDate[0]} {UpdatedTime[0]}
+          </td>
         </tr>
       </Table>
     </>

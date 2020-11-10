@@ -7,6 +7,11 @@ import { PostInfoContext } from "./PostInfoContainer";
 import PostBasicInfo from "./PostBasicInfo";
 import PostBasicStatus from "./PostBasicStatus";
 import TagInformation from "./TagInformation/index";
+import ExternalLink from "./ExternalLink/index";
+import PostImages from "./PostImages/index";
+import PostVideo from "./PostVideo/index";
+import PostDescription from "./PostDescription";
+import SubProduct from "./SubProduct/index";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -17,25 +22,11 @@ const Wrapper = styled.div`
   padding: 20px;
 `;
 
-const TitleBox = styled.div`
-  padding: 15px 0px 15px 0px;
-  display: flex;
-  align-items: center;
-  width: 100%;
-`;
-
-const ButtonBox = styled.div`
-  padding: 15px 0px 15px 0px;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: flex-end;
-`;
-
 export default ({
-  //   loading,
-  //   data,
-  //   error,
+  onSubmit,
+  loading,
+  data,
+  error,
   loading_CategoryData,
   error_CategoryData,
   data_CategoryData,
@@ -43,19 +34,16 @@ export default ({
   error_LinkTypeData,
   data_LinkTypeData,
 }) => {
-  const { postDispatch, postState } = useContext(PostInfoContext);
-
-  //   if (error) {
-  //     return `Error! ${error.message}`;
-  //   }
+  if (error) {
+    return `Error! ${error.message}`;
+  }
   if (error_CategoryData) {
     return `Error! ${error_CategoryData.message}`;
   }
   if (error_LinkTypeData) {
     return `Error! ${error_LinkTypeData.message}`;
   }
-  if (loading_CategoryData || loading_LinkTypeData) {
-    //loading
+  if (loading_CategoryData || loading_LinkTypeData || loading) {
     return (
       <Wrapper>
         <Loader />
@@ -63,40 +51,141 @@ export default ({
     );
   }
   if (
-    // !loading &&
+    !loading &&
     !loading_CategoryData &&
     !loading_LinkTypeData &&
-    // data &&
+    data &&
     data_CategoryData &&
     data_LinkTypeData
   ) {
+    const { postDispatch, postState } = useContext(PostInfoContext);
+
     const categories = data_CategoryData.getManageCategoryOptions.filter(
       (category) => category !== "ShopName"
     );
     const linkTypes = data_LinkTypeData.getLinkTypeOption;
 
-    // useEffect(() => {
-    //   let basicInfo = {
-    //     postId: data.getPostBasicInfo.postId,
-    //     mainProductId: data.getPostBasicInfo.mainProductId,
-    //     mainProductName: data.getPostBasicInfo.mainProductName,
-    //     price: data.getPostBasicInfo.price,
-    //     shopId: data.getPostBasicInfo.shopId,
-    //     shopName: data.getPostBasicInfo.shopName,
-    //   };
-    //   postDispatch({
-    //     type: "SET_DATA",
-    //     data: { basicInfo },
-    //   });
-    // }, []);
+    useEffect(() => {
+      let postDescription = data.getPostDescription;
+
+      let basicStatus = {
+        weeklyRank: data.getPostBasicStatus.weeklyRank,
+        monthlyRank: data.getPostBasicStatus.monthlyRank,
+        totalRank: data.getPostBasicStatus.totalRank,
+        priority: data.getPostBasicStatus.priority,
+        likesNum: data.getPostBasicStatus.likesNum,
+        viewsNum: data.getPostBasicStatus.viewsNum,
+        createdAt: data.getPostBasicStatus.createdAt,
+        updatedAt: data.getPostBasicStatus.updatedAt,
+      };
+
+      let basicInfo = {
+        postId: data.getPostBasicInfo.postId,
+        mainProductId: data.getPostBasicInfo.mainProductId,
+        mainProductName: data.getPostBasicInfo.mainProductName,
+        price: data.getPostBasicInfo.price,
+        shopId: data.getPostBasicInfo.shopId,
+        shopName: data.getPostBasicInfo.shopName,
+      };
+
+      let idIdx = 1;
+      let tagInfoData = data.getPostTagInfo.map((eachData) => {
+        let tagData = {
+          id: idIdx,
+          order: eachData.order,
+          tagId: eachData.tagId,
+          tagName: eachData.tagName,
+          category: eachData.category,
+          className: eachData.className,
+          classId: eachData.classId,
+        };
+        idIdx++;
+        return tagData;
+      });
+
+      idIdx = 1;
+      let externalLink = data.getPostExternalLink.map((eachData) => {
+        let linkData = {
+          id: idIdx,
+          order: eachData.order,
+          linkType: eachData.linkType,
+          url: eachData.url,
+          isShown: eachData.isShown,
+        };
+        idIdx++;
+        return linkData;
+      });
+
+      idIdx = 1;
+      let postImageManagement = data.getPostImages.map((eachData) => {
+        let imageData = {
+          id: idIdx,
+          order: eachData.order,
+          url: eachData.url,
+          isImageChange: false,
+          imageFile: "",
+          imagePreviewUrl: "",
+          imageInput: { current: null },
+        };
+        idIdx++;
+        return imageData;
+      });
+
+      idIdx = 1;
+      let postVideoManagement = data.getPostVideo.map((eachData) => {
+        let videoData = {
+          id: idIdx,
+          order: eachData.order,
+          url: eachData.url,
+        };
+        idIdx++;
+        return videoData;
+      });
+
+      idIdx = 1;
+      let subProductManagement = data.getPostSubProduct.map((eachData) => {
+        let subProductData = {
+          id: idIdx,
+          productId: eachData.productId,
+          productName: eachData.productName,
+          price: eachData.price,
+          link: eachData.link,
+          order: eachData.order,
+        };
+        idIdx++;
+        return subProductData;
+      });
+
+      postDispatch({
+        type: "SET_DATA",
+        data: {
+          basicStatus,
+          basicInfo,
+          tagInfoData,
+          externalLink,
+          postImageManagement,
+          postVideoManagement,
+          postDescription,
+          subProductManagement,
+        },
+      });
+    }, []);
+
+    console.log(postState);
+
     return (
       <>
         <WrapPage>
-          <form>
+          <form onSubmit={onSubmit}>
             <PageTitle text={"Post Management"} />
             <PostBasicInfo />
             <PostBasicStatus />
             <TagInformation categories={categories} />
+            <ExternalLink linkTypes={linkTypes} />
+            <PostImages />
+            <PostVideo />
+            <PostDescription />
+            <SubProduct />
           </form>
         </WrapPage>
       </>

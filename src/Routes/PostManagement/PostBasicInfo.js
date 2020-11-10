@@ -4,6 +4,10 @@ import SectionTitle from "../../Components/SectionTitle";
 import { PostInfoContext } from "./PostInfoContainer";
 import Button from "../../Components/Button";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import AutoSelectBox from "./AutoSelectBox";
+import { useQuery } from "react-apollo-hooks";
+import { GET_BASICINFO } from "./PostInfoQueries";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -45,6 +49,118 @@ const ButtonBox = styled.div`
 
 const PostBasicInfo = () => {
   const { postDispatch, postState } = useContext(PostInfoContext);
+
+  const {
+    postId,
+    mainProductId,
+    mainProductName,
+    price,
+    shopId,
+    shopName,
+  } = postState.basicInfo;
+
+  const {
+    loading: loading_Shop,
+    data: data_Shop,
+    error: error_Shop,
+  } = useQuery(GET_BASICINFO, {
+    variables: { productName: "" },
+  });
+
+  if (error_Shop) toast.error("Error Occured while Searching products");
+
+  const onProductNameChange = (e) => {
+    const value = e.target.value;
+    for (const eachOption of data_Shop.getShopByProductName) {
+      if (eachOption.productName === value) {
+        postDispatch({
+          type: "CHANGE_BASICINFO",
+          data: {
+            postId,
+            mainProductId: eachOption.productId,
+            mainProductName: value,
+            price: eachOption.price,
+            shopId: eachOption.shopId,
+            shopName: eachOption.shopName,
+          },
+        });
+      }
+    }
+    postDispatch({
+      type: "CHANGE_BASICINFO",
+      data: {
+        postId,
+        mainProductId: 0,
+        mainProductName: value,
+        price: 0,
+        shopId: 0,
+        shopName: "",
+      },
+    });
+  };
+
+  const onProductNameSelect = (e) => {
+    if (!e.target.querySelector("li>span")) {
+      const value = e.target.value;
+      for (const eachOption of data_Shop.getShopByProductName) {
+        if (eachOption.productName === value) {
+          postDispatch({
+            type: "CHANGE_BASICINFO",
+            data: {
+              postId,
+              mainProductId: eachOption.productId,
+              mainProductName: value,
+              price: eachOption.price,
+              shopId: eachOption.shopId,
+              shopName: eachOption.shopName,
+            },
+          });
+          return;
+        }
+      }
+      postDispatch({
+        type: "CHANGE_BASICINFO",
+        data: {
+          postId,
+          mainProductId: 0,
+          mainProductName: value,
+          price: 0,
+          shopId: 0,
+          shopName: "",
+        },
+      });
+    } else {
+      const ProductId = Number(e.target.querySelector("li>span").textContent);
+      for (const eachOption of data_Shop.getShopByProductName) {
+        if (eachOption.productId === ProductId) {
+          postDispatch({
+            type: "CHANGE_BASICINFO",
+            data: {
+              postId,
+              mainProductId: eachOption.productId,
+              mainProductName: eachOption.productName,
+              price: eachOption.price,
+              shopId: eachOption.shopId,
+              shopName: eachOption.shopName,
+            },
+          });
+          return;
+        }
+      }
+      postDispatch({
+        type: "CHANGE_BASICINFO",
+        data: {
+          postId,
+          mainProductId: 0,
+          mainProductName,
+          price: 0,
+          shopId: 0,
+          shopName: "",
+        },
+      });
+    }
+  };
+
   return (
     <>
       <TitleBox>
@@ -59,23 +175,34 @@ const PostBasicInfo = () => {
       <Table>
         <tr>
           <td>PostId</td>
-          <td colSpan="3">아이디 자리</td>
+          <td colSpan="3">{postId}</td>
         </tr>
         <tr>
-          <td>Main Product</td>
-          <td colSpan="3">
-            <input type="text" value="productId" />{" "}
-            <input type="text" value="ProductName" />
+          <td>Main ProductId</td>
+          <td>{mainProductId} </td>
+          <td>Main ProductName</td>
+          <td>
+            <AutoSelectBox
+              defaultValue={{
+                productId: mainProductId,
+                productName: mainProductName,
+                shopId,
+                shopName,
+                price,
+              }}
+              data={data_Shop ? data_Shop.getShopByProductName : []}
+              onTitleChangeFunc={onProductNameChange}
+              onTitleSelectFunc={onProductNameSelect}
+            />
           </td>
         </tr>
         <tr>
           <td>Selling Shop</td>
           <td>
-            <input type="text" value="shopId" />{" "}
-            <input type="text" value="shopName" />
+            {shopId} {shopName}
           </td>
           <td>Price</td>
-          <td>가격 자리 VND</td>
+          <td>{price} VND</td>
         </tr>
       </Table>
     </>

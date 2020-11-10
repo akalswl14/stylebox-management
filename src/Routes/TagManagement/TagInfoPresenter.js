@@ -136,6 +136,8 @@ export default ({ loading, data, error, onSubmit }) => {
     const ChangeImage = (e) => {
       let reader = new FileReader();
       let file = e.target.files[0];
+      console.log("check");
+      console.log(imageInput);
       reader.onloadend = () => {
         tagDispatch({
           type: "UPDATE_IMAGE",

@@ -1,15 +1,35 @@
 import React, { useReducer } from "react";
 import PostInfoPresenter from "./PostInfoPresenter";
 import { useQuery, useMutation } from "react-apollo-hooks";
-import { CATEGORY_OPTION, GET_LINKTYPE, GET_POST } from "./PostInfoQueries";
+import AWS, { Credentials } from "aws-sdk";
+import {
+  CATEGORY_OPTION,
+  GET_LINKTYPE,
+  GET_POST,
+  UPDATE_POST,
+} from "./PostInfoQueries";
 import { toast } from "react-toastify";
+
+const access = new Credentials({
+  accessKeyId: process.env.REACT_APP_IAM_ID,
+  secretAccessKey: process.env.REACT_APP_IAM_SECRETKEY,
+});
+
+const s3 = new AWS.S3({
+  credentials: access,
+  region: process.env.S3_REGION,
+});
+
+const signedUrlExpireSeconds = 60 * 15;
+
+const BUCKET_NAME = process.env.REACT_APP_BUCKET_NAME;
 
 export const PostInfoContext = React.createContext(null);
 
 const initialState = {
   basicInfo: {},
   basicStatus: {},
-  tagInfo: [],
+  tagInfoData: [],
   externalLink: [],
   postImageManagement: [],
   postVideoManagement: [],
@@ -20,9 +40,148 @@ const initialState = {
 function reducer(state, action) {
   switch (action.type) {
     case "SET_DATA":
+      return action.data;
+    case "CHANGE_BASICSTATUS":
       return {
         ...state,
-        basicInfo: action.data.basicInfo,
+        basicStatus: {
+          ...state.basicStatus,
+          priority: Number(action.data.value),
+        },
+      };
+    case "CHANGE_BASICINFO":
+      return {
+        ...state,
+        basicInfo: action.data,
+      };
+    case "CREATE_TAG":
+      return {
+        ...state,
+        tagInfoData: state.tagInfoData.concat(action.data),
+      };
+    case "CREATE_LINK":
+      return {
+        ...state,
+        externalLink: state.externalLink.concat(action.data),
+      };
+    case "CREATE_IMAGE":
+      return {
+        ...state,
+        postImageManagement: state.postImageManagement.concat(action.data),
+      };
+    case "CREATE_VIDEO":
+      return {
+        ...state,
+        postVideoManagement: state.postVideoManagement.concat(action.data),
+      };
+    case "CREATE_PRODUCT":
+      return {
+        ...state,
+        subProductManagement: state.subProductManagement.concat(action.data),
+      };
+    case "UPDATE_TAG":
+      return {
+        ...state,
+        tagInfoData: state.tagInfoData.map((eachData) => {
+          if (eachData.id === action.data.id) {
+            return action.data;
+          } else return eachData;
+        }),
+      };
+    case "UPDATE_LINK":
+      return {
+        ...state,
+        externalLink: state.externalLink.map((eachData) => {
+          if (eachData.id === action.data.id) {
+            return action.data;
+          } else return eachData;
+        }),
+      };
+    case "UPDATE_IMAGE":
+      return {
+        ...state,
+        postImageManagement: state.postImageManagement.map((eachData) => {
+          if (eachData.id === action.data.id) {
+            return action.data;
+          } else return eachData;
+        }),
+      };
+    case "UPDATE_IMAGE_FILE":
+      return {
+        ...state,
+        postImageManagement: state.postImageManagement.map((eachData) => {
+          if (eachData.id === action.data.id) {
+            return {
+              id: action.data.id,
+              order: action.data.order,
+              url: action.data.url,
+              imageInput: {
+                current: action.data.imageInput.current,
+              },
+              imageFile: action.data.imageFile,
+              imagePreviewUrl: action.data.imagePreviewUrl,
+              isImageChange: true,
+            };
+          } else return eachData;
+        }),
+      };
+    case "UPDATE_VIDEO":
+      return {
+        ...state,
+        postVideoManagement: state.postVideoManagement.map((eachData) => {
+          if (eachData.id === action.data.id) {
+            return action.data;
+          } else return eachData;
+        }),
+      };
+    case "UPDATE_DESCRIPTION":
+      return {
+        ...state,
+        postDescription: action.data.postDescription,
+      };
+    case "UPDATE_PRODUCT":
+      return {
+        ...state,
+        subProductManagement: state.subProductManagement.map((eachData) => {
+          if (eachData.id === action.data.id) {
+            return action.data;
+          } else return eachData;
+        }),
+      };
+    case "DELETE_TAG":
+      return {
+        ...state,
+        tagInfoData: state.tagInfoData.filter(
+          (eachData) => eachData.id !== action.data.id
+        ),
+      };
+    case "DELETE_LINK":
+      return {
+        ...state,
+        externalLink: state.externalLink.filter(
+          (eachData) => eachData.id !== action.data.id
+        ),
+      };
+    case "DELETE_IMAGE":
+      return {
+        ...state,
+        postImageManagement: state.postImageManagement.filter(
+          (eachData) => eachData.id !== action.data.id
+        ),
+      };
+    case "DELETE_VIDEO":
+      return {
+        ...state,
+        postVideoManagement: state.postVideoManagement.filter(
+          (eachData) => eachData.id !== action.data.id
+        ),
+      };
+    case "DELETE_PRODUCT":
+      return {
+        ...state,
+        subProductManagement: state.subProductManagement.filter(
+          (eachData) => eachData.id !== action.data.id
+        ),
       };
     default:
       return state;
@@ -31,9 +190,9 @@ function reducer(state, action) {
 
 export default () => {
   const [postState, postDispatch] = useReducer(reducer, initialState);
-  //   const { loading, error, data } = useQuery(GET_POST, {
-  //     variables: { id: 45 },
-  //   });
+  const { loading, error, data } = useQuery(GET_POST, {
+    variables: { id: 45 },
+  });
 
   const {
     loading: loading_CategoryData,
@@ -47,14 +206,154 @@ export default () => {
     data: data_LinkTypeData,
   } = useQuery(GET_LINKTYPE);
 
-  console.log(postState);
+  const [updatePostInfo, { error: updateError }] = useMutation(UPDATE_POST);
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    const mutationData = {
+      tags: [],
+      externalLinks: [],
+      images: [],
+      videos: [],
+      subProducts: [],
+    };
+
+    for (const eachData of postState.tagInfoData) {
+      mutationData.tags.push({
+        id: eachData.tagId,
+        order: eachData.order,
+      });
+    }
+
+    for (const eachData of postState.externalLink) {
+      console.log("for문이 돌아가는가?");
+      mutationData.externalLinks.push({
+        url: eachData.url,
+        order: eachData.order,
+        linkType: eachData.linkType,
+        isShown: eachData.isShown,
+      });
+    }
+
+    console.log("====externalLinks====");
+    console.log(mutationData.externalLinks);
+
+    for (const eachData of postState.postImageManagement) {
+      let imageUpdateInfo;
+      if (eachData.isImageChange) {
+        console.log("들어오는가?11");
+        if (eachData.imageInput.current) {
+          console.log("들어오는가?22");
+          const { imageInput } = eachData;
+          const file = imageInput.current.files[0];
+          const fileName = file.name;
+
+          console.log("fileName 확인");
+          console.log(fileName);
+
+          const preSignedUrl = await getPreSignedUrl(fileName);
+          uploadToBucket(preSignedUrl, file);
+          imageUpdateInfo = {
+            url: "Post/" + fileName,
+            order: eachData.order,
+          };
+        } else {
+          imageUpdateInfo = {
+            url: eachData.url,
+            order: eachData.order,
+          };
+        }
+      } else {
+        imageUpdateInfo = {
+          url: eachData.url,
+          order: eachData.order,
+        };
+      }
+      mutationData.images.push(imageUpdateInfo);
+    }
+
+    for (const eachData of postState.postVideoManagement) {
+      mutationData.videos.push({
+        url: eachData.url,
+        order: eachData.order,
+        isYoutube: true,
+      });
+    }
+
+    for (const eachData of postState.subProductManagement) {
+      mutationData.subProducts.push({
+        id: eachData.productId,
+      });
+    }
+
+    const {
+      data: { updatePostInformation },
+    } = await updatePostInfo({
+      variables: {
+        id: 45, // match.param 자리
+        mainProductId: postState.basicInfo.mainProductId,
+        priority: postState.basicStatus.priority,
+        isDescriptionChange: false,
+        description: postState.postDescription,
+        tags: mutationData.tags,
+        externalLinks: mutationData.externalLinks,
+        images: mutationData.images,
+        videos: mutationData.videos,
+        subProducts: mutationData.subProducts,
+      },
+    });
+
+    console.log("====결과값====");
+    console.log(updatePostInformation);
+
+    if (!updatePostInformation || updateError) {
+      toast.error("Error occured while update data.");
+      return;
+    }
+
+    if (updatePostInformation) {
+      toast.success("Sucessfully Update Data!");
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
+      return;
+    }
+  };
+
+  const getPreSignedUrl = async (fileName) => {
+    const params = {
+      Bucket: BUCKET_NAME,
+      Key: "Post/" + fileName,
+      ContentType: "image/*",
+      ACL: "public-read",
+      Expires: signedUrlExpireSeconds,
+    };
+    const url = s3.getSignedUrl("putObject", params);
+    console.log("This is a presigned Url! : ", url);
+    return url;
+  };
+
+  const uploadToBucket = async (preSignedUrl, file) => {
+    const option = {
+      method: "PUT",
+      body: file,
+      headers: {
+        "Content-Type": "image/*",
+        "x-amz-acl": "public-read",
+      },
+    };
+
+    await fetch(preSignedUrl, option);
+  };
 
   return (
     <PostInfoContext.Provider value={{ postState, postDispatch }}>
       <PostInfoPresenter
-        // loading={loading}
-        // data={data}
-        // error={error}
+        onSubmit={onSubmit}
+        loading={loading}
+        data={data}
+        error={error}
         loading_CategoryData={loading_CategoryData}
         error_CategoryData={error_CategoryData}
         data_CategoryData={data_CategoryData}

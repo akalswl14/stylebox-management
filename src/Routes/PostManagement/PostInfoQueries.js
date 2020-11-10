@@ -28,26 +28,26 @@ export const GET_POST = gql`
       category
       order
     }
+
     getPostExternalLink(id: $id) {
-      id
-      url
-      order
       linkType
-      postId
-      Post
+      url
       isShown
-      createdAt
-      updatedAt
+      order
     }
+
     getPostImages(id: $id) {
       order
       url
     }
+
     getPostVideo(id: $id) {
       order
       url
     }
+
     getPostDescription(id: $id)
+
     getPostSubProduct(id: $id) {
       productId
       productName
@@ -85,5 +85,56 @@ export const GET_TAG = gql`
 export const GET_LINKTYPE = gql`
   query GET_LINKTYPE {
     getLinkTypeOption
+  }
+`;
+
+export const GET_SUBPRODUCT = gql`
+  query GET_SUBPRODUCT($productName: String!) {
+    getProductByName(productName: $productName) {
+      productId
+      productName
+      price
+      link
+    }
+  }
+`;
+
+export const GET_BASICINFO = gql`
+  query GET_BASICINFO($productName: String!) {
+    getShopByProductName(productName: $productName) {
+      productId
+      productName
+      shopId
+      shopName
+      price
+    }
+  }
+`;
+
+export const UPDATE_POST = gql`
+  mutation UPDATE_POST(
+    $id: Int!
+    $mainProductId: Int
+    $priority: Int
+    $isDescriptionChange: Boolean!
+    $description: String
+    $tags: [IdOrderInputType!]
+    $externalLinks: [LinkInputType!]
+    $images: [ImageInputType!]
+    $videos: [VideoInputType!]
+    $subProducts: [idDicInputType!]
+  ) {
+    updatePostManage(
+      id: $id
+      mainProductId: $mainProductId
+      priority: $priority
+      isDescriptionChange: $isDescriptionChange
+      description: $description
+      tags: $tags
+      externalLinks: $externalLinks
+      images: $images
+      videos: $videos
+      subProducts: $subProducts
+    )
   }
 `;
