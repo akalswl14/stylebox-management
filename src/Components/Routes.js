@@ -21,6 +21,7 @@ import CreateTag from "../Routes/CreateTag/index";
 import ShopDetail from "../Routes/ShopDetail/index";
 import CreateProduct from "../Routes/CreateProduct/index";
 import ProductDetail from "../Routes/ProductDetail/index";
+import CreateEvent from "../Routes/CreateEvent/CreateEventContainer";
 
 const AppRouter = () => {
   return (
@@ -46,6 +47,7 @@ const AppRouter = () => {
       <Route path="/shopdetail/:shopId" component={ShopDetail} />
       <Route path="/createproduct" component={CreateProduct} />
       <Route path="/productdetail/:productId" component={ProductDetail} />
+      <Route path="/createevent" component={CreateEvent} />
       <Redirect path="*" to="/" />
     </Switch>
   );
