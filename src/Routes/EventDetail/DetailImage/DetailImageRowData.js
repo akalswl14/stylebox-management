@@ -119,7 +119,7 @@ export default ({ data }) => {
         type: "UPDATE_BATCH",
         data: {
           ...EventInfoState,
-          DetailImages: { value: Prevdata, isChange: true },
+          DetailImages: { value: PrevData, isChange: true },
           DeleteImageList: [...EventInfoState.DeleteImageList, data.s3Key],
         },
       });

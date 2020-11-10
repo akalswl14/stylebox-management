@@ -61,27 +61,25 @@ export default ({ onSubmit, loading, data, error }) => {
 
   if (!loading && data) {
     useEffect(() => {
-      let rtnTagList = [],
-        rtnMainImageList = [],
-        rtnVideoList = [],
-        rtnDetailImageList = [];
-      rtnTagList = data.getProductTagInfo.map((eachTag, index) => ({
+      let rtnTagList = data.getEventTagInfo.map((eachTag, index) => ({
         ...eachTag,
         id: index + 1,
       }));
-      rtnMainImageList = data.getEventMainImages.map((eachImage, index) => ({
-        id: index + 1,
-        order: eachImage.order,
-        ImageFile: "",
-        ImagePreviewUrl: S3_URL + eachImage.url,
-        isNewImage: false,
-        s3Key: eachImage.url,
-      }));
-      rtnVideoList = data.getEventMainVideos.map((eachVideo, index) => ({
+      let rtnMainImageList = data.getEventMainImages.map(
+        (eachImage, index) => ({
+          id: index + 1,
+          order: eachImage.order,
+          ImageFile: "",
+          ImagePreviewUrl: S3_URL + eachImage.url,
+          isNewImage: false,
+          s3Key: eachImage.url,
+        })
+      );
+      let rtnVideoList = data.getEventMainVideos.map((eachVideo, index) => ({
         ...eachVideo,
         id: index + 1,
       }));
-      rtnDetailImageList = data.getEventDetailImages.map(
+      let rtnDetailImageList = data.getEventDetailImages.map(
         (eachImage, index) => ({
           id: index + 1,
           order: eachImage.order,

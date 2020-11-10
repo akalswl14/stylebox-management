@@ -93,8 +93,8 @@ export default ({ match }) => {
       EventInfoState.BasicInformation.endDate.isChange
     ) {
       if (
-        EventInfoState.BasicInformation.startDate.value >
-        EventInfoState.BasicInformation.endDate.value
+        new Date(EventInfoState.BasicInformation.startDate.value) >
+        new Date(EventInfoState.BasicInformation.endDate.value)
       ) {
         toast.error("Start date have to earlier than End date.");
         return;
@@ -190,9 +190,11 @@ export default ({ match }) => {
     if (EventInfoState.MainImages.isChange) {
       let mainImageOrderList = [];
       for (const eachImage of EventInfoState.MainImages.value) {
-        if (eachImage.ImageFile === "" || !eachImage.ImageFile) {
-          toast.error("Please upload a Main Image.");
-          return;
+        if (eachImage.isNewImage) {
+          if (eachImage.ImageFile === "" || !eachImage.ImageFile) {
+            toast.error("Please upload a Main Image.");
+            return;
+          }
         }
         if (mainImageOrderList.includes(Number(eachImage.order))) {
           toast.error("Main Image Order values should not be the same.");
@@ -205,10 +207,10 @@ export default ({ match }) => {
         if (Number(eachImage.order) <= 0) {
           toast.error("Main Image Order Value should be bigger than 0");
         }
-        var ImageType = eachImage.ImageFile.type.substring(6);
         TimeNumber = new Date();
         var ImageFileName = null;
         if (eachImage.isNewImage) {
+          var ImageType = eachImage.ImageFile.type.substring(6);
           ImageFileName =
             "Event/" +
             eventId +
@@ -274,9 +276,11 @@ export default ({ match }) => {
     if (EventInfoState.DetailImages.isChange) {
       let detailImageOrderList = [];
       for (const eachImage of EventInfoState.DetailImages.value) {
-        if (eachImage.ImageFile === "" || !eachImage.ImageFile) {
-          toast.error("Please upload a Detail Image.");
-          return;
+        if (eachImage.isNewImage) {
+          if (eachImage.ImageFile === "" || !eachImage.ImageFile) {
+            toast.error("Please upload a Detail Image.");
+            return;
+          }
         }
         if (detailImageOrderList.includes(Number(eachImage.order))) {
           toast.error("Detail Image Order values should not be the same.");
