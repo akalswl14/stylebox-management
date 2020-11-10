@@ -6,19 +6,14 @@ import { ShopInfoContext } from "../ShopDetailContainer";
 import ShopVideoRowData from "./ShopVideoRowData";
 
 const Table = styled.table`
-  border-collapse: collapse;
-  border: 1px solid black;
-  width: 100%;
-  text-align: center;
   font-size: 15px;
   tr {
     height: 40px;
   }
-  tr,
-  td,
-  th {
-    border: ${(props) => props.theme.tableBorder};
-  }
+  border-collapse: collapse;
+  border: 1px solid lightgrey;
+  width: 100%;
+  text-align: center;
   td,
   th {
     padding: 5px;
@@ -27,6 +22,16 @@ const Table = styled.table`
   th {
     background-color: #f2f2f2;
     font-weight: 500;
+    border-bottom: 0.5px solid black;
+  }
+  td:first-child,
+  th:first-child {
+    background-color: #f2f2f2;
+    border-right: 0.5px solid black;
+  }
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
   .orderInputCell,
   .buttonCell {
@@ -75,19 +80,23 @@ export default () => {
     <>
       <SectionTitle text="Shop Video Management" />
       <Table>
-        <tr>
-          <th className="orderInputCell">Order</th>
-          <th>Youtube URL</th>
-          <th className="checkButtonCell">Check</th>
-          <th className="buttonCell">
-            <RowButton onClick={(e) => addRow(e)}>
-              <PlusIcon size={19} />
-            </RowButton>
-          </th>
-        </tr>
-        {ShopInfoState.ShopVideoManagement.value.map((eachRow) => (
-          <ShopVideoRowData data={eachRow} />
-        ))}
+        <thead>
+          <tr>
+            <th className="orderInputCell">Order</th>
+            <th>Youtube URL</th>
+            <th className="checkButtonCell">Check</th>
+            <th className="buttonCell">
+              <RowButton onClick={(e) => addRow(e)}>
+                <PlusIcon size={19} />
+              </RowButton>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {ShopInfoState.ShopVideoManagement.value.map((eachRow, index) => (
+            <ShopVideoRowData data={eachRow} key={index} />
+          ))}
+        </tbody>
       </Table>
     </>
   );

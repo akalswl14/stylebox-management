@@ -7,14 +7,9 @@ import TagIconDataRow from "./TagIconDataRow";
 
 const Table = styled.table`
   border-collapse: collapse;
-  border: 1px solid black;
+  border: 1px solid lightgrey;
   width: 100%;
   text-align: center;
-  tr,
-  td,
-  th {
-    border: ${(props) => props.theme.tableBorder};
-  }
   td,
   th {
     padding: 5px;
@@ -23,18 +18,20 @@ const Table = styled.table`
   th {
     background-color: #f2f2f2;
     font-weight: 500;
+    border-bottom: 0.5px solid black;
   }
   .orderInputCell,
   .buttonCell {
     width: 90px;
   }
-  .tagNameCell {
-    display: flex;
-    justify-content: space-around;
-    border: 0;
+  td:first-child,
+  th:first-child {
+    background-color: #f2f2f2;
+    border-right: 0.5px solid black;
   }
-  .NumCell {
-    padding: 7px 0px;
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
 `;
 
@@ -75,24 +72,29 @@ export const ShopTagIcon = ({ categories }) => {
     <>
       <SectionTitle text={"Tag Icon Management ( in Shop Page )"} />
       <Table>
-        <tr>
-          <th className="orderInputCell">Order</th>
-          <th>Category</th>
-          <th>Class</th>
-          <th>Tag</th>
-          <th className="buttonCell">
-            <RowButton onClick={(e) => addRow(e)}>
-              <PlusIcon size={19} />
-            </RowButton>
-          </th>
-        </tr>
-        {TagIconState.ShopIconRowData.map((eachRow) => (
-          <TagIconDataRow
-            data={eachRow}
-            categories={categories}
-            section={"ShopTag"}
-          />
-        ))}
+        <thead>
+          <tr>
+            <th className="orderInputCell">Order</th>
+            <th>Category</th>
+            <th>Class</th>
+            <th>Tag</th>
+            <th className="buttonCell">
+              <RowButton onClick={(e) => addRow(e)}>
+                <PlusIcon size={19} />
+              </RowButton>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {TagIconState.ShopIconRowData.map((eachRow, index) => (
+            <TagIconDataRow
+              data={eachRow}
+              categories={categories}
+              section={"ShopTag"}
+              key={index}
+            />
+          ))}
+        </tbody>
       </Table>
     </>
   );

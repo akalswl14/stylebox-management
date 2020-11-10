@@ -146,7 +146,7 @@ export default ({ data }) => {
   };
 
   return (
-    <tr id={data.id}>
+    <tr id={data.id} key={data.id}>
       <td className="orderInputCell">
         <OrderInputBox name="order" value={data.order} onChange={onChange} />
       </td>
@@ -157,12 +157,16 @@ export default ({ data }) => {
           onChange={onChange}
         >
           {data.linkType === "-- CHOOSE DATA --" ? (
-            <option value={data.linkType}>{data.linkType}</option>
+            <option value={data.linkType} key={0}>
+              {data.linkType}
+            </option>
           ) : (
             <></>
           )}
-          {linkTypes.map((linkType) => (
-            <option value={linkType}>{linkType}</option>
+          {linkTypes.map((linkType, index) => (
+            <option value={linkType} key={index}>
+              {linkType}
+            </option>
           ))}
         </SelectBox>
       </td>

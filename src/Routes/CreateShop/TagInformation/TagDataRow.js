@@ -138,7 +138,7 @@ export default ({ data, categories }) => {
 
   if (classLoading || tagLoading) {
     return (
-      <tr>
+      <tr key={data.tagId}>
         <td className="orderInputCell">
           <OrderInputBox name="order" value={data.order} />
         </td>
@@ -168,7 +168,7 @@ export default ({ data, categories }) => {
 
   if (!classLoading && classData && tagData) {
     return (
-      <tr id={data.id}>
+      <tr id={data.id} key={data.id}>
         <td>
           <OrderInputBox name="order" value={data.order} onChange={onChange} />
         </td>
@@ -179,12 +179,16 @@ export default ({ data, categories }) => {
             onChange={onChange}
           >
             {data.category === "-- CHOOSE DATA --" ? (
-              <option value={data.category}>{data.category}</option>
+              <option value={data.category} key={0}>
+                {data.category}
+              </option>
             ) : (
               <></>
             )}
-            {categories.map((category) => (
-              <option value={category}>{category}</option>
+            {categories.map((category, index) => (
+              <option value={category} key={index}>
+                {category}
+              </option>
             ))}
           </SelectBox>
         </td>
@@ -195,13 +199,17 @@ export default ({ data, categories }) => {
             onChange={onChange}
           >
             {data.classId === 0 ? (
-              <option value={data.className}>{data.className}</option>
+              <option value={data.className} key={0}>
+                {data.className}
+              </option>
             ) : (
               <></>
             )}
             {data.category !== "-- CHOOSE DATA --" ? (
-              classData.getClassOptions.map((item) => (
-                <option value={item.id}>{item.name}</option>
+              classData.getClassOptions.map((item, index) => (
+                <option value={item.id} key={index}>
+                  {item.name}
+                </option>
               ))
             ) : (
               <></>
@@ -211,13 +219,17 @@ export default ({ data, categories }) => {
         <td>
           <SelectBox name="TagSelectBox" value={data.tagId} onChange={onChange}>
             {data.tagId === 0 ? (
-              <option value={data.tagId}>{data.tagName}</option>
+              <option value={data.tagId} index={0}>
+                {data.tagName}
+              </option>
             ) : (
               <></>
             )}
             {data.classId !== 0 ? (
-              tagData.getTagOptions.map((item) => (
-                <option value={item.id}>{item.name}</option>
+              tagData.getTagOptions.map((item, index) => (
+                <option value={item.id} key={index}>
+                  {item.name}
+                </option>
               ))
             ) : (
               <></>

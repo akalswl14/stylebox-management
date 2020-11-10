@@ -11,12 +11,16 @@ const Table = styled.table`
   tr {
     border: ${(props) => props.theme.tableBorder};
   }
-  td {
+  th {
     border: ${(props) => props.theme.tableBorder};
+    background-color: #f2f2f2;
+    padding: 8px;
+  }
+  td {
     padding: 8px;
   }
   .tableTitle {
-    background-color: #f2f2f2;
+    width: 15%;
   }
   .linkCell {
     display: flex;
@@ -31,77 +35,90 @@ export const DashboardBasicStatus = ({ data }) => (
   <>
     <SectionTitle text={"BasicStatus"} />
     <Table>
-      <tr>
-        <td className="tableTitle">Total Number of Shops</td>
-        <td colSpan="3">
-          <div className="linkCell">
-            <div className="NumCell">{data.ShopNum} Shops</div>
-            <LinkButton link={"/example"} text={"Go to Shop List"}></LinkButton>
-          </div>
-        </td>
-        <td className="tableTitle">Total Number of Users</td>
-        <td colSpan="3">
-          <div className="linkCell">
-            <div className="NumCell">{data.UserNum} Users</div>
-            <LinkButton
-              link={"/userlist"}
-              text={"Go to User List"}
-            ></LinkButton>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td className="tableTitle">Total Number of Posts</td>
-        <td colSpan="3">
-          <div className="linkCell">
-            <div className="NumCell">{data.PostNum} Posts</div>
-            <LinkButton
-              link={"/postlist"}
-              text={"Go to Post List"}
-            ></LinkButton>
-          </div>
-        </td>
-        <td className="tableTitle">Total Number of Products</td>
-        <td colSpan="3">
-          <div className="linkCell">
-            <div className="NumCell">{data.ProductNum} Products</div>
-            <LinkButton
-              link={"/productlist"}
-              text={"Go to Product List"}
-            ></LinkButton>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td className="tableTitle"></td>
-        <td className="tableTitle">Shop</td>
-        <td className="tableTitle">Post</td>
-        <td className="tableTitle">Event</td>
-        <td className="tableTitle"></td>
-        <td className="tableTitle">Shop</td>
-        <td className="tableTitle">Post</td>
-        <td className="tableTitle">Event</td>
-      </tr>
-      <tr>
-        <td className="tableTitle">Avg.Likes</td>
-        <td>{data.AvgShopLikeNum}</td>
-        <td>{data.AvgPostLikeNum}</td>
-        <td>{data.AvgEventLikeNum}</td>
-        <td className="tableTitle">Total Likes</td>
-        <td>{data.TotalShopLikeNum}</td>
-        <td>{data.TotalPostLikeNum}</td>
-        <td>{data.TotalEventLikeNum}</td>
-      </tr>
-      <tr>
-        <td className="tableTitle">Avg.Views</td>
-        <td>{data.AvgShopViewNum}</td>
-        <td>{data.AvgPostViewNum}</td>
-        <td>{data.AvgEventViewNum}</td>
-        <td className="tableTitle">Total Views</td>
-        <td>{data.TotalShopViewNum}</td>
-        <td>{data.TotalPostViewNum}</td>
-        <td>{data.TotalEventViewNum}</td>
-      </tr>
+      <tbody>
+        <tr>
+          <th className="tableTitle">Total Number of Shops</th>
+          <td colSpan="3">
+            <div className="linkCell">
+              <div className="NumCell">{data.ShopNum} Shops</div>
+              <LinkButton
+                href={"/example"}
+                text={"Go to Shop List"}
+              ></LinkButton>
+            </div>
+          </td>
+          <th className="tableTitle">Total Number of Users</th>
+          <td colSpan="3">
+            <div className="linkCell">
+              <div className="NumCell">{data.UserNum} Users</div>
+              <LinkButton
+                href={"/userlist"}
+                text={"Go to User List"}
+              ></LinkButton>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <th className="tableTitle">Total Number of Posts</th>
+          <td colSpan="3">
+            <div className="linkCell">
+              <div className="NumCell">{data.PostNum} Posts</div>
+              <LinkButton
+                href={"/postlist"}
+                text={"Go to Post List"}
+              ></LinkButton>
+            </div>
+          </td>
+          <th className="tableTitle">Total Number of Products</th>
+          <td colSpan="3">
+            <div className="linkCell">
+              <div className="NumCell">{data.ProductNum} Products</div>
+              <LinkButton
+                href={"/productlist"}
+                text={"Go to Product List"}
+              ></LinkButton>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <th className="tableTitle"></th>
+          <th>Shop</th>
+          <th>Post</th>
+          <th>Event</th>
+          <th className="tableTitle"></th>
+          <th>Shop</th>
+          <th>Post</th>
+          <th>Event</th>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <th className="tableTitle">Avg.Likes</th>
+          <td>{data.AvgShopLikeNum}</td>
+          <td>{data.AvgPostLikeNum}</td>
+          <td>{data.AvgEventLikeNum}</td>
+          <th className="tableTitle">Total Likes</th>
+          <td>{data.TotalShopLikeNum}</td>
+          <td>{data.TotalPostLikeNum}</td>
+          <td>{data.TotalEventLikeNum}</td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <th className="tableTitle">Avg.Views</th>
+          <td>{data.AvgShopViewNum}</td>
+          <td>{data.AvgPostViewNum}</td>
+          <td>{data.AvgEventViewNum}</td>
+          <th className="tableTitle">Total Views</th>
+          <td>{data.TotalShopViewNum}</td>
+          <td>{data.TotalPostViewNum}</td>
+          <td>{data.TotalEventViewNum}</td>
+        </tr>
+      </tbody>
     </Table>
   </>
 );

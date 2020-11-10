@@ -157,7 +157,7 @@ export default ({ data }) => {
   };
 
   return (
-    <tr id={data.id}>
+    <tr id={data.id} key={data.id}>
       <td className="orderInputCell">{data.id}</td>
       <td>
         <Input

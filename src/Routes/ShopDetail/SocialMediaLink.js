@@ -6,19 +6,14 @@ import SectionTitle from "../../Components/SectionTitle";
 import { ShopInfoContext } from "./ShopDetailContainer";
 
 const Table = styled.table`
-  border-collapse: collapse;
-  border: 1px solid black;
-  width: 100%;
-  text-align: center;
   font-size: 15px;
   tr {
     height: 40px;
   }
-  tr,
-  td,
-  th {
-    border: ${(props) => props.theme.tableBorder};
-  }
+  border-collapse: collapse;
+  border: 1px solid lightgrey;
+  width: 100%;
+  text-align: center;
   td,
   th {
     padding: 5px;
@@ -27,10 +22,21 @@ const Table = styled.table`
   th {
     background-color: #f2f2f2;
     font-weight: 500;
+    border-bottom: 0.5px solid black;
   }
   .orderInputCell,
   .checkButtonCell {
     width: 300px;
+  }
+  td:first-child,
+  th:first-child {
+    background-color: #f2f2f2;
+    border-right: 0.5px solid black;
+    font-weight: 500;
+  }
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
 `;
 
@@ -146,71 +152,75 @@ export default () => {
     <>
       <SectionTitle text="Social Media Link" />
       <Table>
-        <tr>
-          <th className="orderInputCell">Social Media</th>
-          <th>Link URL</th>
-          <th className="checkButtonCell">Check</th>
-        </tr>
-        <tr>
-          <th className="orderInputCell">Facebook</th>
-          <td>
-            <Input
-              InputWidth={1000}
-              type="text"
-              name="FacebookLinkInput"
-              value={ShopInfoState.SocialMediaLink.FacebookLink.value}
-              onChange={(e) => onChange(e)}
-            />
-          </td>
-          <td className="checkButtonCell">
-            <Button
-              text={"Check"}
-              isButtonType={true}
-              ClickEvent={CheckLink}
-              name="FacebookLinkCheckButton"
-            />
-          </td>
-        </tr>
-        <tr>
-          <th className="orderInputCell">Instagram</th>
-          <td>
-            <Input
-              InputWidth={1000}
-              type="text"
-              name="InstagramLinkInput"
-              value={ShopInfoState.SocialMediaLink.InstagramLink.value}
-              onChange={(e) => onChange(e)}
-            />
-          </td>
-          <td className="checkButtonCell">
-            <Button
-              text={"Check"}
-              isButtonType={true}
-              ClickEvent={CheckLink}
-              name="InstagramLinkCheckButton"
-            />
-          </td>
-        </tr>
-        <tr>
-          <th className="orderInputCell">Youtube</th>
-          <td>
-            <Input
-              InputWidth={1000}
-              type="text"
-              name="YoutubeLinkInput"
-              value={ShopInfoState.SocialMediaLink.YoutubeLink.value}
-              onChange={(e) => onChange(e)}
-            />
-          </td>
-          <td className="checkButtonCell">
-            <Button
-              text={"Check"}
-              isButtonType={true}
-              ClickEvent={CheckLink}
-              name="YoutubeLinkCheckButton"
-            />
-          </td>
-        </tr>
+        <thead>
+          <tr>
+            <th className="orderInputCell">Social Media</th>
+            <th>Link URL</th>
+            <th className="checkButtonCell">Check</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td className="orderInputCell">Facebook</td>
+            <td>
+              <Input
+                InputWidth={1000}
+                type="text"
+                name="FacebookLinkInput"
+                value={ShopInfoState.SocialMediaLink.FacebookLink.value}
+                onChange={(e) => onChange(e)}
+              />
+            </td>
+            <td className="checkButtonCell">
+              <Button
+                text={"Check"}
+                isButtonType={true}
+                ClickEvent={CheckLink}
+                name="FacebookLinkCheckButton"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td className="orderInputCell">Instagram</td>
+            <td>
+              <Input
+                InputWidth={1000}
+                type="text"
+                name="InstagramLinkInput"
+                value={ShopInfoState.SocialMediaLink.InstagramLink.value}
+                onChange={(e) => onChange(e)}
+              />
+            </td>
+            <td className="checkButtonCell">
+              <Button
+                text={"Check"}
+                isButtonType={true}
+                ClickEvent={CheckLink}
+                name="InstagramLinkCheckButton"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td className="orderInputCell">Youtube</td>
+            <td>
+              <Input
+                InputWidth={1000}
+                type="text"
+                name="YoutubeLinkInput"
+                value={ShopInfoState.SocialMediaLink.YoutubeLink.value}
+                onChange={(e) => onChange(e)}
+              />
+            </td>
+            <td className="checkButtonCell">
+              <Button
+                text={"Check"}
+                isButtonType={true}
+                ClickEvent={CheckLink}
+                name="YoutubeLinkCheckButton"
+              />
+            </td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );

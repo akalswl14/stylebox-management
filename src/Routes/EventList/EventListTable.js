@@ -292,7 +292,7 @@ const EventListTable = ({ data }) => {
           <td>{event.likesNum}</td>
           <td>{event.viewsNum}</td>
           <td>
-            <Link to="/">
+            <Link to={"eventdetail/" + event.eventId}>
               <Button text="Edit"></Button>
             </Link>
           </td>

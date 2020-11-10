@@ -5,29 +5,23 @@ import Button from "../../Components/Button";
 
 const Table = styled.table`
   border-collapse: collapse;
-  border: 1px solid black;
   width: 100%;
   text-align: center;
-  tr,
   td,
   th {
-    border: ${(props) => props.theme.tableBorder};
-  }
-  td,
-  th {
-    padding: 8px;
+    padding: 9px;
   }
   th {
     background-color: #f2f2f2;
     font-weight: 500;
   }
   .tagNameCell {
-    display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     border: 0;
   }
-  .NumCell {
-    padding: 7px 0px;
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
 `;
 
@@ -44,6 +38,14 @@ const ButtonBox = styled.div`
   align-items: center;
   width: 100%;
   justify-content: flex-end;
+`;
+
+const TagSpan = styled.span`
+  font-weight: 500;
+  .commanSpan {
+    font-weight: 100;
+    color: red;
+  }
 `;
 
 export const DashboardTopPost = ({ data, setAction }) => {
@@ -73,39 +75,52 @@ export const DashboardTopPost = ({ data, setAction }) => {
         </ButtonBox>
       </TitleBox>
       <Table>
-        <tr>
-          <th>No</th>
-          <th>Post ID</th>
-          <th>mainProductName</th>
-          <th>price</th>
-          <th>shopId</th>
-          <th>priority</th>
-          <th>tagNames</th>
-          <th>subProductNum</th>
-          <th>rankNum</th>
-          <th>likeNum</th>
-          <th>viewNum</th>
-        </tr>
-        {data &&
-          data.map((eachPost) => (
-            <tr>
-              <td>{eachPost.No}</td>
-              <td>{eachPost.postId}</td>
-              <td>{eachPost.mainProductName}</td>
-              <td>{eachPost.price}</td>
-              <td>{eachPost.shopId}</td>
-              <td>{eachPost.priority}</td>
-              <td className="tagNameCell">
-                {eachPost.tagNames.map((eachTagName) => (
-                  <div>{eachTagName}</div>
-                ))}
-              </td>
-              <td>{eachPost.subProductNum}</td>
-              <td>{eachPost.rankNum}</td>
-              <td>{eachPost.likeNum}</td>
-              <td>{eachPost.viewNum}</td>
-            </tr>
-          ))}
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Post ID</th>
+            <th>mainProductName</th>
+            <th>price</th>
+            <th>shopId</th>
+            <th>priority</th>
+            <th>tagNames</th>
+            <th>subProductNum</th>
+            <th>rankNum</th>
+            <th>likeNum</th>
+            <th>viewNum</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data &&
+            data.map((eachPost, index) => (
+              <tr key={index}>
+                <td>{eachPost.No}</td>
+                <td>{eachPost.postId}</td>
+                <td>{eachPost.mainProductName}</td>
+                <td>{eachPost.price}</td>
+                <td>{eachPost.shopId}</td>
+                <td>{eachPost.priority}</td>
+                <td className="tagNameCell">
+                  {eachPost.tagNames.map((eachTagName, index) => {
+                    if (index === eachPost.tagNames.length - 1) {
+                      return <TagSpan key={index}>{eachTagName}</TagSpan>;
+                    } else {
+                      return (
+                        <TagSpan key={index}>
+                          {eachTagName}
+                          <TagSpan className="commanSpan"> / </TagSpan>
+                        </TagSpan>
+                      );
+                    }
+                  })}
+                </td>
+                <td>{eachPost.subProductNum}</td>
+                <td>{eachPost.rankNum}</td>
+                <td>{eachPost.likeNum}</td>
+                <td>{eachPost.viewNum}</td>
+              </tr>
+            ))}
+        </tbody>
       </Table>
     </>
   );
