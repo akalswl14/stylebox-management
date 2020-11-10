@@ -127,7 +127,7 @@ export default () => {
       });
     }
     let rtnImage = {
-      ThumbnailImage: null,
+      ThumbnailImages: null,
       MainImages: [],
       DetailImages: [],
       s3Images: [],
