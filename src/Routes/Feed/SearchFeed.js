@@ -1,6 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import SectionTitle from "../../Components/SectionTitle";
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -12,11 +17,15 @@ const Table = styled.table`
   tr {
     border: 1px solid #858585;
   }
+  td {
+    vertical-align: middle;
+  }
   td:first-child {
     border: 1px solid #858585;
     padding: 8px;
     background-color: #f2f2f2;
-    width : 25%;
+    width: 25%;
+    vertical-align: middle;
   }
 `;
 
@@ -27,9 +36,7 @@ const TitleBox = styled.div`
   width: 100%;
 `;
 
-const SearchFeed = ({feedState, onChange}) => {
-  const date = feedState.SearchPeriod;
-  const dateArr = date.split('T');
+const SearchFeed = ({ feedState, ChangeSearchDate }) => {
   return (
     <>
       <TitleBox>
@@ -39,12 +46,21 @@ const SearchFeed = ({feedState, onChange}) => {
         <tr>
           <td>Open Posts from</td>
           <td>
-            <input
-              name="SearchPeriod"
-              type="date"
-              value={dateArr[0]}
-              onChange={onChange}
-            />
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="MM/dd/yyyy"
+                margin="normal"
+                id="searchPeriod"
+                label="search Period"
+                value={feedState.SearchPeriod}
+                onChange={(date) => ChangeSearchDate(date)}
+                KeyboardButtonProps={{
+                  "aria-label": "change date",
+                }}
+              />
+            </MuiPickersUtilsProvider>
           </td>
         </tr>
       </Table>
