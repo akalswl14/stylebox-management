@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { PostInfoContext } from "../PostInfoContainer";
 import Button from "../../../Components/Button";
 import { toast } from "react-toastify";
+import { S3_URL } from "../../../AWS_IAM";
 
 const OrderInputBox = styled.input`
   width: 30px;
@@ -100,16 +101,7 @@ const ImageTable = ({ data }) => {
     reader.readAsDataURL(file);
   };
 
-  const BUCKET_NAME = String(process.env.REACT_APP_BUCKET_NAME);
-  const S3_REGION = String(process.env.REACT_APP_S3_REGION);
-
-  const imgUrl =
-    "https:// " +
-    BUCKET_NAME +
-    ".s3-" +
-    S3_REGION +
-    ".amazonaws.com/" +
-    +data.url;
+  const imgUrl = S3_URL + data.url;
 
   let Image_Preview = null;
   if (data.imageLogoFile !== "") {

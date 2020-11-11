@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import SectionTitle from "../../Components/SectionTitle";
 import Button from "../../Components/Button";
 import TagTdTable from "./TagTdTable";
+import { S3_URL } from "../../AWS_IAM";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -172,9 +173,6 @@ export default ({ loading, data, error, onSubmit }) => {
       );
     }
 
-    const BUCKET_NAME = String(process.env.REACT_APP_BUCKET_NAME);
-    const S3_REGION = String(process.env.REACT_APP_S3_REGION);
-
     return (
       <>
         <WrapPage>
@@ -207,14 +205,7 @@ export default ({ loading, data, error, onSubmit }) => {
                     tagState.tagInfo.tagImage ? (
                       <PreviewImage
                         className="TagLogo_Preview"
-                        src={
-                          "https:// " +
-                          BUCKET_NAME +
-                          ".s3-" +
-                          S3_REGION +
-                          ".amazonaws.com/" +
-                          tagState.tagInfo.tagImage
-                        }
+                        src={S3_URL + tagState.tagInfo.tagImage}
                       />
                     ) : (
                       <></>
