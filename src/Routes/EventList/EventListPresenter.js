@@ -4,12 +4,12 @@ import WrapPage from "../../Styles/WrapPageStyles";
 import PageTitle from "../../Components/PageTitle";
 import Loader from "../../Components/Loader";
 import { EventListContext } from "./EventListContainer";
-import { Link } from "react-router-dom";
 import Button from "../../Components/Button";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import SearchButton from "../../Components/SearchButton";
 import EventListTable from "./EventListTable";
+import PageChangeButton from "../../Components/PageChangeButton";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -105,6 +105,11 @@ export default ({ loading, data, error, onSubmit }) => {
       },
     });
   };
+
+  const ExportToExcel = (e) => {
+    e.preventDefault();
+  };
+
   if (error) return `Error! ${error.message}`;
   if (loading)
     return (
@@ -167,10 +172,8 @@ export default ({ loading, data, error, onSubmit }) => {
               </SearchBox>
             </form>
             <ButtonBox>
-              <Link to="/createevent">
-                <Button text="Add New Event"></Button>
-              </Link>
-              <Button text="Download List"></Button>
+              <PageChangeButton text="Add New Event" href="/createevent" />
+              <Button text="Download List" ClickEvent={ExportToExcel}></Button>
             </ButtonBox>
           </TitleBox>
           <form onSubmit={onSubmit}>

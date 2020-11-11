@@ -5,6 +5,12 @@ import Button from "../../Components/Button";
 import SortButton from "../../Components/SortButton";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import PageChangeButton from "../../Components/PageChangeButton";
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -23,12 +29,14 @@ const Table = styled.table`
     padding: 12px;
     border: 1px solid #858585;
     background-color: #f2f2f2;
+    vertical-align: middle;
   }
   tr {
     border: 1px solid #858585;
   }
   td {
     padding: 3px;
+    vertical-align: middle;
   }
   td:first-child {
     border: 1px solid #858585;
@@ -82,36 +90,51 @@ const EventListTable = ({ data }) => {
 
   const onChange = (e, eventId) => {
     const { name } = e.target;
-    if (eventState.selectedEventIdList.includes(eventId)) {
-      if (name === "isOnList") {
-        const { checked } = e.target;
-        eventDispatch({
-          type: "UPDATE_EVENT",
-          data: {
-            name,
-            checked,
-            eventId,
-          },
-        });
-      } else {
-        const { value } = e.target;
-        eventDispatch({
-          type: "UPDATE_EVENT",
-          data: {
-            name,
-            value,
-            eventId,
-          },
-        });
-      }
-    } else {
-      toast.error("please edit after select at least one.");
-      return;
+    if (!eventState.selectedEventIdList.includes(eventId)) {
+      eventState.selectedEventIdList.push(eventId);
+    }
+    if (name === "isOnList") {
+      const { checked } = e.target;
+      eventDispatch({
+        type: "UPDATE_EVENT",
+        data: {
+          name,
+          checked,
+          eventId,
+        },
+      });
     }
   };
 
-  const SortClick = (e, name) => {
+  const ChangeStartDate = (e, date, eventId) => {
+    if (!eventState.selectedEventIdList.includes(eventId)) {
+      eventState.selectedEventIdList.push(eventId);
+    }
+    eventDispatch({
+      type: "UPDATE_STARTDATE",
+      data: {
+        eventId,
+        date,
+      },
+    });
+  };
+
+  const ChangeEndDate = (e, date, eventId) => {
+    if (!eventState.selectedEventIdList.includes(eventId)) {
+      eventState.selectedEventIdList.push(eventId);
+    }
+    eventDispatch({
+      type: "UPDATE_ENDDATE",
+      data: {
+        eventId,
+        date,
+      },
+    });
+  };
+
+  const SortClick = (e) => {
     e.preventDefault();
+    const { name } = e.target;
     let sortOption = {
       sortEventId: false,
       sortEventTitle: false,
@@ -184,120 +207,147 @@ const EventListTable = ({ data }) => {
   };
   return (
     <Table>
-      <th>
-        <input
-          type="checkbox"
-          onChange={CheckAllCheckBox}
-          checked={AllCheckBoxStatus()}
-        />
-      </th>
-      <th>
-        <SortText>Event Id</SortText>
-        <SortButton
-          type={
-            !eventState.sortOption.sortEventId
-              ? 0
-              : eventState.sortOption.eventIdAsc
-              ? 1
-              : 2
-          }
-          func={(e) => SortClick(e, "eventId")}
-        />
-      </th>
-      <th>
-        <SortText>Event Title</SortText>
-        <SortButton
-          type={
-            !eventState.sortOption.sortEventTitle
-              ? 0
-              : eventState.sortOption.eventTitleAsc
-              ? 1
-              : 2
-          }
-          func={(e) => SortClick(e, "eventTitle")}
-        />
-      </th>
-      <th>
-        <SortText>Event Start</SortText>
-        <SortButton
-          type={
-            !eventState.sortOption.sortStartDate
-              ? 0
-              : eventState.sortOption.startDateAsc
-              ? 1
-              : 2
-          }
-          func={(e) => SortClick(e, "startDate")}
-        />
-      </th>
-      <th>
-        <SortText>Event End</SortText>
-        <SortButton
-          type={
-            !eventState.sortOption.sortEndDate
-              ? 0
-              : eventState.sortOption.endDateAsc
-              ? 1
-              : 2
-          }
-          func={(e) => SortClick(e, "endDate")}
-        />
-      </th>
-      <th>Show in List</th>
-      <th>Link</th>
-      <th>Likes</th>
-      <th>Views</th>
-      <th>Edit</th>
-      {eventState.eventInfo.map((event) => (
+      <thead>
         <tr>
-          <td>
+          <th>
             <input
               type="checkbox"
-              name="isOnList"
-              onChange={() => onCheckBoxChange(event.eventId)}
-              checked={
-                eventState.selectedEventIdList.includes(event.eventId)
-                  ? true
-                  : false
+              onChange={CheckAllCheckBox}
+              checked={AllCheckBoxStatus()}
+            />
+          </th>
+          <th>
+            <SortText>Event Id</SortText>
+            <SortButton
+              type={
+                !eventState.sortOption.sortEventId
+                  ? 0
+                  : eventState.sortOption.eventIdAsc
+                  ? 1
+                  : 2
               }
+              func={(e) => SortClick(e, "eventId")}
             />
-          </td>
-          <td>{event.eventId}</td>
-          <td>{event.eventTitle}</td>
-          <td>
-            <input
-              name="eventStart"
-              type="date"
-              value={event.eventStart.split("T")[0]}
-              onChange={(e) => onChange(e, event.eventId)}
+          </th>
+          <th>
+            <SortText>Event Title</SortText>
+            <SortButton
+              type={
+                !eventState.sortOption.sortEventTitle
+                  ? 0
+                  : eventState.sortOption.eventTitleAsc
+                  ? 1
+                  : 2
+              }
+              func={(e) => SortClick(e, "eventTitle")}
             />
-          </td>
-          <td>
-            <input
-              name="eventEnd"
-              type="date"
-              value={event.eventEnd.split("T")[0]}
-              onChange={(e) => onChange(e, event.eventId)}
+          </th>
+          <th>
+            <SortText>Event Start</SortText>
+            <SortButton
+              type={
+                !eventState.sortOption.sortStartDate
+                  ? 0
+                  : eventState.sortOption.startDateAsc
+                  ? 1
+                  : 2
+              }
+              func={(e) => SortClick(e, "startDate")}
             />
-          </td>
-          <td>
-            <input
-              type="checkbox"
-              name="isOnList"
-              onChange={(e) => onChange(e, event.eventId)}
-              checked={event.isOnList}
+          </th>
+          <th>
+            <SortText>Event End</SortText>
+            <SortButton
+              type={
+                !eventState.sortOption.sortEndDate
+                  ? 0
+                  : eventState.sortOption.endDateAsc
+                  ? 1
+                  : 2
+              }
+              func={(e) => SortClick(e, "endDate")}
             />
-          </td>
-          <td>{event.link}</td>
-          <td>{event.likesNum}</td>
-          <td>{event.viewsNum}</td>
-          <td>
-            <Link to={"eventdetail/" + event.eventId}>
-              <Button text="Edit"></Button>
-            </Link>
-          </td>
+          </th>
+          <th>Show in List</th>
+          <th>Link</th>
+          <th>Likes</th>
+          <th>Views</th>
+          <th>Edit</th>
         </tr>
-      ))}
+      </thead>
+      <tbody>
+        {eventState.eventInfo.map((event) => (
+          <tr key={event.eventId}>
+            <td>
+              <input
+                type="checkbox"
+                name="isOnList"
+                onChange={() => onCheckBoxChange(event.eventId)}
+                checked={
+                  eventState.selectedEventIdList.includes(event.eventId)
+                    ? true
+                    : false
+                }
+              />
+            </td>
+            <td>{event.eventId}</td>
+            <td>{event.eventTitle}</td>
+            <td>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="startDate"
+                  label="Start Date"
+                  value={event.eventStart}
+                  onChange={(e, date) =>
+                    ChangeStartDate(e, date, event.eventId)
+                  }
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </td>
+            <td>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="endDate"
+                  label="End Date"
+                  value={event.eventEnd}
+                  onChange={(e, date) => ChangeEndDate(e, date, event.eventId)}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </td>
+            <td>
+              <input
+                type="checkbox"
+                name="isOnList"
+                onChange={(e) => onChange(e, event.eventId)}
+                checked={event.isOnList}
+              />
+            </td>
+            <td>{event.link}</td>
+            <td>{event.likesNum}</td>
+            <td>{event.viewsNum}</td>
+            <td>
+              <PageChangeButton
+                text="edit"
+                href={"/eventdetail/" + event.eventId}
+              />
+            </td>
+          </tr>
+        ))}
+      </tbody>
     </Table>
   );
 };
