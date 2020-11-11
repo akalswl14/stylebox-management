@@ -5,11 +5,11 @@ import PageTitle from "../../Components/PageTitle";
 import Loader from "../../Components/Loader";
 import { TagListContext } from "./TagListContainer";
 import TagListTable from "./TagListTable";
-import { Link } from "react-router-dom";
-import Button from "../../Components/Button";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import SearchButton from "../../Components/SearchButton";
+import PageChangeButton from "../../Components/PageChangeButton";
+import Button from "../../Components/Button";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -96,6 +96,11 @@ export default ({ loading, data, error, onSubmit }) => {
       },
     });
   };
+
+  const ExportToExcel = (e) => {
+    e.preventDefault();
+  };
+
   if (error) return `Error! ${error.message}`;
   if (loading)
     return (
@@ -139,16 +144,10 @@ export default ({ loading, data, error, onSubmit }) => {
               </SearchBox>
             </form>
             <ButtonBox>
-              <Link to="/tagmap">
-                <Button text="See Tag Map"></Button>
-              </Link>
-              <Link to="/createclass">
-                <Button text="Add New Class"></Button>
-              </Link>
-              <Link to="/createtag">
-                <Button text="Add New Tag"></Button>
-              </Link>
-              <Button text="Download List"></Button>
+              <PageChangeButton text="See Tag Map" href="/tagmap" />
+              <PageChangeButton text="Add New Class" href="/createclass" />
+              <PageChangeButton text="Add New Tag" href="/createtag" />
+              <Button text="Download List" ClickEvent={ExportToExcel}></Button>
             </ButtonBox>
           </TitleBox>
           <form onSubmit={onSubmit}>
