@@ -28,6 +28,7 @@ const initialState = {
   ShopData: [],
   CategoryData: [],
   DeleteImageKey: null,
+  isDataUpdated: false,
 };
 
 function reducer(state, action) {
@@ -68,7 +69,6 @@ export default ({ match }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    // console.log(ProductInfoState);
 
     if (ProductInfoState.BasicInformation.productName.value === "") {
       toast.error("Please enter Product Name.");
@@ -164,15 +164,6 @@ export default ({ match }) => {
         ? ProductInfoState.BranchManagement.value
         : null,
     };
-
-    console.log("Mutation Data : ", mutationData);
-    console.log("Will be Deleted : ", ProductInfoState.DeleteImageKey);
-    console.log(
-      "Will be Added : ",
-      ProductInfoState.BasicInformation.productImage.isChange
-        ? rtnShopImage.fileName
-        : "NOTHING!"
-    );
 
     const {
       data: { updateProduct },

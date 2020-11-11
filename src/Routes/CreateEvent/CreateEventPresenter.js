@@ -63,46 +63,54 @@ export default ({ onSubmit, loading, data, error }) => {
       let updateData = {
         ...EventInfoState,
         CategoryData: data.getManageCategoryOptions,
+        isDataUpdated: true,
       };
       EventInfoDispatch({
         type: "UPDATE_BATCH",
         data: updateData,
       });
     }, []);
-
-    return (
-      <WrapPage>
-        <Form>
-          <TitleBox>
-            <PageTitle text={"Event Management"} />
-            <ButtonBox>
-              <PageChangeButton text="Back to List" href="/eventlist" />
-              <Button text="Confirm" ClickEvent={onSubmit} />
-            </ButtonBox>
-          </TitleBox>
-          <SectionWrapper>
-            <BasicInformation />
-          </SectionWrapper>
-          <SectionWrapper>
-            <BasicStatus />
-          </SectionWrapper>
-          <SectionWrapper>
-            <TagInformationContainer />
-          </SectionWrapper>
-          <SectionWrapper>
-            <ThumbnailImage />
-          </SectionWrapper>
-          <SectionWrapper>
-            <MainImageContainer />
-          </SectionWrapper>
-          <SectionWrapper>
-            <MainVideoContainer />
-          </SectionWrapper>
-          <SectionWrapper>
-            <DetailImageContainer />
-          </SectionWrapper>
-        </Form>
-      </WrapPage>
-    );
+    if (!EventInfoState.isDataUpdated) {
+      return (
+        <Wrapper>
+          <Loader />
+        </Wrapper>
+      );
+    } else {
+      return (
+        <WrapPage>
+          <Form>
+            <TitleBox>
+              <PageTitle text={"Event Management"} />
+              <ButtonBox>
+                <PageChangeButton text="Back to List" href="/eventlist" />
+                <Button text="Confirm" ClickEvent={onSubmit} />
+              </ButtonBox>
+            </TitleBox>
+            <SectionWrapper>
+              <BasicInformation />
+            </SectionWrapper>
+            <SectionWrapper>
+              <BasicStatus />
+            </SectionWrapper>
+            <SectionWrapper>
+              <TagInformationContainer />
+            </SectionWrapper>
+            <SectionWrapper>
+              <ThumbnailImage />
+            </SectionWrapper>
+            <SectionWrapper>
+              <MainImageContainer />
+            </SectionWrapper>
+            <SectionWrapper>
+              <MainVideoContainer />
+            </SectionWrapper>
+            <SectionWrapper>
+              <DetailImageContainer />
+            </SectionWrapper>
+          </Form>
+        </WrapPage>
+      );
+    }
   }
 };

@@ -26,6 +26,7 @@ const initialState = {
   BranchManagement: { value: [] },
   ShopData: [],
   CategoryData: [],
+  isDataUpdated: false,
 };
 
 function reducer(state, action) {
@@ -63,7 +64,6 @@ export default () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(ProductInfoState);
 
     if (ProductInfoState.BasicInformation.productName.value === "") {
       toast.error("Please enter Product Name.");
@@ -154,8 +154,6 @@ export default () => {
       tags: rtnTagList,
       branchIds: ProductInfoState.BranchManagement.value,
     };
-
-    console.log("Mutation Data : ", mutationData);
 
     const {
       data: { createProduct },

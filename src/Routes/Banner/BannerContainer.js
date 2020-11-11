@@ -8,6 +8,7 @@ export const BannerContext = React.createContext(null);
 
 const initialState = {
   BannerData: [],
+  isDataUpdated: false,
 };
 
 function reducer(state, action) {
@@ -17,12 +18,14 @@ function reducer(state, action) {
     case "CREATE_BANNER":
       return {
         BannerData: state.BannerData.concat(action.data),
+        isDataUpdated: true,
       };
     case "DELETE_BANNER":
       return {
         BannerData: state.BannerData.filter(
           (eachTag) => eachTag.id !== action.data.id
         ),
+        isDataUpdated: true,
       };
     case "UPDATE_BANNER":
       return {
@@ -31,6 +34,7 @@ function reducer(state, action) {
             return action.data;
           } else return eachData;
         }),
+        isDataUpdated: true,
       };
     default:
       return state;

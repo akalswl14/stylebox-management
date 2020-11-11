@@ -6,6 +6,7 @@ import PageTitle from "../../Components/PageTitle";
 import { DashboardBasicStatus } from "./BasicStatus";
 import { DashboardTopShop } from "./TopShop";
 import { DashboardTopPost } from "./TopPost";
+import { toast } from "react-toastify";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -33,13 +34,25 @@ export default ({
       </Wrapper>
     );
   if (!loading && data && data_post) {
-    return (
-      <WrapPage>
-        <PageTitle text={"DASH BOARD"} />
-        <DashboardBasicStatus data={data.getDashboardBasicStatus} />
-        <DashboardTopShop data={data.getTopShops} />
-        <DashboardTopPost data={data_post.getTopPosts} setAction={setAction} />
-      </WrapPage>
-    );
+    if (
+      !data.getDashboardBasicStatus ||
+      !data.getTopShops ||
+      !data_post.getTopPosts
+    ) {
+      toast.error("Error occured getting data.");
+      return <WrapPage></WrapPage>;
+    } else {
+      return (
+        <WrapPage>
+          <PageTitle text={"DASH BOARD"} />
+          <DashboardBasicStatus data={data.getDashboardBasicStatus} />
+          <DashboardTopShop data={data.getTopShops} />
+          <DashboardTopPost
+            data={data_post.getTopPosts}
+            setAction={setAction}
+          />
+        </WrapPage>
+      );
+    }
   }
 };

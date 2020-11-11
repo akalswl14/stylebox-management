@@ -34,6 +34,7 @@ const initialState = {
     Address: "",
     Tag: "",
   },
+  isDataUpdated: false,
 };
 
 function reducer(state, action) {
@@ -104,6 +105,8 @@ function reducer(state, action) {
       return { ...state, WeightData: ReturnWeightData };
     case "UPDATE_BATCH_WEIGHT":
       return { ...state, WeightData: action.data.WeightData };
+    case "UPDATE_BATCH":
+      return action.data;
     default:
       return state;
   }
