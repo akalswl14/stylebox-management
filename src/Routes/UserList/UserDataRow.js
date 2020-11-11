@@ -14,7 +14,7 @@ const UserDataRow = ({ data }) => {
   };
 
   return (
-    <tr id={data.userId}>
+    <tr id={data.userId} key={data.userId}>
       <td>
         <input
           type="checkbox"

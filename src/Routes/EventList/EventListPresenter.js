@@ -167,7 +167,7 @@ export default ({ loading, data, error, onSubmit }) => {
               </SearchBox>
             </form>
             <ButtonBox>
-              <Link to="/">
+              <Link to="/createevent">
                 <Button text="Add New Event"></Button>
               </Link>
               <Button text="Download List"></Button>

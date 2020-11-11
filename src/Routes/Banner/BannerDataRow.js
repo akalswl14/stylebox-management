@@ -187,7 +187,7 @@ const BannerDataRow = ({ data }) => {
   };
 
   return (
-    <tr id={data.id}>
+    <tr id={data.id} key={data.id}>
       <td>
         <OrderInputBox name="order" value={data.order} onChange={onChange} />
       </td>

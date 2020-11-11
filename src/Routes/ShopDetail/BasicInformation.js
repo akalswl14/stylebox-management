@@ -244,82 +244,84 @@ export default () => {
     <>
       <SectionTitle text="Basic Information" />
       <Table>
-        <tr>
-          <th>Shop ID</th>
-          <td className="smallerCell">
-            {ShopInfoState.BasicInformation.shopId}
-          </td>
-          <th rowSpan="3">Shop Logo</th>
-          <td rowSpan="3">
-            <ImageInputBox>
-              <Input
-                type="file"
-                accept="image/jpg,image/png,image/jpeg"
-                name="ShopLogoInput"
-                onChange={(e) => ChangeImage(e)}
+        <tbody>
+          <tr>
+            <th>Shop ID</th>
+            <td className="smallerCell">
+              {ShopInfoState.BasicInformation.shopId}
+            </td>
+            <th rowSpan="3">Shop Logo</th>
+            <td rowSpan="3">
+              <ImageInputBox>
+                <Input
+                  type="file"
+                  accept="image/jpg,image/png,image/jpeg"
+                  name="ShopLogoInput"
+                  onChange={(e) => ChangeImage(e)}
+                />
+                {ShopLogo_Preview}
+              </ImageInputBox>
+              <Button
+                text={"Delete Photo"}
+                isButtonType={true}
+                ClickEvent={(e) => DeleteImage(e)}
               />
-              {ShopLogo_Preview}
-            </ImageInputBox>
-            <Button
-              text={"Delete Photo"}
-              isButtonType={true}
-              ClickEvent={(e) => DeleteImage(e)}
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>Shop Name</th>
-          <td className="smallerCell">
-            <Input
-              InputWidth={300}
-              type="text"
-              name="ShopNameInput"
-              value={ShopInfoState.BasicInformation.shopName.value}
-              onChange={(e) => onChange(e)}
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>Phone Number</th>
-          <td className="smallerCell">
-            <Input
-              InputWidth={300}
-              type="text"
-              name="PhoneNumberInput"
-              value={ShopInfoState.BasicInformation.phoneNumber.value}
-              onChange={(e) => onChange(e)}
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>Main Address</th>
-          <td colSpan="3" id="AddressCell">
-            <AddressCellWrapper>
+            </td>
+          </tr>
+          <tr>
+            <th>Shop Name</th>
+            <td className="smallerCell">
               <Input
-                InputWidth={500}
+                InputWidth={300}
                 type="text"
-                name="MainAddressInput"
-                value={ShopInfoState.BasicInformation.MainAddress.value}
+                name="ShopNameInput"
+                value={ShopInfoState.BasicInformation.shopName.value}
                 onChange={(e) => onChange(e)}
               />
-              <MapUrlWrapper>
-                <TitleSpan>Map URL</TitleSpan>
+            </td>
+          </tr>
+          <tr>
+            <th>Phone Number</th>
+            <td className="smallerCell">
+              <Input
+                InputWidth={300}
+                type="text"
+                name="PhoneNumberInput"
+                value={ShopInfoState.BasicInformation.phoneNumber.value}
+                onChange={(e) => onChange(e)}
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>Main Address</th>
+            <td colSpan="3" id="AddressCell">
+              <AddressCellWrapper>
                 <Input
                   InputWidth={500}
                   type="text"
-                  name="MainMapUrlInput"
-                  value={ShopInfoState.BasicInformation.MainMapUrl.value}
+                  name="MainAddressInput"
+                  value={ShopInfoState.BasicInformation.MainAddress.value}
                   onChange={(e) => onChange(e)}
                 />
-              </MapUrlWrapper>
-              <Button
-                text={"Check"}
-                isButtonType={true}
-                ClickEvent={CheckMapLink}
-              />
-            </AddressCellWrapper>
-          </td>
-        </tr>
+                <MapUrlWrapper>
+                  <TitleSpan>Map URL</TitleSpan>
+                  <Input
+                    InputWidth={500}
+                    type="text"
+                    name="MainMapUrlInput"
+                    value={ShopInfoState.BasicInformation.MainMapUrl.value}
+                    onChange={(e) => onChange(e)}
+                  />
+                </MapUrlWrapper>
+                <Button
+                  text={"Check"}
+                  isButtonType={true}
+                  ClickEvent={CheckMapLink}
+                />
+              </AddressCellWrapper>
+            </td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );

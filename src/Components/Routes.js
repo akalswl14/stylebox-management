@@ -22,6 +22,9 @@ import ShopDetail from "../Routes/ShopDetail/index";
 import CreateProduct from "../Routes/CreateProduct/index";
 import PostManagement from "../Routes/PostManagement/index";
 import CreatePost from "../Routes/CreatePost/index";
+import ProductDetail from "../Routes/ProductDetail/index";
+import CreateEvent from "../Routes/CreateEvent/CreateEventContainer";
+import EventDetail from "../Routes/EventDetail/EventDetailContainer";
 
 const AppRouter = () => {
   return (
@@ -48,6 +51,9 @@ const AppRouter = () => {
       <Route path="/createshop" component={CreateShop} />
       <Route path="/shopdetail/:shopId" component={ShopDetail} />
       <Route path="/createproduct" component={CreateProduct} />
+      <Route path="/productdetail/:productId" component={ProductDetail} />
+      <Route path="/createevent" component={CreateEvent} />
+      <Route path="/eventdetail/:eventId" component={EventDetail} />
       <Redirect path="*" to="/" />
     </Switch>
   );

@@ -33,6 +33,10 @@ const ButtonBox = styled.div`
   justify-content: flex-end;
 `;
 
+const SectionWrapper = styled.div`
+  padding-bottom: 20px;
+`;
+
 const Form = styled.form``;
 
 export default ({
@@ -122,9 +126,15 @@ export default ({
               <Button text="Confirm"></Button>
             </ButtonBox>
           </TitleBox>
-          <MainTagIcon categories={["Style"]} />
-          <BestTagIcon categories={["ProductClass"]} />
-          <ShopTagIcon categories={categories} />
+          <SectionWrapper>
+            <MainTagIcon categories={["Style"]} />
+          </SectionWrapper>
+          <SectionWrapper>
+            <BestTagIcon categories={["ProductClass"]} />
+          </SectionWrapper>
+          <SectionWrapper>
+            <ShopTagIcon categories={categories} />
+          </SectionWrapper>
         </Form>
       </WrapPage>
     );
