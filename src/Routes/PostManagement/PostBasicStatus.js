@@ -16,6 +16,7 @@ const Table = styled.table`
   td {
     width: 25%;
     padding: 0px 25px;
+    vertical-align: middle;
   }
   td:nth-child(odd) {
     text-align: center;

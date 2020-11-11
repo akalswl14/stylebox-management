@@ -171,7 +171,7 @@ export default ({ loading, data, error, onSubmit }) => {
               </SearchBox>
             </form>
             <ButtonBox>
-              <Link to="/">
+              <Link to="/createpost">
                 <Button text="Add New Post"></Button>
               </Link>
               <Button text="Download List"></Button>

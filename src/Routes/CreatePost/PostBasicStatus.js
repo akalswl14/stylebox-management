@@ -34,27 +34,17 @@ const TitleBox = styled.div`
   width: 100%;
 `;
 
-const ButtonBox = styled.div`
-  padding: 15px 0px 15px 0px;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: flex-end;
-`;
-
-const TextArea = styled.textarea`
-  width: 100%;
-  height: 100px;
-`;
-
-const PostDescription = () => {
+const PostBasicStatus = () => {
   const { postDispatch, postState } = useContext(PostInfoContext);
 
+  const { priority } = postState.basicStatus;
+
   const onChange = (e) => {
+    const { value } = e.target;
     postDispatch({
-      type: "UPDATE_DESCRIPTION",
+      type: "CHANGE_BASICSTATUS",
       data: {
-        postDescription: e.target.value,
+        value,
       },
     });
   };
@@ -62,13 +52,19 @@ const PostDescription = () => {
   return (
     <>
       <TitleBox>
-        <SectionTitle text={"Post Description"} />
+        <SectionTitle text={"Basic Status"} />
       </TitleBox>
       <Table>
         <tr>
-          <td>Post Description</td>
+          <td>Post Priority</td>
           <td>
-            <TextArea value={postState.postDescription} onChange={onChange} />
+            <select value={priority} onChange={onChange}>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
           </td>
         </tr>
       </Table>
@@ -76,4 +72,4 @@ const PostDescription = () => {
   );
 };
 
-export default PostDescription;
+export default PostBasicStatus;

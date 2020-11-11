@@ -2,12 +2,7 @@ import React, { useReducer } from "react";
 import PostInfoPresenter from "./PostInfoPresenter";
 import { useQuery, useMutation } from "react-apollo-hooks";
 import AWS, { Credentials } from "aws-sdk";
-import {
-  CATEGORY_OPTION,
-  GET_LINKTYPE,
-  GET_POST,
-  UPDATE_POST,
-} from "./PostInfoQueries";
+import { CATEGORY_OPTION, GET_LINKTYPE, CREATE_POST } from "./PostInfoQueries";
 import { toast } from "react-toastify";
 
 const access = new Credentials({
@@ -35,7 +30,6 @@ const initialState = {
   postVideoManagement: [],
   postDescription: "",
   subProductManagement: [],
-  isDataUpdated: false,
 };
 
 function reducer(state, action) {
@@ -189,11 +183,8 @@ function reducer(state, action) {
   }
 }
 
-export default ({ match }) => {
+export default () => {
   const [postState, postDispatch] = useReducer(reducer, initialState);
-  const { loading, error, data } = useQuery(GET_POST, {
-    variables: { id: Number(match.params.postId) },
-  });
 
   const {
     loading: loading_CategoryData,
@@ -207,7 +198,7 @@ export default ({ match }) => {
     data: data_LinkTypeData,
   } = useQuery(GET_LINKTYPE);
 
-  const [updatePostInfo, { error: updateError }] = useMutation(UPDATE_POST);
+  const [createPost, { error: createError }] = useMutation(CREATE_POST);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -279,13 +270,11 @@ export default ({ match }) => {
     }
 
     const {
-      data: { updatePostManage },
-    } = await updatePostInfo({
+      data: { createPostManage },
+    } = await createPost({
       variables: {
-        id: Number(match.params.postId),
         mainProductId: postState.basicInfo.mainProductId,
         priority: postState.basicStatus.priority,
-        isDescriptionChange: false,
         description: postState.postDescription,
         tags: mutationData.tags,
         externalLinks: mutationData.externalLinks,
@@ -295,12 +284,12 @@ export default ({ match }) => {
       },
     });
 
-    if (!updatePostManage || updateError) {
+    if (!createPostManage || createError) {
       toast.error("Error occured while update data.");
       return;
     }
 
-    if (updatePostManage) {
+    if (createPostManage) {
       toast.success("Sucessfully Update Data!");
       setTimeout(() => {
         window.location.reload();
@@ -339,9 +328,6 @@ export default ({ match }) => {
     <PostInfoContext.Provider value={{ postState, postDispatch }}>
       <PostInfoPresenter
         onSubmit={onSubmit}
-        loading={loading}
-        data={data}
-        error={error}
         loading_CategoryData={loading_CategoryData}
         error_CategoryData={error_CategoryData}
         data_CategoryData={data_CategoryData}

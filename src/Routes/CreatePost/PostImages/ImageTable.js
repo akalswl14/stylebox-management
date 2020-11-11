@@ -3,6 +3,7 @@ import { DeleteIcon } from "../../../Components/Icons";
 import styled from "styled-components";
 import { PostInfoContext } from "../PostInfoContainer";
 import Button from "../../../Components/Button";
+import { toast } from "react-toastify";
 
 const OrderInputBox = styled.input`
   width: 30px;
@@ -56,14 +57,25 @@ const ImageTable = ({ data }) => {
 
   const ClickEvent = (e) => {
     e.preventDefault();
-    let url =
-      "https://myapp-testbucket.s3-ap-southeast-1.amazonaws.com/" + data.url;
-    const img = new Image();
-    img.src = url;
-    const ImageWidth = img.width;
-    const ImageHeight = img.height;
-    const features = "width=" + ImageWidth + ",height=" + ImageHeight;
-    window.open(url, "", features);
+    try {
+      const url = data.imagePreviewUrl;
+      if (url === "") {
+        toast.error("You have to select Image.");
+        return;
+      }
+      const img = new Image();
+      img.src = url;
+      const ImageWidth = img.width;
+      const ImageHeight = img.height;
+      const features = "width=" + ImageWidth + ",height=" + ImageHeight;
+      var Window = window.open(url, "", features);
+      Window.document.write(
+        "<!DOCTYPE html><body style='margin:0px'>" + img.outerHTML + "<body/>"
+      );
+    } catch {
+      toast.error("Image is Invalid.");
+      return;
+    }
   };
 
   const ChangeImage = (e) => {

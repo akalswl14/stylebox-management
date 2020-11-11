@@ -167,28 +167,35 @@ export default ({
           postVideoManagement,
           postDescription,
           subProductManagement,
+          isDataUpdated: true,
         },
       });
     }, []);
 
-    console.log(postState);
-
-    return (
-      <>
-        <WrapPage>
-          <form onSubmit={onSubmit}>
-            <PageTitle text={"Post Management"} />
-            <PostBasicInfo />
-            <PostBasicStatus />
-            <TagInformation categories={categories} />
-            <ExternalLink linkTypes={linkTypes} />
-            <PostImages />
-            <PostVideo />
-            <PostDescription />
-            <SubProduct />
-          </form>
-        </WrapPage>
-      </>
-    );
+    if (!postState.isDataUpdated) {
+      return (
+        <Wrapper>
+          <Loader />
+        </Wrapper>
+      );
+    } else {
+      return (
+        <>
+          <WrapPage>
+            <form onSubmit={onSubmit}>
+              <PageTitle text={"Post Management"} />
+              <PostBasicInfo />
+              <PostBasicStatus />
+              <TagInformation categories={categories} />
+              <ExternalLink linkTypes={linkTypes} />
+              <PostImages />
+              <PostVideo />
+              <PostDescription />
+              <SubProduct />
+            </form>
+          </WrapPage>
+        </>
+      );
+    }
   }
 };

@@ -52,7 +52,6 @@ const PostBasicInfo = () => {
   const { postDispatch, postState } = useContext(PostInfoContext);
 
   const {
-    postId,
     mainProductId,
     mainProductName,
     price,
@@ -77,7 +76,6 @@ const PostBasicInfo = () => {
         postDispatch({
           type: "CHANGE_BASICINFO",
           data: {
-            postId,
             mainProductId: eachOption.productId,
             mainProductName: value,
             price: eachOption.price,
@@ -90,7 +88,6 @@ const PostBasicInfo = () => {
     postDispatch({
       type: "CHANGE_BASICINFO",
       data: {
-        postId,
         mainProductId: 0,
         mainProductName: value,
         price: 0,
@@ -108,7 +105,6 @@ const PostBasicInfo = () => {
           postDispatch({
             type: "CHANGE_BASICINFO",
             data: {
-              postId,
               mainProductId: eachOption.productId,
               mainProductName: value,
               price: eachOption.price,
@@ -122,7 +118,6 @@ const PostBasicInfo = () => {
       postDispatch({
         type: "CHANGE_BASICINFO",
         data: {
-          postId,
           mainProductId: 0,
           mainProductName: value,
           price: 0,
@@ -137,7 +132,6 @@ const PostBasicInfo = () => {
           postDispatch({
             type: "CHANGE_BASICINFO",
             data: {
-              postId,
               mainProductId: eachOption.productId,
               mainProductName: eachOption.productName,
               price: eachOption.price,
@@ -151,7 +145,6 @@ const PostBasicInfo = () => {
       postDispatch({
         type: "CHANGE_BASICINFO",
         data: {
-          postId,
           mainProductId: 0,
           mainProductName,
           price: 0,
@@ -175,10 +168,6 @@ const PostBasicInfo = () => {
       </TitleBox>
       <Table>
         <tr>
-          <td>PostId</td>
-          <td colSpan="3">{postId}</td>
-        </tr>
-        <tr>
           <td>Main ProductId</td>
           <td>{mainProductId} </td>
           <td>Main ProductName</td>
@@ -200,8 +189,7 @@ const PostBasicInfo = () => {
         <tr>
           <td>Selling Shop</td>
           <td>
-            {shopId}&nbsp;&nbsp;&nbsp;
-            {shopName}
+            {shopId} {shopName}
           </td>
           <td>Price</td>
           <td>{price} VND</td>
