@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import { useQuery } from "react-apollo-hooks";
-import { GET_CLASS, GET_TAG } from "./SearchTagQueries";
-import { DeleteIcon } from "../../Components/Icons";
+import { GET_CLASS, GET_TAG } from "../PostInfoQueries";
+import { DeleteIcon } from "../../../Components/Icons";
 import styled from "styled-components";
-import { SearchTagIconContext } from "./SearchTagContainer";
+import { PostInfoContext } from "../PostInfoContainer";
 
 const OrderInputBox = styled.input`
   width: 30px;
@@ -22,8 +22,8 @@ const RowButton = styled.button`
   min-width: fit-content;
 `;
 
-const SearchTagTable = ({ categories, data }) => {
-  const { searchTagDispatch } = useContext(SearchTagIconContext);
+const TagInfoTable = ({ categories, data }) => {
+  const { postDispatch } = useContext(PostInfoContext);
   let categoryData;
   let classIdData;
 
@@ -49,7 +49,7 @@ const SearchTagTable = ({ categories, data }) => {
     const { value, name } = e.target;
     if (name === "order") {
       if (Number(value) >= 0) {
-        searchTagDispatch({
+        postDispatch({
           type: "UPDATE_TAG",
           data: {
             id: Number(data.id),
@@ -65,7 +65,7 @@ const SearchTagTable = ({ categories, data }) => {
     }
     if (name === "category") {
       setclassState(value);
-      searchTagDispatch({
+      postDispatch({
         type: "UPDATE_TAG",
         data: {
           id: Number(data.id),
@@ -80,7 +80,7 @@ const SearchTagTable = ({ categories, data }) => {
     }
     if (name === "classInfo") {
       setTagState(Number(value));
-      searchTagDispatch({
+      postDispatch({
         type: "UPDATE_TAG",
         data: {
           id: Number(data.id),
@@ -94,7 +94,7 @@ const SearchTagTable = ({ categories, data }) => {
       });
     }
     if (name === "tagInfo") {
-      searchTagDispatch({
+      postDispatch({
         type: "UPDATE_TAG",
         data: {
           id: Number(data.id),
@@ -111,7 +111,7 @@ const SearchTagTable = ({ categories, data }) => {
 
   const deleteRow = (e, rowId) => {
     e.preventDefault();
-    searchTagDispatch({
+    postDispatch({
       type: "DELETE_TAG",
       data: {
         id: Number(rowId),
@@ -220,4 +220,4 @@ const SearchTagTable = ({ categories, data }) => {
   }
 };
 
-export default SearchTagTable;
+export default TagInfoTable;

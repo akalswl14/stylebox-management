@@ -302,7 +302,7 @@ const PostListTable = ({ data }) => {
           <td>{post.viewsNum}</td>
           <td>{post.linksClickNum}</td>
           <td>
-            <Link to="/">
+            <Link to={{ pathname: `/postinfo/${post.postId}` }}>
               <Button text="Edit"></Button>
             </Link>
           </td>

@@ -136,6 +136,8 @@ export default ({ loading, data, error, onSubmit }) => {
     const ChangeImage = (e) => {
       let reader = new FileReader();
       let file = e.target.files[0];
+      console.log("check");
+      console.log(imageInput);
       reader.onloadend = () => {
         tagDispatch({
           type: "UPDATE_IMAGE",
@@ -170,6 +172,9 @@ export default ({ loading, data, error, onSubmit }) => {
       );
     }
 
+    const BUCKET_NAME = String(process.env.REACT_APP_BUCKET_NAME);
+    const S3_REGION = String(process.env.REACT_APP_S3_REGION);
+
     return (
       <>
         <WrapPage>
@@ -203,7 +208,11 @@ export default ({ loading, data, error, onSubmit }) => {
                       <PreviewImage
                         className="TagLogo_Preview"
                         src={
-                          "https://myapp-testbucket.s3-ap-southeast-1.amazonaws.com/" +
+                          "https:// " +
+                          BUCKET_NAME +
+                          ".s3-" +
+                          S3_REGION +
+                          ".amazonaws.com/" +
                           tagState.tagInfo.tagImage
                         }
                       />

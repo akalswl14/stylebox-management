@@ -12,7 +12,7 @@ const access = new Credentials({
 
 const s3 = new AWS.S3({
   credentials: access,
-  region: process.env.S3_REGION,
+  region: process.env.REACT_APP_S3_REGION,
 });
 
 const signedUrlExpireSeconds = 60 * 15;
@@ -188,8 +188,7 @@ export default ({ match }) => {
 
     await fetch(preSignedUrl, option);
   };
-  console.log("checkcheck");
-  console.log(tagState);
+
   return (
     <TagInfoContext.Provider value={{ tagState, tagDispatch }}>
       <TagInfoPresenter

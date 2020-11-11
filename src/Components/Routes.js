@@ -20,6 +20,8 @@ import CreateClass from "../Routes/CreateClass/index";
 import CreateTag from "../Routes/CreateTag/index";
 import ShopDetail from "../Routes/ShopDetail/index";
 import CreateProduct from "../Routes/CreateProduct/index";
+import PostManagement from "../Routes/PostManagement/index";
+import CreatePost from "../Routes/CreatePost/index";
 import ProductDetail from "../Routes/ProductDetail/index";
 import CreateEvent from "../Routes/CreateEvent/CreateEventContainer";
 import EventDetail from "../Routes/EventDetail/EventDetailContainer";
@@ -43,6 +45,8 @@ const AppRouter = () => {
       <Route path="/shoplist" component={ShopList} />
       <Route path="/productlist" component={ProductList} />
       <Route path="/postList" component={PostList} />
+      <Route path="/postinfo/:postId" component={PostManagement} />
+      <Route path="/createpost" component={CreatePost} />
       <Route path="/eventlist" component={EventList} />
       <Route path="/createshop" component={CreateShop} />
       <Route path="/shopdetail/:shopId" component={ShopDetail} />
