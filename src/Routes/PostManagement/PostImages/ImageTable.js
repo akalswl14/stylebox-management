@@ -3,6 +3,7 @@ import { DeleteIcon } from "../../../Components/Icons";
 import styled from "styled-components";
 import { PostInfoContext } from "../PostInfoContainer";
 import Button from "../../../Components/Button";
+import { S3_URL } from "../../../AWS_IAM";
 
 const OrderInputBox = styled.input`
   width: 30px;
@@ -56,8 +57,7 @@ const ImageTable = ({ data }) => {
 
   const ClickEvent = (e) => {
     e.preventDefault();
-    let url =
-      "https://myapp-testbucket.s3-ap-southeast-1.amazonaws.com/" + data.url;
+    let url = S3_URL + data.url;
     const img = new Image();
     img.src = url;
     const ImageWidth = img.width;
@@ -88,16 +88,7 @@ const ImageTable = ({ data }) => {
     reader.readAsDataURL(file);
   };
 
-  const BUCKET_NAME = String(process.env.REACT_APP_BUCKET_NAME);
-  const S3_REGION = String(process.env.REACT_APP_S3_REGION);
-
-  const imgUrl =
-    "https:// " +
-    BUCKET_NAME +
-    ".s3-" +
-    S3_REGION +
-    ".amazonaws.com/" +
-    +data.url;
+  const imgUrl = S3_URL + data.url;
 
   let Image_Preview = null;
   if (data.imageLogoFile !== "") {
