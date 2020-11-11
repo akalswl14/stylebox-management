@@ -4,12 +4,12 @@ import WrapPage from "../../Styles/WrapPageStyles";
 import PageTitle from "../../Components/PageTitle";
 import Loader from "../../Components/Loader";
 import { ProductListContext } from "./ProductListContainer";
-import { Link } from "react-router-dom";
 import Button from "../../Components/Button";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import SearchButton from "../../Components/SearchButton";
 import ProductListTable from "./ProductListTable";
+import PageChangeButton from "../../Components/PageChangeButton";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -91,6 +91,10 @@ export default ({ loading, data, error, onSubmit }) => {
     });
   };
 
+  const ExportToExcel = (e) => {
+    e.preventDefault();
+  };
+
   const SearchProductList = (e) => {
     e.preventDefault();
     productDispatch({
@@ -164,10 +168,8 @@ export default ({ loading, data, error, onSubmit }) => {
               </SearchBox>
             </form>
             <ButtonBox>
-              <Link to="/createproduct">
-                <Button text="Add New Product"></Button>
-              </Link>
-              <Button text="Download List"></Button>
+              <PageChangeButton text="Add New Product" href="/createproduct" />
+              <Button text="Download List" ClickEvent={ExportToExcel}></Button>
             </ButtonBox>
           </TitleBox>
           <form onSubmit={onSubmit}>

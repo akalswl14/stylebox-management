@@ -1,10 +1,8 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { ProductListContext } from "./ProductListContainer";
-import Button from "../../Components/Button";
 import SortButton from "../../Components/SortButton";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import PageChangeButton from "../../Components/PageChangeButton";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -82,18 +80,16 @@ const ProductListTable = ({ data }) => {
 
   const PriceChange = (e, productId) => {
     const { value } = e.target;
-    if (productState.selectedProductIdList.includes(productId)) {
-      productDispatch({
-        type: "UPDATE_PRODUCT_PRICE",
-        data: {
-          value,
-          productId,
-        },
-      });
-    } else {
-      toast.error("please edit after select at least one.");
-      return;
+    if (!productState.selectedProductIdList.includes(productId)) {
+      productState.selectedProductIdList.push(productId);
     }
+    productDispatch({
+      type: "UPDATE_PRODUCT_PRICE",
+      data: {
+        value,
+        productId,
+      },
+    });
   };
 
   const SortClick = (e, name) => {
@@ -155,88 +151,95 @@ const ProductListTable = ({ data }) => {
   };
   return (
     <Table>
-      <th>
-        <input
-          type="checkbox"
-          onChange={CheckAllCheckBox}
-          checked={AllCheckBoxStatus()}
-        />
-      </th>
-      <th>
-        <SortText>Product Id</SortText>
-        <SortButton
-          type={
-            !productState.sortOption.sortProductId
-              ? 0
-              : productState.sortOption.productIdAsc
-              ? 1
-              : 2
-          }
-          func={(e) => SortClick(e, "productId")}
-        />
-      </th>
-      <th>
-        <SortText>Product Name</SortText>
-        <SortButton
-          type={
-            !productState.sortOption.sortProductName
-              ? 0
-              : productState.sortOption.productNameAsc
-              ? 1
-              : 2
-          }
-          func={(e) => SortClick(e, "productName")}
-        />
-      </th>
-      <th>
-        <SortText>Price</SortText>
-        <SortButton
-          type={
-            !productState.sortOption.sortPrice
-              ? 0
-              : productState.sortOption.priceAsc
-              ? 1
-              : 2
-          }
-          func={(e) => SortClick(e, "price")}
-        />
-      </th>
-      <th>Number of Posts</th>
-      <th>Link</th>
-      <th>Edit</th>
-      {productState.productInfo.map((product) => (
+      <thead>
         <tr>
-          <td>
+          <th>
             <input
               type="checkbox"
-              name="productId"
-              onChange={() => onCheckBoxChange(product.productId)}
-              checked={
-                productState.selectedProductIdList.includes(product.productId)
-                  ? true
-                  : false
+              onChange={CheckAllCheckBox}
+              checked={AllCheckBoxStatus()}
+            />
+          </th>
+          <th>
+            <SortText>Product Id</SortText>
+            <SortButton
+              type={
+                !productState.sortOption.sortProductId
+                  ? 0
+                  : productState.sortOption.productIdAsc
+                  ? 1
+                  : 2
               }
+              func={(e) => SortClick(e, "productId")}
             />
-          </td>
-          <td>{product.productId}</td>
-          <td>{product.productName}</td>
-          <td>
-            <input
-              type="text"
-              name="price"
-              value={product.price}
-              onChange={(e) => PriceChange(e, product.productId)}
+          </th>
+          <th>
+            <SortText>Product Name</SortText>
+            <SortButton
+              type={
+                !productState.sortOption.sortProductName
+                  ? 0
+                  : productState.sortOption.productNameAsc
+                  ? 1
+                  : 2
+              }
+              func={(e) => SortClick(e, "productName")}
             />
-          </td>
-          <td>{product.postNum}</td>
-          <td>{product.link}</td>
-          <td>
-            <Link to="/">
-              <Button text="Edit"></Button>
-            </Link>
-          </td>
+          </th>
+          <th>
+            <SortText>Price</SortText>
+            <SortButton
+              type={
+                !productState.sortOption.sortPrice
+                  ? 0
+                  : productState.sortOption.priceAsc
+                  ? 1
+                  : 2
+              }
+              func={(e) => SortClick(e, "price")}
+            />
+          </th>
+          <th>Number of Posts</th>
+          <th>Link</th>
+          <th>Edit</th>
         </tr>
-      ))}
+      </thead>
+      <tbody>
+        {productState.productInfo.map((product) => (
+          <tr key={product.productId}>
+            <td>
+              <input
+                type="checkbox"
+                name="productId"
+                onChange={() => onCheckBoxChange(product.productId)}
+                checked={
+                  productState.selectedProductIdList.includes(product.productId)
+                    ? true
+                    : false
+                }
+              />
+            </td>
+            <td>{product.productId}</td>
+            <td>{product.productName}</td>
+            <td>
+              <input
+                type="text"
+                name="price"
+                value={product.price}
+                onChange={(e) => PriceChange(e, product.productId)}
+              />
+            </td>
+            <td>{product.postNum}</td>
+            <td>{product.link}</td>
+            <td>
+              <PageChangeButton
+                text="edit"
+                href={"/productdetail/" + product.productId}
+              />
+            </td>
+          </tr>
+        ))}
+      </tbody>
     </Table>
   );
 };

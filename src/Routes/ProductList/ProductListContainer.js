@@ -184,6 +184,10 @@ export default () => {
       let products = [];
       for (const id of productState.selectedProductIdList) {
         for (const eachData of productState.productInfo) {
+          if (isNaN(Number(eachData.price))) {
+            toast.error("Invalid Price Value.");
+            return;
+          }
           if (id === eachData.productId) {
             products.push({
               id: id,
@@ -214,8 +218,6 @@ export default () => {
       }
     }
   };
-
-  console.log(productState);
 
   return (
     <ProductListContext.Provider value={{ productState, productDispatch }}>

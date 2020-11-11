@@ -1,10 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { EventListContext } from "./EventListContainer";
-import Button from "../../Components/Button";
 import SortButton from "../../Components/SortButton";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import PageChangeButton from "../../Components/PageChangeButton";
 import {
   KeyboardDatePicker,
