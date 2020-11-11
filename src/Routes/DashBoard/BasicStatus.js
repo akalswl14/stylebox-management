@@ -98,25 +98,25 @@ export const DashboardBasicStatus = ({ data }) => (
       <tbody>
         <tr>
           <th className="tableTitle">Avg.Likes</th>
-          <td>{data.AvgShopLikeNum}</td>
-          <td>{data.AvgPostLikeNum}</td>
-          <td>{data.AvgEventLikeNum}</td>
+          <td>{Number(data.AvgShopLikeNum).toFixed(2)}</td>
+          <td>{Number(data.AvgPostLikeNum).toFixed(2)}</td>
+          <td>{Number(data.AvgEventLikeNum).toFixed(2)}</td>
           <th className="tableTitle">Total Likes</th>
-          <td>{data.TotalShopLikeNum}</td>
-          <td>{data.TotalPostLikeNum}</td>
-          <td>{data.TotalEventLikeNum}</td>
+          <td>{Number(data.TotalShopLikeNum).toFixed(2)}</td>
+          <td>{Number(data.TotalPostLikeNum).toFixed(2)}</td>
+          <td>{Number(data.TotalEventLikeNum).toFixed(2)}</td>
         </tr>
       </tbody>
       <tbody>
         <tr>
           <th className="tableTitle">Avg.Views</th>
-          <td>{data.AvgShopViewNum}</td>
-          <td>{data.AvgPostViewNum}</td>
-          <td>{data.AvgEventViewNum}</td>
+          <td>{Number(data.AvgShopViewNum).toFixed(2)}</td>
+          <td>{Number(data.AvgPostViewNum).toFixed(2)}</td>
+          <td>{Number(data.AvgEventViewNum).toFixed(2)}</td>
           <th className="tableTitle">Total Views</th>
-          <td>{data.TotalShopViewNum}</td>
-          <td>{data.TotalPostViewNum}</td>
-          <td>{data.TotalEventViewNum}</td>
+          <td>{Number(data.TotalShopViewNum).toFixed(2)}</td>
+          <td>{Number(data.TotalPostViewNum).toFixed(2)}</td>
+          <td>{Number(data.TotalEventViewNum).toFixed(2)}</td>
         </tr>
       </tbody>
     </Table>
