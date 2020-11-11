@@ -196,6 +196,7 @@ export default ({ onSubmit, loading, data, error }) => {
           ),
           LinkTypeData: data.getLinkTypeOption,
           DeleteImageList: [],
+          isDataUpdated: true,
         };
         ShopInfoDispatch({
           type: "UPDATE_BATCH",
