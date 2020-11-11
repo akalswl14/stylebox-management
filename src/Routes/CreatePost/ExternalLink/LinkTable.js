@@ -95,7 +95,7 @@ const LinkTable = ({ linkTypes, data }) => {
     if (url.includes("https://") || url.includes("http://")) {
       window.open(`${data.url}`, "_blank");
     } else {
-      alert("유효한 주소가 아닙니다.");
+      alert("This is not a valid address");
     }
   };
 
