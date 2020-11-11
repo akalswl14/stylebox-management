@@ -228,8 +228,6 @@ export default () => {
     }
   };
 
-  console.log(postState);
-
   return (
     <PostListContext.Provider value={{ postState, postDispatch }}>
       <PostListPresenter

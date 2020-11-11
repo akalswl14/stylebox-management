@@ -10,6 +10,7 @@ import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import SearchButton from "../../Components/SearchButton";
 import PostListTable from "./PostListTable";
+import PageChangeButton from "../../Components/PageChangeButton";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -105,6 +106,11 @@ export default ({ loading, data, error, onSubmit }) => {
       },
     });
   };
+
+  const ExportToExcel = (e) => {
+    e.preventDefault();
+  };
+
   if (error) return `Error! ${error.message}`;
   if (loading)
     return (
@@ -171,10 +177,8 @@ export default ({ loading, data, error, onSubmit }) => {
               </SearchBox>
             </form>
             <ButtonBox>
-              <Link to="/createpost">
-                <Button text="Add New Post"></Button>
-              </Link>
-              <Button text="Download List"></Button>
+              <PageChangeButton text="Add New Post" href="/createpost" />
+              <Button text="Download List" ClickEvent={ExportToExcel}></Button>
             </ButtonBox>
           </TitleBox>
           <form onSubmit={onSubmit}>
