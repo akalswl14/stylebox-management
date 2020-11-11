@@ -34,7 +34,6 @@ const initialState = {
     Address: "",
     Tag: "",
   },
-  isDataUpdated: false,
 };
 
 function reducer(state, action) {

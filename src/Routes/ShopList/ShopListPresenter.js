@@ -10,6 +10,7 @@ import SortButton from "../../Components/SortButton";
 import Pagination from "react-pagination-js";
 import SearchButton from "../../Components/SearchButton";
 import PageChangeButton from "../../Components/PageChangeButton";
+import { toast } from "react-toastify";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -252,18 +253,52 @@ export default ({ onSubmit, loading, error, data }) => {
 
   if (error) return <WrapPage>`Error! ${error.message}`</WrapPage>;
 
-  if (loading)
+  if (loading) {
     return (
       <Wrapper>
         <Loader />
       </Wrapper>
     );
+  }
   if (!loading && data) {
     if (!data.getShopList || !data.getShopList.shops) {
-      ShopListDispatch({
-        type: "UPDATE_BATCH",
-        data: { ...ShopListState, isDataUpdated: true },
-      });
+      toast.error("Error occured gettig data.");
+      return (
+        <WrapPage>
+          <TitleBox>
+            <PageTitle text={"Shop List"} />
+          </TitleBox>
+          <Table>
+            <thead>
+              <tr>
+                <th className="CheckBoxCell">
+                  <input type="checkbox" />
+                </th>
+                <th>
+                  <SortText>Shop ID</SortText>
+                </th>
+                <th>
+                  <SortText>Shop Name</SortText>
+                </th>
+                <th>PhoneNumber</th>
+                <th>Address</th>
+                <th>Thumbnail Tags</th>
+                <th>
+                  <SortText>Rank</SortText>
+                </th>
+                <th>
+                  <SortText>Weight</SortText>
+                </th>
+                <th>Posts</th>
+                <th>Products</th>
+                <th>Likes</th>
+                <th>Views</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+          </Table>
+        </WrapPage>
+      );
     }
     const CheckAllCheckBox = (e) => {
       let BatchShopList = ShopListState.SelectedShopList;
@@ -301,175 +336,165 @@ export default ({ onSubmit, loading, error, data }) => {
       console.log("Export to Excel");
     };
 
-    if (!ShopListState.isDataUpdated) {
-      return (
-        <Wrapper>
-          <Loader />
-        </Wrapper>
-      );
-    } else {
-      return (
-        <WrapPage>
-          <Form>
-            <TitleBox>
-              <PageTitle text={"Shop List"} />
-              <ButtonBox>
-                <PageChangeButton text="Add New Shop" href="/createshop" />
-                <Button
-                  text="Export to Excel"
-                  ClickEvent={ExportToExcel}
-                  isButtonType={true}
-                />
-              </ButtonBox>
-            </TitleBox>
-            <SearchContainer>
-              <select
-                name="SearchTypeBox"
-                defaultValue={ShopListState.SearchOption.SearchSelectBox}
-                onChange={(e) => ChangeSearchSelectBox(e)}
-              >
-                <option value="ShopID" key={0}>
-                  ShopID
-                </option>
-                <option value="ShopName" key={1}>
-                  Shop Name
-                </option>
-                <option value="PhoneNumber" key={2}>
-                  PhoneNumber
-                </option>
-                <option value="Address" key={3}>
-                  Address
-                </option>
-                <option value="Tag" key={4}>
-                  Tag
-                </option>
-              </select>
-              <input
-                type="text"
-                name="SearchKeywordInput"
-                value={ShopListState.SearchOption.SearchKeyWord}
-                onChange={(e) => ChangeSearchKeyword(e)}
-                onKeyPress={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    SearchShopList(e);
-                  }
-                }}
+    return (
+      <WrapPage>
+        <Form>
+          <TitleBox>
+            <PageTitle text={"Shop List"} />
+            <ButtonBox>
+              <PageChangeButton text="Add New Shop" href="/createshop" />
+              <Button
+                text="Export to Excel"
+                ClickEvent={ExportToExcel}
+                isButtonType={true}
               />
-              <SearchButton ClickEvent={SearchShopList} />
-            </SearchContainer>
-            <Table>
-              <thead>
-                <tr>
-                  <th className="CheckBoxCell">
-                    <input
-                      type="checkbox"
-                      onClick={(e) => CheckAllCheckBox(e)}
-                      checked={AllCheckBoxStatus()}
-                    />
-                  </th>
-                  <th>
-                    <SortText>Shop ID</SortText>
-                    <SortButton
-                      type={
-                        !ShopListState.SortOption.SortShopId
-                          ? 0
-                          : ShopListState.SortOption.shopIdAsc
-                          ? 1
-                          : 2
-                      }
-                      func={(e) => SortClick(e, "ShopId")}
-                    />
-                  </th>
-                  <th>
-                    <SortText>Shop Name</SortText>
-                    <SortButton
-                      type={
-                        !ShopListState.SortOption.SortShopName
-                          ? 0
-                          : ShopListState.SortOption.ShopNameAsc
-                          ? 1
-                          : 2
-                      }
-                      func={(e) => SortClick(e, "ShopName")}
-                    />
-                  </th>
-                  <th>PhoneNumber</th>
-                  <th>Address</th>
-                  <th>Thumbnail Tags</th>
-                  <th>
-                    <SortText>Rank</SortText>
-                    <SortButton
-                      type={
-                        !ShopListState.SortOption.SortRank
-                          ? 0
-                          : ShopListState.SortOption.RankAsc
-                          ? 1
-                          : 2
-                      }
-                      func={(e) => SortClick(e, "Rank")}
-                    />
-                  </th>
-                  <th>
-                    <SortText>Weight</SortText>
-                    <SortButton
-                      type={
-                        !ShopListState.SortOption.SortWeight
-                          ? 0
-                          : ShopListState.SortOption.WeightAsc
-                          ? 1
-                          : 2
-                      }
-                      func={(e) => SortClick(e, "Weight")}
-                    />
-                  </th>
-                  <th>Posts</th>
-                  <th>Products</th>
-                  <th>Likes</th>
-                  <th>Views</th>
-                  <th>Edit</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.getShopList.shops.map((eachShop) => (
-                  <ShopDataRow data={eachShop} key={eachShop.shopId} />
-                ))}
-              </tbody>
-            </Table>
-            <DeleteButtonBox>
-              <Button
-                text="Edit Selected"
-                name="EditButton"
-                ClickEvent={onSubmit}
-              ></Button>
-              <Button
-                text="Delete Selected"
-                name="DeleteButton"
-                ClickEvent={onSubmit}
-              ></Button>
-            </DeleteButtonBox>
-            <SelectedShopContainer>
-              Selected Shop : {ShopListState.SelectedShopList.toString()}
-            </SelectedShopContainer>
-            <SelectedShopContainer>
-              Edited Shop :{" "}
-              {ShopListState.WeightData.map(
-                (eachData) => eachData.id
-              ).toString()}
-            </SelectedShopContainer>
-          </Form>
-          <PaginationWrapper>
-            <Pagination
-              currentPage={ShopListState.pageNum}
-              totalSize={data.getShopList.totalShopNum}
-              sizePerPage={13}
-              theme="bootstrap"
-              changeCurrentPage={(e) => ChangeCurrentPage(e)}
-              numberOfPagesNextToActivePage={3}
+            </ButtonBox>
+          </TitleBox>
+          <SearchContainer>
+            <select
+              name="SearchTypeBox"
+              defaultValue={ShopListState.SearchOption.SearchSelectBox}
+              onChange={(e) => ChangeSearchSelectBox(e)}
+            >
+              <option value="ShopID" key={0}>
+                ShopID
+              </option>
+              <option value="ShopName" key={1}>
+                Shop Name
+              </option>
+              <option value="PhoneNumber" key={2}>
+                PhoneNumber
+              </option>
+              <option value="Address" key={3}>
+                Address
+              </option>
+              <option value="Tag" key={4}>
+                Tag
+              </option>
+            </select>
+            <input
+              type="text"
+              name="SearchKeywordInput"
+              value={ShopListState.SearchOption.SearchKeyWord}
+              onChange={(e) => ChangeSearchKeyword(e)}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  SearchShopList(e);
+                }
+              }}
             />
-          </PaginationWrapper>
-        </WrapPage>
-      );
-    }
+            <SearchButton ClickEvent={SearchShopList} />
+          </SearchContainer>
+          <Table>
+            <thead>
+              <tr>
+                <th className="CheckBoxCell">
+                  <input
+                    type="checkbox"
+                    onClick={(e) => CheckAllCheckBox(e)}
+                    checked={AllCheckBoxStatus()}
+                  />
+                </th>
+                <th>
+                  <SortText>Shop ID</SortText>
+                  <SortButton
+                    type={
+                      !ShopListState.SortOption.SortShopId
+                        ? 0
+                        : ShopListState.SortOption.shopIdAsc
+                        ? 1
+                        : 2
+                    }
+                    func={(e) => SortClick(e, "ShopId")}
+                  />
+                </th>
+                <th>
+                  <SortText>Shop Name</SortText>
+                  <SortButton
+                    type={
+                      !ShopListState.SortOption.SortShopName
+                        ? 0
+                        : ShopListState.SortOption.ShopNameAsc
+                        ? 1
+                        : 2
+                    }
+                    func={(e) => SortClick(e, "ShopName")}
+                  />
+                </th>
+                <th>PhoneNumber</th>
+                <th>Address</th>
+                <th>Thumbnail Tags</th>
+                <th>
+                  <SortText>Rank</SortText>
+                  <SortButton
+                    type={
+                      !ShopListState.SortOption.SortRank
+                        ? 0
+                        : ShopListState.SortOption.RankAsc
+                        ? 1
+                        : 2
+                    }
+                    func={(e) => SortClick(e, "Rank")}
+                  />
+                </th>
+                <th>
+                  <SortText>Weight</SortText>
+                  <SortButton
+                    type={
+                      !ShopListState.SortOption.SortWeight
+                        ? 0
+                        : ShopListState.SortOption.WeightAsc
+                        ? 1
+                        : 2
+                    }
+                    func={(e) => SortClick(e, "Weight")}
+                  />
+                </th>
+                <th>Posts</th>
+                <th>Products</th>
+                <th>Likes</th>
+                <th>Views</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.getShopList.shops.map((eachShop) => (
+                <ShopDataRow data={eachShop} key={eachShop.shopId} />
+              ))}
+            </tbody>
+          </Table>
+          <DeleteButtonBox>
+            <Button
+              text="Edit Selected"
+              name="EditButton"
+              ClickEvent={onSubmit}
+            ></Button>
+            <Button
+              text="Delete Selected"
+              name="DeleteButton"
+              ClickEvent={onSubmit}
+            ></Button>
+          </DeleteButtonBox>
+          <SelectedShopContainer>
+            Selected Shop : {ShopListState.SelectedShopList.toString()}
+          </SelectedShopContainer>
+          <SelectedShopContainer>
+            Edited Shop :{" "}
+            {ShopListState.WeightData.map((eachData) => eachData.id).toString()}
+          </SelectedShopContainer>
+        </Form>
+        <PaginationWrapper>
+          <Pagination
+            currentPage={ShopListState.pageNum}
+            totalSize={data.getShopList.totalShopNum}
+            sizePerPage={13}
+            theme="bootstrap"
+            changeCurrentPage={(e) => ChangeCurrentPage(e)}
+            numberOfPagesNextToActivePage={3}
+          />
+        </PaginationWrapper>
+      </WrapPage>
+    );
   }
 };
