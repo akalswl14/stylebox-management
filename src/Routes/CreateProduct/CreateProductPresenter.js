@@ -11,6 +11,7 @@ import BasicStatus from "./BasicStatus";
 import TagInformationContainer from "./TagInformation";
 import BranchInfoContainer from "./BranchManagement";
 import ProductDescription from "./ProductDescription";
+import { toast } from "react-toastify";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -60,46 +61,63 @@ export default ({ onSubmit, loading, data, error }) => {
 
   if (!loading && data) {
     useEffect(() => {
-      let updateData = {
-        ...ProductInfoState,
-        ShopData: data.getShopOption,
-        CategoryData: data.getManageCategoryOptions.filter(
-          (category) => category !== "ShopName"
-        ),
-      };
-      ProductInfoDispatch({
-        type: "UPDATE_BATCH",
-        data: updateData,
-      });
+      try {
+        let updateData = {
+          ...ProductInfoState,
+          ShopData: data.getShopOption,
+          CategoryData: data.getManageCategoryOptions.filter(
+            (category) => category !== "ShopName"
+          ),
+          isDataUpdated: true,
+        };
+        ProductInfoDispatch({
+          type: "UPDATE_BATCH",
+          data: updateData,
+        });
+      } catch {
+        toast.error("Error occured getting data.");
+        ProductInfoDispatch({
+          type: "UPDATE_BATCH",
+          data: { ...ProductInfoState, isDataUpdated: true },
+        });
+      }
     }, []);
 
-    return (
-      <WrapPage>
-        <Form>
-          <TitleBox>
-            <PageTitle text={"Product Management"} />
-            <ButtonBox>
-              <PageChangeButton text="Back to List" href="/productlist" />
-              <Button text="Confirm" ClickEvent={onSubmit} />
-            </ButtonBox>
-          </TitleBox>
-          <SectionWrapper>
-            <BasicInformation />
-          </SectionWrapper>
-          <SectionWrapper>
-            <BasicStatus />
-          </SectionWrapper>
-          <SectionWrapper>
-            <TagInformationContainer />
-          </SectionWrapper>
-          <SectionWrapper>
-            <BranchInfoContainer />
-          </SectionWrapper>
-          <SectionWrapper>
-            <ProductDescription />
-          </SectionWrapper>
-        </Form>
-      </WrapPage>
-    );
+    if (!ProductInfoState.isDataUpdated) {
+      return (
+        <Wrapper>
+          <Loader />
+        </Wrapper>
+      );
+    } else {
+      return (
+        <WrapPage>
+          <Form>
+            <TitleBox>
+              <PageTitle text={"Product Management"} />
+              <ButtonBox>
+                <PageChangeButton text="Back to List" href="/productlist" />
+                <Button text="Confirm" ClickEvent={onSubmit} />
+              </ButtonBox>
+            </TitleBox>
+            <SectionWrapper>
+              <BasicInformation />
+            </SectionWrapper>
+            <SectionWrapper>
+              <BasicStatus />
+            </SectionWrapper>
+            <SectionWrapper>
+              <TagInformationContainer />
+            </SectionWrapper>
+            <SectionWrapper>
+              <BranchInfoContainer />
+            </SectionWrapper>
+            <SectionWrapper>
+              <ProductDescription />
+            </SectionWrapper>
+          </Form>
+        </WrapPage>
+      );
+    }
   }
 };

@@ -77,7 +77,7 @@ export default ({
     const categories = data_CategoryData.getManageCategoryOptions.filter(
       (category) => category !== "ShopName"
     );
-    const linkTypes = data_LinkTypeData.getLinkTypeOption;
+    const linkTypes = data_LinkTypeData.getLinkTypeOption ?? [];
     return (
       <WrapPage>
         <Form>

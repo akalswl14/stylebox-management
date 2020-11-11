@@ -41,6 +41,7 @@ const initialState = {
   CategoryData: [],
   LinkTypeData: [],
   DeleteImageList: [],
+  isDataUpdated: false,
 };
 
 function reducer(state, action) {

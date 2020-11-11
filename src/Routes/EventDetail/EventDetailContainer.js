@@ -38,6 +38,7 @@ const initialState = {
   DetailImages: { value: [], isChange: false },
   CategoryData: [],
   DeleteImageList: [],
+  isDataUpdated: false,
 };
 
 function reducer(state, action) {

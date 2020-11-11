@@ -8,6 +8,7 @@ import { MainTagIcon } from "./MainTagIcon";
 import { BestTagIcon } from "./BestTagIcon";
 import { ShopTagIcon } from "./ShopTagIcon";
 import { TagIconContext } from "./TagIconContainer";
+import { toast } from "react-toastify";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -57,58 +58,70 @@ export default ({
       </Wrapper>
     );
   if (!loading && data && !loading_CategoryData && data_CategoryData) {
-    const { TagIconDispatch } = useContext(TagIconContext);
+    const { TagIconState, TagIconDispatch } = useContext(TagIconContext);
     useEffect(() => {
-      let idIdx = 1;
-      let MainIconRowData = data.getSettingMainBubbles.map((eachData) => {
-        let tagData = {
-          id: idIdx,
-          order: idIdx,
-          category: eachData.category,
-          classId: eachData.classId,
-          className: eachData.className,
-          tagId: eachData.tagId,
-          tagName: eachData.tagName,
-        };
-        idIdx++;
-        return tagData;
-      });
-      idIdx = 1;
-      let BestIconRowData = data.getSettingBestBubbles.map((eachData) => {
-        let tagData = {
-          id: idIdx,
-          order: idIdx,
-          category: eachData.category,
-          classId: eachData.classId,
-          className: eachData.className,
-          tagId: eachData.tagId,
-          tagName: eachData.tagName,
-        };
-        idIdx++;
-        return tagData;
-      });
-      idIdx = 1;
-      let ShopIconRowData = data.getSettingShopBubbles.map((eachData) => {
-        let tagData = {
-          id: idIdx,
-          order: idIdx,
-          category: eachData.category,
-          classId: eachData.classId,
-          className: eachData.className,
-          tagId: eachData.tagId,
-          tagName: eachData.tagName,
-        };
-        idIdx++;
-        return tagData;
-      });
-      TagIconDispatch({
-        type: "SET_DATA",
-        data: {
-          MainIconRowData,
-          BestIconRowData,
-          ShopIconRowData,
-        },
-      });
+      try {
+        let idIdx = 1;
+        let MainIconRowData = data.getSettingMainBubbles.map((eachData) => {
+          let tagData = {
+            id: idIdx,
+            order: idIdx,
+            category: eachData.category,
+            classId: eachData.classId,
+            className: eachData.className,
+            tagId: eachData.tagId,
+            tagName: eachData.tagName,
+          };
+          idIdx++;
+          return tagData;
+        });
+        idIdx = 1;
+        let BestIconRowData = data.getSettingBestBubbles.map((eachData) => {
+          let tagData = {
+            id: idIdx,
+            order: idIdx,
+            category: eachData.category,
+            classId: eachData.classId,
+            className: eachData.className,
+            tagId: eachData.tagId,
+            tagName: eachData.tagName,
+          };
+          idIdx++;
+          return tagData;
+        });
+        idIdx = 1;
+        let ShopIconRowData = data.getSettingShopBubbles.map((eachData) => {
+          let tagData = {
+            id: idIdx,
+            order: idIdx,
+            category: eachData.category,
+            classId: eachData.classId,
+            className: eachData.className,
+            tagId: eachData.tagId,
+            tagName: eachData.tagName,
+          };
+          idIdx++;
+          return tagData;
+        });
+        TagIconDispatch({
+          type: "SET_DATA",
+          data: {
+            MainIconRowData,
+            BestIconRowData,
+            ShopIconRowData,
+            isDataUpdated: true,
+          },
+        });
+      } catch {
+        toast.error("Error occured getting data.");
+        TagIconDispatch({
+          type: "SET_DATA",
+          data: {
+            ...TagIconState,
+            isDataUpdated: true,
+          },
+        });
+      }
     }, []);
     const categories = data_CategoryData.getManageCategoryOptions.filter(
       (category) =>
@@ -117,26 +130,34 @@ export default ({
         category !== "Location" &&
         category !== "Price"
     );
-    return (
-      <WrapPage>
-        <Form onSubmit={onSubmit}>
-          <TitleBox>
-            <PageTitle text={"Tag Icon Management"} />
-            <ButtonBox>
-              <Button text="Confirm"></Button>
-            </ButtonBox>
-          </TitleBox>
-          <SectionWrapper>
-            <MainTagIcon categories={["Style"]} />
-          </SectionWrapper>
-          <SectionWrapper>
-            <BestTagIcon categories={["ProductClass"]} />
-          </SectionWrapper>
-          <SectionWrapper>
-            <ShopTagIcon categories={categories} />
-          </SectionWrapper>
-        </Form>
-      </WrapPage>
-    );
+    if (!TagIconState.isDataUpdated) {
+      return (
+        <Wrapper>
+          <Loader />
+        </Wrapper>
+      );
+    } else {
+      return (
+        <WrapPage>
+          <Form onSubmit={onSubmit}>
+            <TitleBox>
+              <PageTitle text={"Tag Icon Management"} />
+              <ButtonBox>
+                <Button text="Confirm"></Button>
+              </ButtonBox>
+            </TitleBox>
+            <SectionWrapper>
+              <MainTagIcon categories={["Style"]} />
+            </SectionWrapper>
+            <SectionWrapper>
+              <BestTagIcon categories={["ProductClass"]} />
+            </SectionWrapper>
+            <SectionWrapper>
+              <ShopTagIcon categories={categories} />
+            </SectionWrapper>
+          </Form>
+        </WrapPage>
+      );
+    }
   }
 };

@@ -14,6 +14,7 @@ const initialState = {
   MainIconRowData: [],
   BestIconRowData: [],
   ShopIconRowData: [],
+  isDataUpdated: false,
 };
 
 function reducer(state, action) {

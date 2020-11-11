@@ -33,6 +33,7 @@ const initialState = {
   MainVideos: { value: [] },
   DetailImages: { value: [] },
   CategoryData: [],
+  isDataUpdated: false,
 };
 
 function reducer(state, action) {

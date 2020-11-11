@@ -8,6 +8,7 @@ import Loader from "../../Components/Loader";
 import Button from "../../Components/Button";
 import { BannerContext } from "./BannerContainer";
 import BannerDataRow from "./BannerDataRow";
+import { toast } from "react-toastify";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -83,25 +84,38 @@ export default ({ onSubmit, loading, error, data }) => {
     );
   if (!loading && data) {
     const { BannerState, BannerDispatch } = useContext(BannerContext);
+
     useEffect(() => {
-      let idIdx = 1;
-      let BannerData = data.getSettingEventBanner.map((eachData) => {
-        let eachBannerData = {
-          id: idIdx,
-          order: idIdx,
-          title: eachData.title,
-          eventId: eachData.eventId,
-          bannerImage: eachData.bannerImage,
-        };
-        idIdx++;
-        return eachBannerData;
-      });
-      BannerDispatch({
-        type: "SET_DATA",
-        data: {
-          BannerData,
-        },
-      });
+      try {
+        let idIdx = 1;
+        let BannerData = data.getSettingEventBanner.map((eachData) => {
+          let eachBannerData = {
+            id: idIdx,
+            order: idIdx,
+            title: eachData.title,
+            eventId: eachData.eventId,
+            bannerImage: eachData.bannerImage,
+          };
+          idIdx++;
+          return eachBannerData;
+        });
+        BannerDispatch({
+          type: "SET_DATA",
+          data: {
+            BannerData,
+            isDataUpdated: true,
+          },
+        });
+      } catch (e) {
+        toast.error("Error occured getting data.");
+        BannerDispatch({
+          type: "SET_DATA",
+          data: {
+            BannerData: [],
+            isDataUpdated: true,
+          },
+        });
+      }
     }, []);
 
     const addRow = (e) => {
@@ -120,39 +134,47 @@ export default ({ onSubmit, loading, error, data }) => {
       });
     };
 
-    return (
-      <WrapPage>
-        <Form onSubmit={onSubmit}>
-          <TitleBox>
-            <PageTitle text={"Banner Management"} />
-            <ButtonBox>
-              <Button text="Confirm"></Button>
-            </ButtonBox>
-          </TitleBox>
-          <SectionTitle text={"Event Banner Management ( in Main Page )"} />
-          <Table>
-            <thead>
-              <tr>
-                <th className="orderInputCell">Order</th>
-                <th>Event ID</th>
-                <th>Event Title</th>
-                <th>Image Thumbnail</th>
-                <th>Enlarge Image</th>
-                <th className="buttonCell">
-                  <RowButton onClick={(e) => addRow(e)}>
-                    <PlusIcon size={19} />
-                  </RowButton>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {BannerState.BannerData.map((eachRow, index) => (
-                <BannerDataRow data={eachRow} key={index} />
-              ))}
-            </tbody>
-          </Table>
-        </Form>
-      </WrapPage>
-    );
+    if (!BannerState.isDataUpdated) {
+      return (
+        <Wrapper>
+          <Loader />
+        </Wrapper>
+      );
+    } else {
+      return (
+        <WrapPage>
+          <Form onSubmit={onSubmit}>
+            <TitleBox>
+              <PageTitle text={"Banner Management"} />
+              <ButtonBox>
+                <Button text="Confirm"></Button>
+              </ButtonBox>
+            </TitleBox>
+            <SectionTitle text={"Event Banner Management ( in Main Page )"} />
+            <Table>
+              <thead>
+                <tr>
+                  <th className="orderInputCell">Order</th>
+                  <th>Event ID</th>
+                  <th>Event Title</th>
+                  <th>Image Thumbnail</th>
+                  <th>Enlarge Image</th>
+                  <th className="buttonCell">
+                    <RowButton onClick={(e) => addRow(e)}>
+                      <PlusIcon size={19} />
+                    </RowButton>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {BannerState.BannerData.map((eachRow, index) => (
+                  <BannerDataRow data={eachRow} key={index} />
+                ))}
+              </tbody>
+            </Table>
+          </Form>
+        </WrapPage>
+      );
+    }
   }
 };
