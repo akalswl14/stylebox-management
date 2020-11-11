@@ -78,6 +78,7 @@ export default () => {
         <tr>
           <th className="orderInputCell">Order</th>
           <th>Youtube URL</th>
+          <th>Youtube Thumbnail</th>
           <th className="checkButtonCell">Check</th>
           <th className="buttonCell">
             <RowButton onClick={(e) => addRow(e)}>

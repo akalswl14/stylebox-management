@@ -3,6 +3,7 @@ import { DeleteIcon } from "../../../Components/Icons";
 import styled from "styled-components";
 import { PostInfoContext } from "../PostInfoContainer";
 import Button from "../../../Components/Button";
+import YoutubeThumbnail from "../../../Components/YoutubeThumbnail";
 
 const OrderInputBox = styled.input`
   width: 30px;
@@ -65,9 +66,6 @@ const ImageTable = ({ data }) => {
     }
   };
 
-  let youtubeUrl = String(data.url).split("/");
-  let youtubeSrc = "https://www.youtube.com/embed/" + youtubeUrl[3];
-
   return (
     <tr id={data.id}>
       <td>
@@ -83,18 +81,7 @@ const ImageTable = ({ data }) => {
         <input name="url" type="text" value={data.url} onChange={onChange} />
       </td>
       <td>
-        {data.url !== "" ? (
-          <iframe
-            width="300px"
-            height="200px"
-            src={youtubeSrc}
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
-        ) : (
-          <></>
-        )}
+        <YoutubeThumbnail url={data.url} />
       </td>
       <td>
         <Button text={"Check"} ClickEvent={ClickEvent} />
