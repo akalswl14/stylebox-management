@@ -157,6 +157,7 @@ export default () => {
         order: Number(eachTag.order),
       });
     }
+    rtnTagList.sort((a, b) => a.order - b.order);
     let LinkOrderList = [];
     let rtnExternalLinkList = [];
     for (const eachLink of ShopInfoState.ExternalLink) {

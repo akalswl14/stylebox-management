@@ -153,6 +153,7 @@ export default ({ match }) => {
         });
       }
     }
+    rtnTagList.sort((a, b) => a.order - b.order);
     let LinkOrderList = [];
     let rtnExternalLinkList = [];
     if (ShopInfoState.ExternalLink.isChange) {
@@ -342,12 +343,12 @@ export default ({ match }) => {
       externalLinks: ShopInfoState.ExternalLink.isChange
         ? rtnExternalLinkList
         : null,
-      isFacebookLinkChage: ShopInfoState.SocialMediaLink.FacebookLink.isChange,
+      isFacebookLinkChange: ShopInfoState.SocialMediaLink.FacebookLink.isChange,
       FacebookLink: ShopInfoState.SocialMediaLink.FacebookLink.value,
-      isInstagramLinkChage:
+      isInstagramLinkChange:
         ShopInfoState.SocialMediaLink.InstagramLink.isChange,
       InstagramLink: ShopInfoState.SocialMediaLink.InstagramLink.value,
-      isYoutubeLinkChage: ShopInfoState.SocialMediaLink.YoutubeLink.isChange,
+      isYoutubeLinkChange: ShopInfoState.SocialMediaLink.YoutubeLink.isChange,
       YoutubeLink: ShopInfoState.SocialMediaLink.YoutubeLink.value,
       shopImages: ShopInfoState.ShopImagesManagement.isChange
         ? rtnImageList
