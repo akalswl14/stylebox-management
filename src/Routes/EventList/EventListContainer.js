@@ -41,28 +41,6 @@ function reducer(state, action) {
         eventInfo: action.data.eventInfo,
       };
     case "UPDATE_EVENT":
-      if (action.data.name === "eventStart") {
-        let eventInfo = state.eventInfo.map((eachEvent) =>
-          eachEvent.eventId === action.data.eventId
-            ? { ...eachEvent, eventStart: action.data.value + "T00:00:00.000Z" }
-            : eachEvent
-        );
-        return {
-          ...state,
-          eventInfo,
-        };
-      }
-      if (action.data.name === "eventEnd") {
-        let eventInfo = state.eventInfo.map((eachEvent) =>
-          eachEvent.eventId === action.data.eventId
-            ? { ...eachEvent, eventEnd: action.data.value + "T00:00:00.000Z" }
-            : eachEvent
-        );
-        return {
-          ...state,
-          eventInfo,
-        };
-      }
       if (action.data.name === "isOnList") {
         let eventInfo = state.eventInfo.map((eachEvent) =>
           eachEvent.eventId === action.data.eventId
@@ -74,6 +52,26 @@ function reducer(state, action) {
           eventInfo,
         };
       }
+    case "UPDATE_STARTDATE":
+      let eventStartInfos = state.eventInfo.map((eachEvent) =>
+        eachEvent.eventId === action.data.eventId
+          ? { ...eachEvent, eventStart: action.data.date }
+          : eachEvent
+      );
+      return {
+        ...state,
+        eventInfo: eventStartInfos,
+      };
+    case "UPDATE_ENDDATE":
+      let eventEndInfos = state.eventInfo.map((eachEvent) =>
+        eachEvent.eventId === action.data.eventId
+          ? { ...eachEvent, eventEnd: action.data.date }
+          : eachEvent
+      );
+      return {
+        ...state,
+        eventInfo: eventEndInfos,
+      };
     case "UPDATE_PAGENUM":
       return { ...state, pageNum: action.data.pageNum };
     case "UPDATE_SEARCH":
@@ -214,10 +212,16 @@ export default () => {
       for (const id of eventState.selectedEventIdList) {
         for (const eachData of eventState.eventInfo) {
           if (id === eachData.eventId) {
+            let rtnStartDate = new Date(eachData.eventStart);
+            let rtnEndDate = new Date(eachData.eventEnd);
+            rtnStartDate.setUTCHours(17, 0, 0, 0);
+            rtnEndDate.setUTCHours(17, 0, 0, 0);
+
             events.push({
               eventId: eachData.eventId,
-              eventStart: eachData.eventStart,
-              eventEnd: eachData.eventEnd,
+              eventStart: rtnStartDate,
+              eventEnd: rtnEndDate,
+              isOnList: eachData.isOnList,
             });
           }
         }

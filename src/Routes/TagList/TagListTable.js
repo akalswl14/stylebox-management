@@ -1,9 +1,8 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { TagListContext } from "./TagListContainer";
-import Button from "../../Components/Button";
 import SortButton from "../../Components/SortButton";
-import { Link } from "react-router-dom";
+import PageChangeButton from "../../Components/PageChangeButton";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -138,83 +137,87 @@ const TagListTable = ({ data }) => {
   };
   return (
     <Table>
-      <th>
-        <input
-          type="checkbox"
-          onChange={CheckAllCheckBox}
-          checked={AllCheckBoxStatus()}
-        />
-      </th>
-      <th>
-        <SortText>Tag Id</SortText>
-        <SortButton
-          type={
-            !tagState.sortOption.sortTagId
-              ? 0
-              : tagState.sortOption.tagIdAsc
-              ? 1
-              : 2
-          }
-          func={(e) => SortClick(e, "tagId")}
-        />
-      </th>
-      <th>
-        <SortText>Tag Name</SortText>
-        <SortButton
-          type={
-            !tagState.sortOption.sortTagName
-              ? 0
-              : tagState.sortOption.tagNameAsc
-              ? 1
-              : 2
-          }
-          func={(e) => SortClick(e, "tagName")}
-        />
-      </th>
-      <th>
-        <SortText>Category</SortText>
-        <SortButton
-          type={
-            !tagState.sortOption.sortCategory
-              ? 0
-              : tagState.sortOption.categoryAsc
-              ? 1
-              : 2
-          }
-          func={(e) => SortClick(e, "category")}
-        />
-      </th>
-      <th>Class</th>
-      <th>Shops</th>
-      <th>Posts</th>
-      <th>Product</th>
-      <th>Edit</th>
-      {data.getTagList.tags.map((tag) => (
+      <thead>
         <tr>
-          <td>
+          <th>
             <input
               type="checkbox"
-              name="tagId"
-              onChange={() => onCheckBoxChange(tag.tagId)}
-              checked={
-                tagState.selectedTagIdList.includes(tag.tagId) ? true : false
-              }
+              onChange={CheckAllCheckBox}
+              checked={AllCheckBoxStatus()}
             />
-          </td>
-          <td>{tag.tagId}</td>
-          <td>{tag.tagName}</td>
-          <td>{tag.category}</td>
-          <td>{tag.className}</td>
-          <td>{tag.postNum}</td>
-          <td>{tag.shopNum}</td>
-          <td>{tag.productNum}</td>
-          <td>
-            <Link to={{ pathname: `/taginfo/${tag.tagId}` }}>
-              <Button text="Edit"></Button>
-            </Link>
-          </td>
+          </th>
+          <th>
+            <SortText>Tag Id</SortText>
+            <SortButton
+              type={
+                !tagState.sortOption.sortTagId
+                  ? 0
+                  : tagState.sortOption.tagIdAsc
+                  ? 1
+                  : 2
+              }
+              func={(e) => SortClick(e, "tagId")}
+            />
+          </th>
+          <th>
+            <SortText>Tag Name</SortText>
+            <SortButton
+              type={
+                !tagState.sortOption.sortTagName
+                  ? 0
+                  : tagState.sortOption.tagNameAsc
+                  ? 1
+                  : 2
+              }
+              func={(e) => SortClick(e, "tagName")}
+            />
+          </th>
+          <th>
+            <SortText>Category</SortText>
+            <SortButton
+              type={
+                !tagState.sortOption.sortCategory
+                  ? 0
+                  : tagState.sortOption.categoryAsc
+                  ? 1
+                  : 2
+              }
+              func={(e) => SortClick(e, "category")}
+            />
+          </th>
+          <th>Class</th>
+          <th>Shops</th>
+          <th>Posts</th>
+          <th>Product</th>
+          <th>Edit</th>
         </tr>
-      ))}
+      </thead>
+      <tbody>
+        {data.getTagList.tags.map((tag) => (
+          <tr key={tag.tagId}>
+            <td>
+              <input
+                type="checkbox"
+                name="tagId"
+                onChange={() => onCheckBoxChange(tag.tagId)}
+                checked={
+                  tagState.selectedTagIdList.includes(tag.tagId) ? true : false
+                }
+              />
+            </td>
+            <td>{tag.tagId}</td>
+            <td>{tag.tagName}</td>
+            <td>{tag.category}</td>
+            <td>{tag.className}</td>
+            <td>{tag.postNum}</td>
+            <td>{tag.shopNum}</td>
+            <td>{tag.productNum}</td>
+            <td>
+              <PageChangeButton text="edit" href={"/taginfo/" + tag.tagId} />
+            </td>
+          </tr>
+        ))}
+      </tbody>
     </Table>
   );
 };
