@@ -150,6 +150,7 @@ export default ({ match }) => {
         });
       }
     }
+    rtnTagList.sort((a, b) => a.order - b.order);
     let rtnImage = {
       ThumbnailImages: null,
       MainImages: [],

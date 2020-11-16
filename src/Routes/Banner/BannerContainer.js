@@ -59,11 +59,11 @@ export default () => {
       return;
     }
     for (const eachBanner of BannerState.BannerData) {
-      if (orderArr.includes(eachBanner.order)) {
+      if (orderArr.includes(Number(eachBanner.order))) {
         toast.error("Order values should not be the same.");
         return;
       }
-      if (eachBanner.order <= 0) {
+      if (Number(eachBanner.order <= 0)) {
         toast.error("Order values should be bigger than 0.");
       }
       if (eventIdArr.includes(eachBanner.eventId)) {
@@ -74,13 +74,14 @@ export default () => {
         toast.error("You have to choose event.");
         return;
       }
-      orderArr.push(eachBanner.order);
+      orderArr.push(Number(eachBanner.order));
       eventIdArr.push(eachBanner.eventId);
       mutationData.push({
         id: eachBanner.eventId,
-        order: eachBanner.order,
+        order: Number(eachBanner.order),
       });
     }
+    mutationData.sort((a, b) => a.order - b.order);
     const {
       data: { updateSettingEventBanner },
     } = await updateBanner({

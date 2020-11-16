@@ -127,6 +127,7 @@ export default () => {
         order: Number(eachTag.order),
       });
     }
+    rtnTagList.sort((a, b) => a.order - b.order);
     let rtnImage = {
       ThumbnailImages: null,
       MainImages: [],

@@ -73,11 +73,11 @@ export const UPDATE_SHOP = gql`
     $description: String
     $tags: [IdOrderInputType!]
     $externalLinks: [LinkInputType!]
-    $isFacebookLinkChage: Boolean!
+    $isFacebookLinkChange: Boolean!
     $FacebookLink: String
-    $isInstagramLinkChage: Boolean!
+    $isInstagramLinkChange: Boolean!
     $InstagramLink: String
-    $isYoutubeLinkChage: Boolean!
+    $isYoutubeLinkChange: Boolean!
     $YoutubeLink: String
     $shopImages: [ImageInputType!]
     $shopVideos: [ImageInputType!]
@@ -96,11 +96,11 @@ export const UPDATE_SHOP = gql`
       description: $description
       tags: $tags
       externalLinks: $externalLinks
-      isFacebookLinkChage: $isFacebookLinkChage
+      isFacebookLinkChange: $isFacebookLinkChange
       FacebookLink: $FacebookLink
-      isInstagramLinkChage: $isInstagramLinkChage
+      isInstagramLinkChange: $isInstagramLinkChange
       InstagramLink: $InstagramLink
-      isYoutubeLinkChage: $isYoutubeLinkChage
+      isYoutubeLinkChange: $isYoutubeLinkChange
       YoutubeLink: $YoutubeLink
       shopImages: $shopImages
       shopVideos: $shopVideos
