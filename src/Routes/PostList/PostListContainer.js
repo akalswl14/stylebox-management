@@ -176,7 +176,7 @@ export default () => {
         data: { deletePostList },
       } = await deletePosts({
         variables: {
-          productIds: postState.selectedPostIdList,
+          postIds: postState.selectedPostIdList,
         },
       });
 
