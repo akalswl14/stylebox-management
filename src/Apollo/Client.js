@@ -1,5 +1,6 @@
 import ApolloClient from "apollo-boost";
+import { API_SERVER } from "../AWS_IAM";
 
 export default new ApolloClient({
-  uri: process.env.REACT_APP_PORT,
+  uri: API_SERVER,
 });
