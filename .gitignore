@@ -57,3 +57,6 @@ sketch
 src/.env
 
 .env
+build/*
+
+build/
