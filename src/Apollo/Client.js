@@ -1,9 +1,9 @@
 import ApolloClient from "apollo-boost";
-// import { API_SERVER } from "../AWS_IAM";
+import { API_SERVER } from "../AWS_IAM";
 import { defaults, resolvers } from "./LocalState";
 
 export default new ApolloClient({
-  uri: "http://localhost:4000/",
+  uri: API_SERVER,
   clientState: {
     defaults,
     resolvers,
