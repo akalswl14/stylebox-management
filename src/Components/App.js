@@ -7,6 +7,8 @@ import Routes from "./Routes";
 import SideBar from "./SideBar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { gql } from "apollo-boost";
+import { useQuery } from "react-apollo-hooks";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -28,17 +30,29 @@ const SidebarWrapper = styled.div`
   transition: min-width 0.2s;
 `;
 
+const QUERY = gql`
+  {
+    isLoggedIn @client
+  }
+`;
+
 export default () => {
+  const {
+    data: { isLoggedIn },
+  } = useQuery(QUERY);
+
   return (
     <ThemeProvider theme={Theme}>
       <GlobalStyles />
       <Router>
         <Wrapper>
-          <Routes />
+          <Routes isLoggedIn={isLoggedIn} />
           <ToastContainer position={toast.POSITION.TOP_RIGHT} />
-          <SidebarWrapper>
-            <SideBar />
-          </SidebarWrapper>
+          {isLoggedIn && (
+            <SidebarWrapper>
+              <SideBar />
+            </SidebarWrapper>
+          )}
         </Wrapper>
       </Router>
     </ThemeProvider>

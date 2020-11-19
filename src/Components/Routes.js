@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Banner from "../Routes/Banner/index";
 import DashBoard from "../Routes/DashBoard/index";
@@ -25,8 +26,9 @@ import CreatePost from "../Routes/CreatePost/index";
 import ProductDetail from "../Routes/ProductDetail/index";
 import CreateEvent from "../Routes/CreateEvent/CreateEventContainer";
 import EventDetail from "../Routes/EventDetail/EventDetailContainer";
+import Login from "../Routes/Login/index";
 
-const AppRouter = () => {
+const LoggedInRoutes = () => {
   return (
     <Switch>
       <Route exact path="/" component={DashBoard} />
@@ -59,4 +61,19 @@ const AppRouter = () => {
   );
 };
 
+const LoggedOutRoutes = () => {
+  return (
+    <Switch>
+      <Route exact path="/" component={Login} />
+      <Redirect path="*" to="/" />
+    </Switch>
+  );
+};
+
+const AppRouter = ({ isLoggedIn }) =>
+  isLoggedIn ? <LoggedInRoutes /> : <LoggedOutRoutes />;
+
+AppRouter.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+};
 export default AppRouter;
