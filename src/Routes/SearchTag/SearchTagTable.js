@@ -29,7 +29,7 @@ const SearchTagTable = ({ categories, data }) => {
 
   if (data.category === "-- CHOOSE DATA --") {
     categoryData = "Style";
-    classIdData = 1;
+    classIdData = 0;
   } else {
     categoryData = data.category;
     classIdData = Number(data.classId);
@@ -186,6 +186,7 @@ const SearchTagTable = ({ categories, data }) => {
               <></>
             )}
             {data.category !== "-- CHOOSE DATA --" ? (
+              classData.getClassOptions &&
               classData.getClassOptions.map((item) => (
                 <option value={item.id}>{item.name}</option>
               ))
@@ -202,6 +203,7 @@ const SearchTagTable = ({ categories, data }) => {
               <></>
             )}
             {data.classId !== 0 ? (
+              tagData.getTagOptions &&
               tagData.getTagOptions.map((item) => (
                 <option value={item.id}>{item.name}</option>
               ))
