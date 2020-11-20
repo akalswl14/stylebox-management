@@ -58,6 +58,10 @@ export default () => {
       toast.error("You have to choose 1 item at least.");
       return;
     }
+    if (BannerState.BannerData.length > 10) {
+      toast.error("Up to 10 Banners can be registered.");
+      return;
+    }
     for (const eachBanner of BannerState.BannerData) {
       if (orderArr.includes(Number(eachBanner.order))) {
         toast.error("Order values should not be the same.");

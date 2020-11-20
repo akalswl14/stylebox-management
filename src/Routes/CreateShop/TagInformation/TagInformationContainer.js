@@ -83,7 +83,7 @@ export default ({ categories }) => {
         <thead>
           <tr>
             <th className="orderInputCell">Order</th>
-            <th>Category</th>
+            <th>Tag Type</th>
             <th>Class</th>
             <th>Tag</th>
             <th className="buttonCell">
