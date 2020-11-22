@@ -3,7 +3,7 @@ import styled from "styled-components";
 import WrapPage from "../../Styles/WrapPageStyles";
 import PageTitle from "../../Components/PageTitle";
 import { TagInfoContext } from "./CreateTagContainer";
-import { Link } from "react-router-dom";
+import PageChangeButton from "../../Components/PageChangeButton";
 import SectionTitle from "../../Components/SectionTitle";
 import Button from "../../Components/Button";
 import TagTdTable from "./TagTdTable";
@@ -124,69 +124,69 @@ export default ({ onSubmit }) => {
           <TitleBox>
             <SectionTitle text={"Tag Information"} />
             <ButtonBox>
-              <Link to="/">
-                <Button text="Back To Main"></Button>
-              </Link>
+              <PageChangeButton text="Back To Main" href="/" />
               <Button type="submit" text="Confirm"></Button>
             </ButtonBox>
           </TitleBox>
           <Table>
-            <tr>
-              <td>Tag Name</td>
-              <td>
-                <input
-                  name="tagName"
-                  type="text"
-                  value={tagName}
-                  onChange={onChange}
-                  required
-                />
-              </td>
-              <td rowSpan="3">Tag Image</td>
-              <td rowSpan="3">
-                <ImageInputBox>
-                  <Input
-                    type="file"
-                    accept="image/jpg,image/png,image/jpeg"
-                    name="TagLogoInput"
-                    onChange={(e) => ChangeImage(e)}
-                    ref={imageInput}
+            <tbody>
+              <tr>
+                <td>Tag Name</td>
+                <td>
+                  <input
+                    name="tagName"
+                    type="text"
+                    value={tagName}
+                    onChange={onChange}
+                    required
                   />
-                  {TagLogo_Preview}
-                </ImageInputBox>
-                <ButtonBox onClick={onClick}>
-                  <Button text="Delete"></Button>
-                </ButtonBox>
-              </td>
-            </tr>
-            <tr>
-              <td>Tag Category</td>
-              <td>
-                <select
-                  name="category"
-                  value={category}
-                  onChange={onChange}
-                  required
-                >
-                  {category === "" ? (
-                    <option value="==choose==">{"-- CHOOSE --"}</option>
-                  ) : (
-                    <></>
-                  )}
-                  <option value="Style">Style</option>
-                  <option value="Location">Location</option>
-                  <option value="ProductClass">ProductClass</option>
-                  <option value="Price">Price</option>
-                  <option value="Feature">Feature</option>
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td>Tag Class</td>
-              <td>
-                <TagTdTable category={category} />
-              </td>
-            </tr>
+                </td>
+                <td rowSpan="3">Tag Image</td>
+                <td rowSpan="3">
+                  <ImageInputBox>
+                    <Input
+                      type="file"
+                      accept="image/jpg,image/png,image/jpeg"
+                      name="TagLogoInput"
+                      onChange={(e) => ChangeImage(e)}
+                      ref={imageInput}
+                    />
+                    {TagLogo_Preview}
+                  </ImageInputBox>
+                  <ButtonBox onClick={onClick}>
+                    <Button text="Delete"></Button>
+                  </ButtonBox>
+                </td>
+              </tr>
+              <tr>
+                <td>Tag Category</td>
+                <td>
+                  <select
+                    name="category"
+                    value={category}
+                    onChange={onChange}
+                    required
+                  >
+                    {category === "" ? (
+                      <option value="==choose==">{"-- CHOOSE --"}</option>
+                    ) : (
+                      <></>
+                    )}
+                    <option value="Style">Style</option>
+                    <option value="Location">Location</option>
+                    <option value="ProductClass">ProductClass</option>
+                    <option value="Price">Price</option>
+                    <option value="Feature">Feature</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>Tag Class</td>
+                <td>
+                  <TagTdTable category={category} />
+                </td>
+              </tr>
+            </tbody>
           </Table>
         </form>
       </WrapPage>

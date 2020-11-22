@@ -4,7 +4,7 @@ import WrapPage from "../../Styles/WrapPageStyles";
 import PageTitle from "../../Components/PageTitle";
 import Loader from "../../Components/Loader";
 import { ClassInfoContext } from "./ClassInfoContainer";
-import { Link } from "react-router-dom";
+import PageChangeButton from "../../Components/PageChangeButton";
 import SectionTitle from "../../Components/SectionTitle";
 import Button from "../../Components/Button";
 
@@ -89,6 +89,7 @@ export default ({ loading, data, error, onSubmit }) => {
         type: "SET_DATA",
         data: {
           classInfo,
+          isData: true,
         },
       });
     }, []);
@@ -108,69 +109,79 @@ export default ({ loading, data, error, onSubmit }) => {
     let UpdatedDate = String(updatedAt).split("T");
     let UpdatedTime = String(UpdatedDate[1]).split(".");
 
-    console.log("====check====");
-    console.log(category);
-
-    return (
-      <>
-        <WrapPage>
-          <form onSubmit={onSubmit}>
-            <PageTitle text={"Tag Class Management"} />
-            <TitleBox>
-              <SectionTitle text={"Tag Class Information"} />
-              <ButtonBox>
-                <Link to="/">
-                  <Button text="Back To Main"></Button>
-                </Link>
-                <Button type="submit" text="Confirm"></Button>
-              </ButtonBox>
-            </TitleBox>
-            <Table>
-              <tr>
-                <td>TagClass ID</td>
-                <td>{classId}</td>
-                <td>Shops</td>
-                <td>{shopNum} shops</td>
-              </tr>
-              <tr>
-                <td>Class Name</td>
-                <td>
-                  <input
-                    name="className"
-                    type="text"
-                    value={className}
-                    onChange={onChange}
-                  />
-                </td>
-                <td>Posts</td>
-                <td>{postNum} posts</td>
-              </tr>
-              <tr>
-                <td>Tag Category</td>
-                <td>
-                  <select name="category" value={category} onChange={onChange}>
-                    <option value="Style">Style</option>
-                    <option value="Location">Location</option>
-                    <option value="ProductClass">ProductClass</option>
-                    <option value="Price">Price</option>
-                    <option value="Feature">Feature</option>
-                  </select>
-                </td>
-                <td>Products</td>
-                <td>{productNum} products</td>
-              </tr>
-              <tr>
-                <td>Registration Date</td>
-                <td>{RegistrationDate[0]}</td>
-                <td>Last Updated</td>
-                <td>
-                  {UpdatedDate[0]} {UpdatedTime[0]}
-                </td>
-              </tr>
-            </Table>
-          </form>
-        </WrapPage>
-      </>
-    );
+    if (!classState.isData) {
+      return (
+        <Wrapper>
+          <Loader />
+        </Wrapper>
+      );
+    } else {
+      return (
+        <>
+          <WrapPage>
+            <form onSubmit={onSubmit}>
+              <PageTitle text={"Tag Class Management"} />
+              <TitleBox>
+                <SectionTitle text={"Tag Class Information"} />
+                <ButtonBox>
+                  <PageChangeButton text="Back to Main" href="/" />
+                  <Button type="submit" text="Confirm"></Button>
+                </ButtonBox>
+              </TitleBox>
+              <Table>
+                <tbody>
+                  <tr>
+                    <td>TagClass ID</td>
+                    <td>{classId}</td>
+                    <td>Shops</td>
+                    <td>{shopNum} shops</td>
+                  </tr>
+                  <tr>
+                    <td>Class Name</td>
+                    <td>
+                      <input
+                        name="className"
+                        type="text"
+                        value={className}
+                        onChange={onChange}
+                        required
+                      />
+                    </td>
+                    <td>Posts</td>
+                    <td>{postNum} posts</td>
+                  </tr>
+                  <tr>
+                    <td>Tag Category</td>
+                    <td>
+                      <select
+                        name="category"
+                        value={category}
+                        onChange={onChange}
+                      >
+                        <option value="Style">Style</option>
+                        <option value="Location">Location</option>
+                        <option value="ProductClass">ProductClass</option>
+                        <option value="Price">Price</option>
+                        <option value="Feature">Feature</option>
+                      </select>
+                    </td>
+                    <td>Products</td>
+                    <td>{productNum} products</td>
+                  </tr>
+                  <tr>
+                    <td>Registration Date</td>
+                    <td>{RegistrationDate[0]}</td>
+                    <td>Last Updated</td>
+                    <td>
+                      {UpdatedDate[0]} {UpdatedTime[0]}
+                    </td>
+                  </tr>
+                </tbody>
+              </Table>
+            </form>
+          </WrapPage>
+        </>
+      );
+    }
   }
 };

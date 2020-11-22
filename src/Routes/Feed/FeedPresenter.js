@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import WrapPage from "../../Styles/WrapPageStyles";
 import styled from "styled-components";
 import PageTitle from "../../Components/PageTitle";
@@ -21,8 +21,6 @@ const Wrapper = styled.div`
 export default ({
   loading,
   data,
-  setalreadyGetData,
-  alreadyGetData,
   feedState,
   setFeedState,
   todayStylePeriod,
@@ -34,6 +32,8 @@ export default ({
   onShopResetPriority,
   ChangeSearchDate,
   ChangeStyleDate,
+  isData,
+  setIsData,
 }) => {
   if (loading)
     return (
@@ -42,7 +42,7 @@ export default ({
       </Wrapper>
     );
   if (!loading && data) {
-    if (!alreadyGetData) {
+    useEffect(() => {
       const defaultFeed = {
         TodaysStylesPeriod: data.getTodaysStylesPeriod.period,
         SearchPeriod: data.getSearchPeriod,
@@ -59,36 +59,45 @@ export default ({
         postNum: data.getTodaysStylesPeriod.postNum,
       };
       setTodayStylePeriod(defaultTodayperiod);
-      setalreadyGetData(true);
+      setIsData(true);
+    }, []);
+
+    if (!isData) {
+      return (
+        <Wrapper>
+          <Loader />
+        </Wrapper>
+      );
+    } else {
+      return (
+        <>
+          <WrapPage>
+            <form onSubmit={onSubmit}>
+              <PageTitle text={"Feed Management"} />
+              <MainFeed
+                todayStylePeriod={todayStylePeriod}
+                ChangeStyleDate={ChangeStyleDate}
+              />
+              <SearchFeed
+                feedState={feedState}
+                ChangeSearchDate={ChangeSearchDate}
+              />
+              <BestFeed feedState={feedState} onChange={onChange} />
+              <ShopRank
+                feedState={feedState}
+                onChange={onChange}
+                onShopResetPriority={onShopResetPriority}
+                onShopReset={onShopReset}
+              />
+              <PostRank
+                feedState={feedState}
+                onChange={onChange}
+                onPostReset={onPostReset}
+              />
+            </form>
+          </WrapPage>
+        </>
+      );
     }
-    return (
-      <>
-        <WrapPage>
-          <form onSubmit={onSubmit}>
-            <PageTitle text={"Feed Management"} />
-            <MainFeed
-              todayStylePeriod={todayStylePeriod}
-              ChangeStyleDate={ChangeStyleDate}
-            />
-            <SearchFeed
-              feedState={feedState}
-              ChangeSearchDate={ChangeSearchDate}
-            />
-            <BestFeed feedState={feedState} onChange={onChange} />
-            <ShopRank
-              feedState={feedState}
-              onChange={onChange}
-              onShopResetPriority={onShopResetPriority}
-              onShopReset={onShopReset}
-            />
-            <PostRank
-              feedState={feedState}
-              onChange={onChange}
-              onPostReset={onPostReset}
-            />
-          </form>
-        </WrapPage>
-      </>
-    );
   }
 };

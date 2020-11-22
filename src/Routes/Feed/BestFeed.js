@@ -27,25 +27,26 @@ const TitleBox = styled.div`
   width: 100%;
 `;
 
-
-const BestFeed = ({feedState , onChange}) => {
+const BestFeed = ({ feedState, onChange }) => {
   return (
     <>
       <TitleBox>
         <SectionTitle text={"Best Feed"} />
       </TitleBox>
       <Table>
-        <tr>
-          <td>Number of Rank</td>
-          <td>
-            <input
-              name="BestRankNum"
-              type="text"
-              value={feedState.BestRankNum}
-              onChange={onChange}
-            />
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>Number of Rank</td>
+            <td>
+              <input
+                name="BestRankNum"
+                type="text"
+                value={feedState.BestRankNum}
+                onChange={onChange}
+              />
+            </td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );

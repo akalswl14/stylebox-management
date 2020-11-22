@@ -10,9 +10,9 @@ const YoutubeThumbnail = ({ url }) => {
       width="300px"
       height="200px"
       src={youtubeSrc}
-      frameborder="0"
+      frameBorder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
+      allowFullScreen
     />
   );
 };

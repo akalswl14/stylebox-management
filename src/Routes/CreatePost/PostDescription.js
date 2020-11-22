@@ -34,14 +34,6 @@ const TitleBox = styled.div`
   width: 100%;
 `;
 
-const ButtonBox = styled.div`
-  padding: 15px 0px 15px 0px;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: flex-end;
-`;
-
 const TextArea = styled.textarea`
   width: 100%;
   height: 100px;
@@ -65,12 +57,14 @@ const PostDescription = () => {
         <SectionTitle text={"Post Description"} />
       </TitleBox>
       <Table>
-        <tr>
-          <td>Post Description</td>
-          <td>
-            <TextArea value={postState.postDescription} onChange={onChange} />
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>Post Description</td>
+            <td>
+              <TextArea value={postState.postDescription} onChange={onChange} />
+            </td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );

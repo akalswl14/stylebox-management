@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Button from "../../Components/Button";
 import { TagMapContext } from "./TagMapContainer";
 import { BiLinkExternal } from "react-icons/bi";
+import PageChangeButton from "../../Components/PageChangeButton";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -73,11 +74,6 @@ const TdBoxChildren = styled.div`
   padding: 5px 15px;
 `;
 
-// const style = {
-//   fontSize: "1.75em",
-//   marginTop: "12px",
-// };
-
 const Tags = () => {
   const { tagState } = useContext(TagMapContext);
   return (
@@ -85,134 +81,158 @@ const Tags = () => {
       <TitleBox>
         <SectionTitle text={"Location Tags"} />
         <ButtonBox>
-          <Link to="/taglist">
-            <Button text="See Tag List"></Button>
-          </Link>
-          <Link to="/createclass">
-            <Button text="Add New Class"></Button>
-          </Link>
-          <Link to="/createtag">
-            <Button text="Add New Tag"></Button>
-          </Link>
+          <PageChangeButton text="See Tag List" href="/taglist" />
+          <PageChangeButton text="Add New Class" href="/createclass" />
+          <PageChangeButton text="Add New Tag" href="/createtag" />
           <Button text="Download List"></Button>
         </ButtonBox>
       </TitleBox>
       <Table>
-        <th>Class (Province-city)</th>
-        <th>Tags</th>
-        {tagState.LocationTagData.map((tag) => (
+        <thead>
           <tr>
-            <td>
-              {tag.className}
-              <Link to={{ pathname: `/classinfo/${tag.classId}` }}>
-                <BiLinkExternal size="15" color="black" />
-              </Link>
-            </td>
-            <TdBox>
-              {tag.tags.map((eachtag) => (
-                <TdBoxChildren>
-                  {eachtag.tagName}({eachtag.postNum})
-                </TdBoxChildren>
-              ))}
-            </TdBox>
+            <th>Class (Province-city)</th>
+            <th>Tags</th>
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {tagState.LocationTagData.map((tag) => (
+            <tr key={tag.classId}>
+              <td>
+                {tag.className}
+                <Link to={{ pathname: `/classinfo/${tag.classId}` }}>
+                  <BiLinkExternal size="15" color="black" />
+                </Link>
+              </td>
+              <TdBox>
+                {tag.tags.map((eachtag) => (
+                  <TdBoxChildren key={eachtag.tagId}>
+                    {eachtag.tagName}({eachtag.postNum})
+                  </TdBoxChildren>
+                ))}
+              </TdBox>
+            </tr>
+          ))}
+        </tbody>
       </Table>
       <TitleBox>
         <SectionTitle text={"Style Tags"} />
       </TitleBox>
       <Table>
-        <th>Class (Style)</th>
-        <th>Tags</th>
-        {tagState.StyleTagData.map((tag) => (
+        <thead>
           <tr>
-            <td>
-              {tag.className}
-              <Link to={{ pathname: `/classinfo/${tag.classId}` }}>
-                <BiLinkExternal size="15" color="black" />
-              </Link>
-            </td>
-            <TdBox>
-              {tag.tags.map((eachtag) => (
-                <TdBoxChildren>
-                  {eachtag.tagName}({eachtag.postNum})
-                </TdBoxChildren>
-              ))}
-            </TdBox>
+            <th>Class (Style)</th>
+            <th>Tags</th>
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {tagState.StyleTagData.map((tag) => (
+            <tr key={tag.classId}>
+              <td>
+                {tag.className}
+                <Link to={{ pathname: `/classinfo/${tag.classId}` }}>
+                  <BiLinkExternal size="15" color="black" />
+                </Link>
+              </td>
+              <TdBox>
+                {tag.tags.map((eachtag) => (
+                  <TdBoxChildren key={eachtag.tagId}>
+                    {eachtag.tagName}({eachtag.postNum})
+                  </TdBoxChildren>
+                ))}
+              </TdBox>
+            </tr>
+          ))}
+        </tbody>
       </Table>
       <TitleBox>
         <SectionTitle text={"Category Tags"} />
       </TitleBox>
       <Table>
-        <th>Class (Category)</th>
-        <th>Tags</th>
-        {tagState.ProductClassTagData.map((tag) => (
+        <thead>
           <tr>
-            <td>
-              {tag.className}
-              <Link to={{ pathname: `/classinfo/${tag.classId}` }}>
-                <BiLinkExternal size="15" color="black" />
-              </Link>
-            </td>
-            <TdBox>
-              {tag.tags.map((eachtag) => (
-                <TdBoxChildren>
-                  {eachtag.tagName}({eachtag.postNum})
-                </TdBoxChildren>
-              ))}
-            </TdBox>
+            <th>Class (Category)</th>
+            <th>Tags</th>
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {tagState.ProductClassTagData.map((tag) => (
+            <tr key={tag.classId}>
+              <td>
+                {tag.className}
+                <Link to={{ pathname: `/classinfo/${tag.classId}` }}>
+                  <BiLinkExternal size="15" color="black" />
+                </Link>
+              </td>
+              <TdBox>
+                {tag.tags.map((eachtag) => (
+                  <TdBoxChildren key={eachtag.tagId}>
+                    {eachtag.tagName}({eachtag.postNum})
+                  </TdBoxChildren>
+                ))}
+              </TdBox>
+            </tr>
+          ))}
+        </tbody>
       </Table>
       <TitleBox>
         <SectionTitle text={"Feature Tags"} />
       </TitleBox>
       <Table>
-        <th>Class (Feature)</th>
-        <th>Tags</th>
-        {tagState.FeatureTagData.map((tag) => (
+        <thead>
           <tr>
-            <td>
-              {tag.className}
-              <Link to={{ pathname: `/classinfo/${tag.classId}` }}>
-                <BiLinkExternal size="15" color="black" />
-              </Link>
-            </td>
-            <TdBox>
-              {tag.tags.map((eachtag) => (
-                <TdBoxChildren>
-                  {eachtag.tagName}({eachtag.postNum})
-                </TdBoxChildren>
-              ))}
-            </TdBox>
+            <th>Class (Feature)</th>
+            <th>Tags</th>
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {tagState.FeatureTagData.map((tag) => (
+            <tr key={tag.classId}>
+              <td>
+                {tag.className}
+                <Link to={{ pathname: `/classinfo/${tag.classId}` }}>
+                  <BiLinkExternal size="15" color="black" />
+                </Link>
+              </td>
+              <TdBox>
+                {tag.tags.map((eachtag) => (
+                  <TdBoxChildren key={eachtag.tagId}>
+                    {eachtag.tagName}({eachtag.postNum})
+                  </TdBoxChildren>
+                ))}
+              </TdBox>
+            </tr>
+          ))}
+        </tbody>
       </Table>
       <TitleBox>
         <SectionTitle text={"Price Tags"} />
       </TitleBox>
       <Table>
-        <th>Class (Price)</th>
-        <th>Tags</th>
-        {tagState.PriceTagData.map((tag) => (
+        <thead>
           <tr>
-            <td>
-              {tag.className}
-              <Link to={{ pathname: `/classinfo/${tag.classId}` }}>
-                <BiLinkExternal size="15" color="black" />
-              </Link>
-            </td>
-            <TdBox>
-              {tag.tags.map((eachtag) => (
-                <TdBoxChildren>
-                  {eachtag.tagName}({eachtag.postNum})
-                </TdBoxChildren>
-              ))}
-            </TdBox>
+            <th>Class (Price)</th>
+            <th>Tags</th>
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {tagState.PriceTagData.map((tag) => (
+            <tr kety={tag.classId}>
+              <td>
+                {tag.className}
+                <Link to={{ pathname: `/classinfo/${tag.classId}` }}>
+                  <BiLinkExternal size="15" color="black" />
+                </Link>
+              </td>
+              <TdBox>
+                {tag.tags.map((eachtag) => (
+                  <TdBoxChildren key={eachtag.tagId}>
+                    {eachtag.tagName}({eachtag.postNum})
+                  </TdBoxChildren>
+                ))}
+              </TdBox>
+            </tr>
+          ))}
+        </tbody>
       </Table>
     </>
   );

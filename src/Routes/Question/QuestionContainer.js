@@ -17,29 +17,28 @@ export default () => {
   });
   const [questionState, setQuestionState] = useState([
     {
+      id: 1,
       order: 1,
       questionType: "",
     },
   ]);
   const [isDataState, setIsDataState] = useState(false);
-  const [alreadyGetData, setalreadyGetData] = useState(false);
 
   const { email, pw } = adminState;
 
   const addRow = (e) => {
     e.preventDefault();
     const newData = {
-      order: questionState[questionState.length - 1].order + 1,
+      id: questionState.length + 1,
+      order: questionState.length + 1,
       questionType: "",
     };
     setQuestionState((prevData) => [...prevData, newData]);
   };
 
-  const deleteRow = (e, order) => {
+  const deleteRow = (e, id) => {
     e.preventDefault();
-    setQuestionState(
-      questionState.filter((eachRow) => eachRow.order !== order)
-    );
+    setQuestionState(questionState.filter((eachRow) => eachRow.id !== id));
   };
 
   const onChange = (e) => {
@@ -50,13 +49,20 @@ export default () => {
     });
   };
 
-  const onOrderChange = (questionType, e) => {
+  const onOrderChange = (id, e) => {
     const { value } = e.target;
     setQuestionState(
       questionState.map((option) =>
-        option.questionType === questionType
-          ? { ...option, order: Number(value) }
-          : option
+        option.id === id ? { ...option, order: Number(value) } : option
+      )
+    );
+  };
+
+  const onTypeChange = (id, e) => {
+    const { value } = e.target;
+    setQuestionState(
+      questionState.map((option) =>
+        option.id === id ? { ...option, questionType: value } : option
       )
     );
   };
@@ -64,6 +70,13 @@ export default () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     let orderArr = [];
+    let questionStateArr = [];
+
+    if (questionState.length < 1) {
+      toast.error("Question Page : Please write questionType");
+      return;
+    }
+
     for (const question of questionState) {
       if (orderArr.includes(question.order)) {
         toast.error("Question Page : Order values should not be the same.");
@@ -73,20 +86,28 @@ export default () => {
         toast.error("Question Page : Order values should be bigger than 0.");
         return;
       }
+      if (isNaN(question.order)) {
+        toast.error("Invalid Price Value.");
+        return;
+      }
       if (question.questionType === "") {
-        toast.error("Question Page : Write questionType");
+        toast.error("Question Page : Please write questionType");
         return;
       }
       orderArr.push(question.order);
+      questionStateArr.push({
+        order: question.order,
+        questionType: question.questionType,
+      });
     }
 
     if (adminState.email === "") {
-      toast.error("Question Page : Write email");
+      toast.error("Question Page : please write email");
       return;
     }
 
     if (adminState.pw === "") {
-      toast.error("Question Page : Write password");
+      toast.error("Question Page : please write password");
       return;
     }
 
@@ -96,7 +117,7 @@ export default () => {
       variables: {
         email: adminState.email,
         pw: adminState.pw,
-        questionTypes: questionState,
+        questionTypes: questionStateArr,
       },
     });
 
@@ -111,15 +132,6 @@ export default () => {
       }, 5000);
       return;
     }
-  };
-
-  const onTypeChange = (order, e) => {
-    const { value } = e.target;
-    setQuestionState(
-      questionState.map((option) =>
-        option.order === order ? { ...option, questionType: value } : option
-      )
-    );
   };
 
   return (
@@ -137,8 +149,6 @@ export default () => {
       mutationLoading={mutationLoading}
       mutationError={mutationError}
       onSubmit={onSubmit}
-      setalreadyGetData={setalreadyGetData}
-      alreadyGetData={alreadyGetData}
       addRow={addRow}
       deleteRow={deleteRow}
       isDataState={isDataState}

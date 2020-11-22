@@ -121,7 +121,7 @@ const TagInfoTable = ({ categories, data }) => {
 
   if (classLoading || tagLoading)
     return (
-      <tr>
+      <tr key={data.id}>
         <td className="orderInputCell">
           <OrderInputBox
             type="text"
@@ -129,20 +129,21 @@ const TagInfoTable = ({ categories, data }) => {
             value={data.order}
             onChange={onChange}
             required
+            readOnly={true}
           />
         </td>
         <td>
-          <select name="category">
+          <select name="category" readOnly={true}>
             <option value={"-- LOADING --"}>{"-- LOADING --"}</option>
           </select>
         </td>
         <td>
-          <select name="classInfo">
+          <select name="classInfo" readOnly={true}>
             <option value={0}>{"-- LOADING --"}</option>
           </select>
         </td>
         <td>
-          <select name="tagInfo" value={data.tagId}>
+          <select name="tagInfo" readOnly={true}>
             <option value={0}>{"-- LOADING --"}</option>
           </select>
         </td>
@@ -174,7 +175,9 @@ const TagInfoTable = ({ categories, data }) => {
               <></>
             )}
             {categories.map((category) => (
-              <option value={category}>{category}</option>
+              <option key={category} value={category}>
+                {category}
+              </option>
             ))}
           </SelectBox>
         </td>
@@ -187,7 +190,9 @@ const TagInfoTable = ({ categories, data }) => {
             )}
             {data.category !== "-- CHOOSE DATA --" ? (
               classData.getClassOptions.map((item) => (
-                <option value={item.id}>{item.name}</option>
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
               ))
             ) : (
               <></>
@@ -203,7 +208,9 @@ const TagInfoTable = ({ categories, data }) => {
             )}
             {data.classId !== 0 ? (
               tagData.getTagOptions.map((item) => (
-                <option value={item.id}>{item.name}</option>
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
               ))
             ) : (
               <></>

@@ -1,9 +1,8 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import WrapPage from "../../Styles/WrapPageStyles";
 import PageTitle from "../../Components/PageTitle";
 import Loader from "../../Components/Loader";
-import { PostInfoContext } from "./PostInfoContainer";
 import PostBasicInfo from "./PostBasicInfo";
 import PostBasicStatus from "./PostBasicStatus";
 import TagInformation from "./TagInformation/index";
@@ -54,7 +53,6 @@ export default ({
       (category) => category !== "ShopName"
     );
     const linkTypes = data_LinkTypeData.getLinkTypeOption;
-
     return (
       <>
         <WrapPage>

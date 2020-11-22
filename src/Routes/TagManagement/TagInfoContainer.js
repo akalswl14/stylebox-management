@@ -27,6 +27,7 @@ const initialState = {
   tagLogoFile: "",
   tagLogoPreviewUrl: "",
   imageInput: { current: null },
+  isData: false,
 };
 
 function reducer(state, action) {
@@ -35,6 +36,7 @@ function reducer(state, action) {
       return {
         ...state,
         tagInfo: action.data.tagInfo,
+        isData: true,
       };
     case "TAGINFO_CHANGE":
       const { name, value } = action.data;
@@ -109,14 +111,27 @@ export default ({ match }) => {
       return;
     }
 
+    let TimeNumber = new Date();
     if (tagState.isTagImageChange) {
       if (tagState.imageInput.current) {
+        if (tagState.tagLogoFile === "") {
+          toast.error("Please choose Shop Image.");
+          return;
+        }
         const { imageInput } = tagState;
+        const ImageType = tagState.tagLogoFile.type.substring(6);
         const file = imageInput.current.files[0];
-        const fileName = file.name;
+        const fileName =
+          tagState.tagInfo.tagId + "/" + TimeNumber.getTime() + "." + ImageType;
 
-        const preSignedUrl = await getPreSignedUrl(fileName);
-        uploadToBucket(preSignedUrl, file);
+        try {
+          const preSignedUrl = await getPreSignedUrl(fileName);
+          await uploadToBucket(preSignedUrl, file);
+        } catch (e) {
+          toast.error("Error occured while create data.");
+          return;
+        }
+
         tagUpdateInfo = {
           tagId: tagState.tagInfo.tagId,
           tagName: tagState.tagInfo.tagName,
@@ -130,7 +145,7 @@ export default ({ match }) => {
           tagId: tagState.tagInfo.tagId,
           tagName: tagState.tagInfo.tagName,
           tagCategory: tagState.tagInfo.category,
-          tagImage: tagState.tagInfo.tagImage,
+          tagImage: null,
           isTagImageChange: tagState.isTagImageChange,
           classId: tagState.tagInfo.classId,
         };
@@ -172,7 +187,6 @@ export default ({ match }) => {
       Expires: signedUrlExpireSeconds,
     };
     const url = s3.getSignedUrl("putObject", params);
-    console.log("This is a presigned Url! : ", url);
     return url;
   };
 

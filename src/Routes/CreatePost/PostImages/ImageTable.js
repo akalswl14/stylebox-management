@@ -39,7 +39,6 @@ const ImageTable = ({ data }) => {
             imageInput: data.imageInput,
             imageFile: data.imageFile,
             imagePreviewUrl: data.imagePreviewUrl,
-            isImageChange: data.isImageChange,
           },
         });
       }
@@ -82,8 +81,6 @@ const ImageTable = ({ data }) => {
   const ChangeImage = (e) => {
     let reader = new FileReader();
     let file = e.target.files[0];
-    console.log("check");
-    console.log(imagePostInput);
     reader.onloadend = () => {
       postDispatch({
         type: "UPDATE_IMAGE_FILE",
@@ -94,7 +91,6 @@ const ImageTable = ({ data }) => {
           imageInput: imagePostInput,
           imageFile: file,
           imagePreviewUrl: reader.result,
-          isImageChange: true,
         },
       });
     };

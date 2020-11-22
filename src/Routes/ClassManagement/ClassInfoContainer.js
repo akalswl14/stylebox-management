@@ -8,6 +8,7 @@ export const ClassInfoContext = React.createContext(null);
 
 const initialState = {
   classInfo: {},
+  isData: false,
 };
 
 function reducer(state, action) {
@@ -17,6 +18,7 @@ function reducer(state, action) {
     case "CLASSINFO_CHANGE":
       const { name, value } = action.data;
       return {
+        ...state,
         classInfo: {
           ...state.classInfo,
           [name]: value,
@@ -36,6 +38,11 @@ export default ({ match }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    if (classState.classInfo.className === "") {
+      toast.error("Please write class name.");
+      return;
+    }
 
     const classUpdateInfo = {
       classId: classState.classInfo.classId,
@@ -59,7 +66,7 @@ export default ({ match }) => {
       return;
     }
   };
-  console.log(classState);
+
   return (
     <ClassInfoContext.Provider value={{ classState, classDispatch }}>
       <ClassInfoPresenter

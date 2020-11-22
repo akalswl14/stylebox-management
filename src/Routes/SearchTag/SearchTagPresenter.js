@@ -3,12 +3,13 @@ import styled from "styled-components";
 import WrapPage from "../../Styles/WrapPageStyles";
 import PageTitle from "../../Components/PageTitle";
 import SectionTitle from "../../Components/SectionTitle";
-import { Link } from "react-router-dom";
+import PageChangeButton from "../../Components/PageChangeButton";
 import Loader from "../../Components/Loader";
 import Button from "../../Components/Button";
 import SearchTagTable from "./SearchTagTable";
 import { PlusIcon } from "../../Components/Icons";
 import { SearchTagIconContext } from "./SearchTagContainer";
+import { toast } from "react-toastify";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -127,6 +128,10 @@ export default ({ loading, data, error, onSubmit }) => {
     const addRow = (e) => {
       e.preventDefault();
       const PrevMainRowData = searchTagState.SearchTagRowData;
+      if (PrevMainRowData.length >= 10) {
+        toast.error("Up to 10 is possible.");
+        return;
+      }
       const newData = {
         id:
           PrevMainRowData.length > 0
@@ -160,30 +165,34 @@ export default ({ loading, data, error, onSubmit }) => {
             <TitleBox>
               <SectionTitle text={"Recommendation Tag Management"} />
               <ButtonBox>
-                <Link to="/">
-                  <Button text="Back To Main"></Button>
-                </Link>
+                <PageChangeButton text="Back To Main" href="/" />
                 <Button type="submit" text="Confirm"></Button>
               </ButtonBox>
             </TitleBox>
             <Table>
-              <th>Order</th>
-              <th>Category</th>
-              <th>Class</th>
-              <th>Tag</th>
-              <th>
-                <RowButton onClick={(e) => addRow(e)}>
-                  <PlusIcon size={19} />
-                </RowButton>
-              </th>
-              {searchTagState.isData &&
-                searchTagState.SearchTagRowData.map((searchTag) => (
-                  <SearchTagTable
-                    key={searchTag.id}
-                    categories={categories}
-                    data={searchTag}
-                  />
-                ))}
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Category</th>
+                  <th>Class</th>
+                  <th>Tag</th>
+                  <th>
+                    <RowButton onClick={(e) => addRow(e)}>
+                      <PlusIcon size={19} />
+                    </RowButton>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {searchTagState.isData &&
+                  searchTagState.SearchTagRowData.map((searchTag) => (
+                    <SearchTagTable
+                      key={searchTag.id}
+                      categories={categories}
+                      data={searchTag}
+                    />
+                  ))}
+              </tbody>
             </Table>
           </Form>
         </WrapPage>

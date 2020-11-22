@@ -89,8 +89,8 @@ export const GET_LINKTYPE = gql`
 `;
 
 export const GET_SUBPRODUCT = gql`
-  query GET_SUBPRODUCT($productName: String!) {
-    getProductByName(productName: $productName) {
+  query GET_SUBPRODUCT($productName: String!, $shopId: Int) {
+    getProductByName(productName: $productName, shopId: $shopId) {
       productId
       productName
       price

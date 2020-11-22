@@ -56,11 +56,21 @@ export default () => {
         popularTags: [],
       };
 
+    if (searchTagState.SearchTagRowData.length < 1) {
+      toast.error(
+        "Recommendation Tag Page  : Please choose Recommendation Tag"
+      );
+      return;
+    }
     for (const eachTag of searchTagState.SearchTagRowData) {
       if (orderArr.includes(eachTag.order)) {
         toast.error(
           "Recommendation Tag Page  : Order values should not be the same."
         );
+        return;
+      }
+      if (isNaN(eachTag.order)) {
+        toast.error("Invalid Price Value.");
         return;
       }
       if (eachTag.order === 0) {

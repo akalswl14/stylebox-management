@@ -4,6 +4,7 @@ import { PlusIcon } from "../../../Components/Icons";
 import SectionTitle from "../../../Components/SectionTitle";
 import { PostInfoContext } from "../PostInfoContainer";
 import LinkTable from "./LinkTable";
+import { toast } from "react-toastify";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -65,6 +66,10 @@ export default ({ linkTypes }) => {
   const addRow = (e) => {
     e.preventDefault();
     const PrevMainRowData = postState.externalLink;
+    if (PrevMainRowData.length >= 10) {
+      toast.error("Up to 10 is possible.");
+      return;
+    }
     const newData = {
       id:
         PrevMainRowData.length > 0
@@ -89,19 +94,29 @@ export default ({ linkTypes }) => {
         <SectionTitle text={"External Link"} />
       </TitleBox>
       <Table>
-        <th>Order</th>
-        <th>Category</th>
-        <th>Link URL</th>
-        <th>Show</th>
-        <th>Check</th>
-        <th>
-          <RowButton onClick={(e) => addRow(e)}>
-            <PlusIcon size={19} />
-          </RowButton>
-        </th>
-        {postState.externalLink.map((postLink) => (
-          <LinkTable key={postLink.id} linkTypes={linkTypes} data={postLink} />
-        ))}
+        <thead>
+          <tr>
+            <th>Order</th>
+            <th>Category</th>
+            <th>Link URL</th>
+            <th>Show</th>
+            <th>Check</th>
+            <th>
+              <RowButton onClick={(e) => addRow(e)}>
+                <PlusIcon size={19} />
+              </RowButton>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {postState.externalLink.map((postLink) => (
+            <LinkTable
+              key={postLink.id}
+              linkTypes={linkTypes}
+              data={postLink}
+            />
+          ))}
+        </tbody>
       </Table>
     </>
   );

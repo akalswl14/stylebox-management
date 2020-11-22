@@ -4,6 +4,7 @@ import { PlusIcon } from "../../../Components/Icons";
 import SectionTitle from "../../../Components/SectionTitle";
 import { PostInfoContext } from "../PostInfoContainer";
 import TagInfoTable from "./TagInfoTable";
+import { toast } from "react-toastify";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -65,6 +66,10 @@ export default ({ categories }) => {
   const addRow = (e) => {
     e.preventDefault();
     const PrevMainRowData = postState.tagInfoData;
+    if (PrevMainRowData.length >= 10) {
+      toast.error("Up to 10 is possible.");
+      return;
+    }
     const newData = {
       id:
         PrevMainRowData.length > 0
@@ -91,22 +96,28 @@ export default ({ categories }) => {
         <SectionTitle text={"Tag Information"} />
       </TitleBox>
       <Table>
-        <th>Order</th>
-        <th>Category</th>
-        <th>Class</th>
-        <th>Tag</th>
-        <th>
-          <RowButton onClick={(e) => addRow(e)}>
-            <PlusIcon size={19} />
-          </RowButton>
-        </th>
-        {postState.tagInfoData.map((postTag) => (
-          <TagInfoTable
-            key={postTag.id}
-            categories={categories}
-            data={postTag}
-          />
-        ))}
+        <thead>
+          <tr>
+            <th>Order</th>
+            <th>Category</th>
+            <th>Class</th>
+            <th>Tag</th>
+            <th>
+              <RowButton onClick={(e) => addRow(e)}>
+                <PlusIcon size={19} />
+              </RowButton>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {postState.tagInfoData.map((postTag) => (
+            <TagInfoTable
+              key={postTag.id}
+              categories={categories}
+              data={postTag}
+            />
+          ))}
+        </tbody>
       </Table>
     </>
   );

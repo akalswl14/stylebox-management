@@ -44,6 +44,11 @@ export default () => {
       return;
     }
 
+    if (classState.classInfo.className === "") {
+      toast.error("Please write class Name.");
+      return;
+    }
+
     const classUpdateInfo = {
       className: classState.classInfo.className,
       category: classState.classInfo.category,
@@ -65,7 +70,6 @@ export default () => {
       return;
     }
   };
-  console.log(classState);
   return (
     <ClassInfoContext.Provider value={{ classState, classDispatch }}>
       <CreateClassPresenter onSubmit={onSubmit} />

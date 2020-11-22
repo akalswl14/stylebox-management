@@ -167,33 +167,35 @@ const PostBasicInfo = () => {
         </ButtonBox>
       </TitleBox>
       <Table>
-        <tr>
-          <td>Main ProductId</td>
-          <td>{mainProductId} </td>
-          <td>Main ProductName</td>
-          <td>
-            <AutoSelectBox
-              defaultValue={{
-                productId: mainProductId,
-                productName: mainProductName,
-                shopId,
-                shopName,
-                price,
-              }}
-              data={data_Shop ? data_Shop.getShopByProductName : []}
-              onTitleChangeFunc={onProductNameChange}
-              onTitleSelectFunc={onProductNameSelect}
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>Selling Shop</td>
-          <td>
-            {shopId} {shopName}
-          </td>
-          <td>Price</td>
-          <td>{price} VND</td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>Main ProductId</td>
+            <td>{mainProductId} </td>
+            <td>Main ProductName</td>
+            <td>
+              <AutoSelectBox
+                defaultValue={{
+                  productId: mainProductId,
+                  productName: mainProductName,
+                  shopId,
+                  shopName,
+                  price,
+                }}
+                data={data_Shop ? data_Shop.getShopByProductName : []}
+                onTitleChangeFunc={onProductNameChange}
+                onTitleSelectFunc={onProductNameSelect}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>Selling Shop</td>
+            <td>
+              {shopId} {shopName}
+            </td>
+            <td>Price</td>
+            <td>{price} VND</td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );

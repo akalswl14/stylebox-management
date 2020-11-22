@@ -4,6 +4,7 @@ import { PlusIcon } from "../../../Components/Icons";
 import SectionTitle from "../../../Components/SectionTitle";
 import { PostInfoContext } from "../PostInfoContainer";
 import ImageTable from "./ImageTable";
+import { toast } from "react-toastify";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -65,6 +66,10 @@ export default () => {
   const addRow = (e) => {
     e.preventDefault();
     const PrevMainRowData = postState.postImageManagement;
+    if (PrevMainRowData.length >= 10) {
+      toast.error("Up to 10 is possible.");
+      return;
+    }
     const newData = {
       id:
         PrevMainRowData.length > 0
@@ -87,18 +92,24 @@ export default () => {
         <SectionTitle text={"Post Images Management"} />
       </TitleBox>
       <Table>
-        <th>Order</th>
-        <th>File</th>
-        <th>Image</th>
-        <th>Enlarge Image</th>
-        <th>
-          <RowButton onClick={(e) => addRow(e)}>
-            <PlusIcon size={19} />
-          </RowButton>
-        </th>
-        {postState.postImageManagement.map((eachData) => (
-          <ImageTable key={eachData.id} data={eachData} />
-        ))}
+        <thead>
+          <tr>
+            <th>Order</th>
+            <th>File</th>
+            <th>Image</th>
+            <th>Enlarge Image</th>
+            <th>
+              <RowButton onClick={(e) => addRow(e)}>
+                <PlusIcon size={19} />
+              </RowButton>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {postState.postImageManagement.map((eachData) => (
+            <ImageTable key={eachData.id} data={eachData} />
+          ))}
+        </tbody>
       </Table>
     </>
   );

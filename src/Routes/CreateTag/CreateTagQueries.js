@@ -12,7 +12,9 @@ export const CREATE_TAG = gql`
       tagCategory: $tagCategory
       tagImage: $tagImage
       classId: $classId
-    )
+    ) {
+      tagId
+    }
   }
 `;
 

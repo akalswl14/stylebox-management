@@ -68,37 +68,39 @@ const PostBasicStatus = () => {
         <SectionTitle text={"Basic Status"} />
       </TitleBox>
       <Table>
-        <tr>
-          <td>Post Rank</td>
-          <td>
-            Weekly:#{weeklyRank}&nbsp; Monthly:#{monthlyRank}&nbsp; Total:#
-            {totalRank}
-          </td>
-          <td>Post Priority</td>
-          <td>
-            <select value={priority} onChange={onChange}>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>Total Likes</td>
-          <td>{likesNum} Likes</td>
-          <td>Total Views</td>
-          <td>{viewsNum} Views</td>
-        </tr>
-        <tr>
-          <td>Registration Date</td>
-          <td>{RegistrationDate[0]}</td>
-          <td>Last Updated</td>
-          <td>
-            {UpdatedDate[0]} {UpdatedTime[0]}
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>Post Rank</td>
+            <td>
+              Weekly:#{weeklyRank}&nbsp; Monthly:#{monthlyRank}&nbsp; Total:#
+              {totalRank}
+            </td>
+            <td>Post Priority</td>
+            <td>
+              <select value={priority ? priority : 1} onChange={onChange}>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>Total Likes</td>
+            <td>{likesNum} Likes</td>
+            <td>Total Views</td>
+            <td>{viewsNum} Views</td>
+          </tr>
+          <tr>
+            <td>Registration Date</td>
+            <td>{RegistrationDate[0]}</td>
+            <td>Last Updated</td>
+            <td>
+              {UpdatedDate[0]} {UpdatedTime[0]}
+            </td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );

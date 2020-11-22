@@ -4,6 +4,7 @@ import { PlusIcon } from "../../../Components/Icons";
 import SectionTitle from "../../../Components/SectionTitle";
 import { PostInfoContext } from "../PostInfoContainer";
 import SubProductTable from "./SubProductTable";
+import { toast } from "react-toastify";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -66,6 +67,10 @@ export default () => {
   const addRow = (e) => {
     e.preventDefault();
     const PrevMainRowData = postState.subProductManagement;
+    if (PrevMainRowData.length >= 5) {
+      toast.error("Up to 5 is possible.");
+      return;
+    }
     const newData = {
       id:
         PrevMainRowData.length > 0
@@ -92,20 +97,26 @@ export default () => {
         <SectionTitle text={"Sub Product Management"} />
       </TitleBox>
       <Table>
-        <th>Order</th>
-        <th>Product ID</th>
-        <th>Product Name</th>
-        <th>Price</th>
-        <th>Product Link</th>
-        <th>Check</th>
-        <th>
-          <RowButton onClick={(e) => addRow(e)}>
-            <PlusIcon size={19} />
-          </RowButton>
-        </th>
-        {postState.subProductManagement.map((eachData) => (
-          <SubProductTable key={eachData.id} data={eachData} />
-        ))}
+        <thead>
+          <tr>
+            <th>Order</th>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Product Link</th>
+            <th>Check</th>
+            <th>
+              <RowButton onClick={(e) => addRow(e)}>
+                <PlusIcon size={19} />
+              </RowButton>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {postState.subProductManagement.map((eachData) => (
+            <SubProductTable key={eachData.id} data={eachData} />
+          ))}
+        </tbody>
       </Table>
     </>
   );

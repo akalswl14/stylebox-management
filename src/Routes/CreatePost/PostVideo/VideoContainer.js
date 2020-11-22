@@ -4,6 +4,7 @@ import { PlusIcon } from "../../../Components/Icons";
 import SectionTitle from "../../../Components/SectionTitle";
 import { PostInfoContext } from "../PostInfoContainer";
 import VideoTable from "./VideoTable";
+import { toast } from "react-toastify";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -65,6 +66,10 @@ export default () => {
   const addRow = (e) => {
     e.preventDefault();
     const PrevMainRowData = postState.postVideoManagement;
+    if (PrevMainRowData.length >= 1) {
+      toast.error("Up to 1 is possible.");
+      return;
+    }
     const newData = {
       id:
         PrevMainRowData.length > 0
@@ -87,18 +92,24 @@ export default () => {
         <SectionTitle text={"Post Video Management"} />
       </TitleBox>
       <Table>
-        <th>Order</th>
-        <th>Youtube URL</th>
-        <th>Youtube Thumbnail</th>
-        <th>Check</th>
-        <th>
-          <RowButton onClick={(e) => addRow(e)}>
-            <PlusIcon size={19} />
-          </RowButton>
-        </th>
-        {postState.postVideoManagement.map((eachData) => (
-          <VideoTable key={eachData.id} data={eachData} />
-        ))}
+        <thead>
+          <tr>
+            <th>Order</th>
+            <th>Youtube URL</th>
+            <th>Youtube Thumbnail</th>
+            <th>Check</th>
+            <th>
+              <RowButton onClick={(e) => addRow(e)}>
+                <PlusIcon size={19} />
+              </RowButton>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {postState.postVideoManagement.map((eachData) => (
+            <VideoTable key={eachData.id} data={eachData} />
+          ))}
+        </tbody>
       </Table>
     </>
   );

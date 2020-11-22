@@ -8,7 +8,7 @@ export default () => {
   const { loading, data } = useQuery(FEED_QUERY);
   const [resetShop, { error: resetError }] = useMutation(RESET_MUTATION);
   const [updateFeed, { error: updateError }] = useMutation(FEED_MUTATION);
-  const [alreadyGetData, setalreadyGetData] = useState(false);
+  const [isData, setIsData] = useState(false);
   const [feedState, setFeedState] = useState({
     TodaysStylesPeriod: "",
     SearchPeriod: "",
@@ -158,8 +158,6 @@ export default () => {
     <FeedPresenter
       loading={loading}
       data={data}
-      setalreadyGetData={setalreadyGetData}
-      alreadyGetData={alreadyGetData}
       feedState={feedState}
       setFeedState={setFeedState}
       todayStylePeriod={todayStylePeriod}
@@ -171,6 +169,8 @@ export default () => {
       onShopResetPriority={onShopResetPriority}
       ChangeStyleDate={ChangeStyleDate}
       ChangeSearchDate={ChangeSearchDate}
+      isData={isData}
+      setIsData={setIsData}
     />
   );
 };

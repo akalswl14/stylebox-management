@@ -21,14 +21,17 @@ const RowButton = styled.button`
 `;
 
 const SubProductTable = ({ data }) => {
-  const { postDispatch } = useContext(PostInfoContext);
+  const { postDispatch, postState } = useContext(PostInfoContext);
 
   const {
     loading: loading_subProduct,
     data: data_subProduct,
     error: error_subProduct,
   } = useQuery(GET_SUBPRODUCT, {
-    variables: { productName: "" },
+    variables: {
+      productName: "",
+      shopId: postState.basicInfo.shopId ? postState.basicInfo.shopId : null,
+    },
   });
 
   if (error_subProduct) toast.error("Error Occured while Searching products");

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import SectionTitle from "../../Components/SectionTitle";
 import Button from "../../Components/Button";
-import { Link } from "react-router-dom";
+import PageChangeButton from "../../Components/PageChangeButton";
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
@@ -52,35 +52,35 @@ const MainFeed = ({ todayStylePeriod, ChangeStyleDate }) => {
       <TitleBox>
         <SectionTitle text={"Main(Home) Feed"} />
         <ButtonBox>
-          <Link to="/">
-            <Button text="Back To Main"></Button>
-          </Link>
+          <PageChangeButton text="Back To Main" href="/" />
           <Button type="submit" text="Confirm"></Button>
         </ButtonBox>
       </TitleBox>
       <Table>
-        <tr>
-          <td>Open Posts from</td>
-          <td>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="MM/dd/yyyy"
-                margin="normal"
-                id="todaysStylesPeriod"
-                label="todays Styles Period"
-                value={todayStylePeriod.TodaysStylesPeriod}
-                onChange={(date) => ChangeStyleDate(date)}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-            </MuiPickersUtilsProvider>
-          </td>
-          <td>Open Posts</td>
-          <td>{todayStylePeriod.postNum} posts</td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>Open Posts from</td>
+            <td>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="todaysStylesPeriod"
+                  label="todays Styles Period"
+                  value={todayStylePeriod.TodaysStylesPeriod}
+                  onChange={(date) => ChangeStyleDate(date)}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </td>
+            <td>Open Posts</td>
+            <td>{todayStylePeriod.postNum} posts</td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );

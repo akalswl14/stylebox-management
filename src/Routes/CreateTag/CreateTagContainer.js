@@ -108,19 +108,16 @@ export default () => {
       toast.error("Please choose a Class.");
       return;
     }
-
+    let TimeNumber = new Date();
     if (tagState.imageInput.current) {
-      const { imageInput } = tagState;
-      const file = imageInput.current.files[0];
-      const fileName = file.name;
+      const ImageType = tagState.tagLogoFile.type.substring(6);
+      const fileName = TimeNumber.getTime() + "." + ImageType;
 
-      const preSignedUrl = await getPreSignedUrl(fileName);
-      uploadToBucket(preSignedUrl, file);
       tagUpdateInfo = {
         classId: tagState.tagInfo.classId,
         tagName: tagState.tagInfo.tagName,
         tagCategory: tagState.tagInfo.category,
-        tagImage: "Tag/" + fileName,
+        tagImage: fileName,
       };
     } else {
       tagUpdateInfo = {
@@ -139,7 +136,22 @@ export default () => {
       toast.error("Error occured while update data.");
       return;
     }
-    if (createTagInfo) {
+
+    if (createTagInfo && createTagInfo.tagId) {
+      if (tagState.imageInput.current) {
+        const { imageInput } = tagState;
+        const ImageType = tagState.tagLogoFile.type.substring(6);
+        const file = imageInput.current.files[0];
+        const fileName =
+          createTagInfo.tagId + "/" + TimeNumber.getTime() + "." + ImageType;
+        try {
+          const preSignedUrl = await getPreSignedUrl(fileName);
+          await uploadToBucket(preSignedUrl, file);
+        } catch (e) {
+          toast.error("Error occured while create data.");
+          return;
+        }
+      }
       toast.success("Sucessfullly Update Data!");
       setTimeout(() => {
         window.location.reload();
@@ -157,7 +169,6 @@ export default () => {
       Expires: signedUrlExpireSeconds,
     };
     const url = s3.getSignedUrl("putObject", params);
-    console.log("This is a presigned Url! : ", url);
     return url;
   };
 
@@ -173,8 +184,6 @@ export default () => {
 
     await fetch(preSignedUrl, option);
   };
-  console.log("checkcheck");
-  console.log(tagState);
   return (
     <TagInfoContext.Provider value={{ tagState, tagDispatch }}>
       <CreateTagPresenter onSubmit={onSubmit} />

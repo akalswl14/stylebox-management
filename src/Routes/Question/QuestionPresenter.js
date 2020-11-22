@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import WrapPage from "../../Styles/WrapPageStyles";
 import PageTitle from "../../Components/PageTitle";
 import SectionTitle from "../../Components/SectionTitle";
 import Loader from "../../Components/Loader";
 import Button from "../../Components/Button";
-import { Link } from "react-router-dom";
+import PageChangeButton from "../../Components/PageChangeButton";
 import { PlusIcon, DeleteIcon } from "../../Components/Icons";
 
 const Wrapper = styled.div`
@@ -78,8 +78,6 @@ export default ({
   onTypeChange,
   onOrderChange,
   onSubmit,
-  alreadyGetData,
-  setalreadyGetData,
   addRow,
   deleteRow,
   setIsDataState,
@@ -91,7 +89,7 @@ export default ({
       </Wrapper>
     );
   if (!loading && data) {
-    if (!alreadyGetData) {
+    useEffect(() => {
       if (data.getSettingAdminEmail && data.getSettingQuestionOption) {
         const defaultAdmin = {
           email: data.getSettingAdminEmail.email,
@@ -100,8 +98,10 @@ export default ({
         setAdminState(defaultAdmin);
         if (data.getSettingQuestionOption.length > 0) {
           const question = [];
+          let id = 1;
           data.getSettingQuestionOption.map((option) =>
             question.push({
+              id: id++,
               order: Number(option.order),
               questionType: option.questionType,
             })
@@ -110,17 +110,17 @@ export default ({
         } else {
           setQuestionState([
             {
+              id: 1,
               order: 1,
               questionType: "",
             },
           ]);
         }
-        setalreadyGetData(true);
         setIsDataState(true);
       } else {
         setIsDataState(false);
       }
-    }
+    }, []);
     return (
       <>
         <WrapPage>
@@ -129,79 +129,83 @@ export default ({
             <TitleBox>
               <SectionTitle text={"Email Information"} />
               <ButtonBox>
-                <Link to="/">
-                  <Button text="Back To Main"></Button>
-                </Link>
+                <PageChangeButton text="Back To Main" href="/" />
                 <Button type="submit" text="Confirm"></Button>
               </ButtonBox>
             </TitleBox>
             <Table>
-              <tr>
-                <td>Admin Email</td>
-                <td>
-                  <input
-                    name="email"
-                    type="email"
-                    onChange={onChange}
-                    value={email}
-                    required
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Admin Password</td>
-                <td>
-                  <input
-                    name="pw"
-                    type="password"
-                    onChange={onChange}
-                    value={pw}
-                    required
-                  />
-                </td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td>Admin Email</td>
+                  <td>
+                    <input
+                      name="email"
+                      type="email"
+                      onChange={onChange}
+                      value={email}
+                      required
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Admin Password</td>
+                  <td>
+                    <input
+                      name="pw"
+                      type="password"
+                      onChange={onChange}
+                      value={pw}
+                      required
+                    />
+                  </td>
+                </tr>
+              </tbody>
             </Table>
             <TitleBox>
               <SectionTitle text={"Question Type Management"} />
             </TitleBox>
             <Table>
-              <th>Order</th>
-              <th>Question Type</th>
-              <th>
-                <RowButton onClick={(e) => addRow(e)}>
-                  <PlusIcon size={19} />
-                </RowButton>
-              </th>
-              {questionState.length > 0 &&
-                questionState.map((question) => (
-                  <tr>
-                    <td>
-                      <input
-                        name="order"
-                        type="text"
-                        value={question.order}
-                        onChange={(e) =>
-                          onOrderChange(question.questionType, e)
-                        }
-                        required
-                      />
-                    </td>
-                    <td>
-                      <input
-                        name="questionType"
-                        type="text"
-                        value={question.questionType}
-                        onChange={(e) => onTypeChange(question.order, e)}
-                        required
-                      />
-                    </td>
-                    <td>
-                      <RowButton onClick={(e) => deleteRow(e, question.order)}>
-                        <DeleteIcon size={19} />
-                      </RowButton>
-                    </td>
-                  </tr>
-                ))}
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Question Type</th>
+                  <th>
+                    <RowButton onClick={(e) => addRow(e)}>
+                      <PlusIcon size={19} />
+                    </RowButton>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {questionState.length > 0 &&
+                  questionState.map((question) => (
+                    <tr key={question.id}>
+                      <td>
+                        <input
+                          name="order"
+                          type="text"
+                          value={question.order}
+                          onChange={(e) => onOrderChange(question.id, e)}
+                          required
+                        />
+                      </td>
+                      <td>
+                        <input
+                          name="questionType"
+                          type="text"
+                          value={question.questionType}
+                          onChange={(e) => onTypeChange(question.id, e)}
+                          required
+                        />
+                      </td>
+                      <td>
+                        <RowButton onClick={(e) => deleteRow(e, question.id)}>
+                          <DeleteIcon size={19} />
+                        </RowButton>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
             </Table>
           </form>
         </WrapPage>

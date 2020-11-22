@@ -43,26 +43,28 @@ const SearchFeed = ({ feedState, ChangeSearchDate }) => {
         <SectionTitle text={"Search Feed"} />
       </TitleBox>
       <Table>
-        <tr>
-          <td>Open Posts from</td>
-          <td>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="MM/dd/yyyy"
-                margin="normal"
-                id="searchPeriod"
-                label="search Period"
-                value={feedState.SearchPeriod}
-                onChange={(date) => ChangeSearchDate(date)}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-            </MuiPickersUtilsProvider>
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>Open Posts from</td>
+            <td>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="searchPeriod"
+                  label="search Period"
+                  value={feedState.SearchPeriod}
+                  onChange={(date) => ChangeSearchDate(date)}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );

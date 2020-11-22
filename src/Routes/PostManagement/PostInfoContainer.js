@@ -212,6 +212,11 @@ export default ({ match }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    if (postState.basicInfo.mainProductId === 0) {
+      toast.error("Select the main product name.");
+      return;
+    }
+
     const mutationData = {
       tags: [],
       externalLinks: [],
@@ -220,14 +225,68 @@ export default ({ match }) => {
       subProducts: [],
     };
 
+    let TagOrderList = [];
+    let TagIdList = [];
     for (const eachData of postState.tagInfoData) {
+      if (TagOrderList.includes(Number(eachData.order))) {
+        toast.error("Tag Order values should not be the same.");
+        return;
+      }
+      if (isNaN(Number(eachData.order))) {
+        toast.error("Invalid Tag Order Value.");
+        return;
+      }
+      if (Number(eachData.order) <= 0) {
+        toast.error("Tag Order Value should be bigger than 0");
+      }
+      if (
+        Number(eachData.tagId) === 0 ||
+        Number(eachData.classId) === 0 ||
+        eachData.category === "-- CHOOSE DATA --" ||
+        eachData.category === "-- LOADING --"
+      ) {
+        toast.error("Please choose Tag.");
+        return;
+      }
+      if (TagIdList.includes(Number(eachData.tagId))) {
+        toast.error("Tag should not be the same.");
+        return;
+      }
+      TagOrderList.push(Number(eachData.order));
+      TagIdList.push(Number(eachData.tagId));
       mutationData.tags.push({
         id: eachData.tagId,
         order: eachData.order,
       });
     }
 
+    let LinkOrderList = [];
     for (const eachData of postState.externalLink) {
+      if (LinkOrderList.includes(Number(eachData.order))) {
+        toast.error("External Link Order values should not be the same.");
+        return;
+      }
+      if (isNaN(Number(eachData.order))) {
+        toast.error("Invalid External Link Order value.");
+        return;
+      }
+      if (Number(eachData.order) <= 0) {
+        toast.error("External Link Order values should be bigger than 0.");
+        return;
+      }
+      if (eachData.linkType === "-- CHOOSE DATA --") {
+        toast.error("Please choose Link Type on External Link.");
+        return;
+      }
+      if (
+        eachData.url === "http://" ||
+        eachData.url === "" ||
+        eachData.url === "https://"
+      ) {
+        toast.error("Invalid External Link URL.");
+        return;
+      }
+      LinkOrderList.push(Number(eachData.order));
       mutationData.externalLinks.push({
         url: eachData.url,
         order: eachData.order,
@@ -236,22 +295,55 @@ export default ({ match }) => {
       });
     }
 
+    let TimeNumber = new Date();
+    let ImageOrderList = [];
     for (const eachData of postState.postImageManagement) {
       let imageUpdateInfo;
+      if (ImageOrderList.includes(Number(eachData.order))) {
+        toast.error("Image Order values should not be the same.");
+        return;
+      }
+      if (isNaN(Number(eachData.order))) {
+        toast.error("Invalid Image Order value.");
+        return;
+      }
+      if (Number(eachData.order) <= 0) {
+        toast.error("Image Order values should be bigger than 0.");
+        return;
+      }
       if (eachData.isImageChange) {
         if (eachData.imageInput.current) {
+          if (eachData.imageFile === "") {
+            toast.error("Please choose Shop Image.");
+            return;
+          }
           const { imageInput } = eachData;
+          const ImageType = eachData.imageFile.type.substring(6);
           const file = imageInput.current.files[0];
-          const fileName = file.name;
-          const preSignedUrl = await getPreSignedUrl(fileName);
-          uploadToBucket(preSignedUrl, file);
+          const fileName =
+            postState.basicInfo.postId +
+            "/" +
+            TimeNumber.getTime() +
+            "_" +
+            eachData.order +
+            "." +
+            ImageType;
+
+          try {
+            const preSignedUrl = await getPreSignedUrl(fileName);
+            await uploadToBucket(preSignedUrl, file);
+          } catch (e) {
+            toast.error("Error occured while create data.");
+            return;
+          }
+
           imageUpdateInfo = {
             url: "Post/" + fileName,
             order: eachData.order,
           };
         } else {
           imageUpdateInfo = {
-            url: eachData.url,
+            url: null,
             order: eachData.order,
           };
         }
@@ -261,10 +353,33 @@ export default ({ match }) => {
           order: eachData.order,
         };
       }
+      ImageOrderList.push(Number(eachData.order));
       mutationData.images.push(imageUpdateInfo);
     }
 
+    let VideoOrderList = [];
     for (const eachData of postState.postVideoManagement) {
+      if (VideoOrderList.includes(Number(eachData.order))) {
+        toast.error("Video Order values should not be the same.");
+        return;
+      }
+      if (isNaN(Number(eachData.order))) {
+        toast.error("Invalid Video Order value.");
+        return;
+      }
+      if (Number(eachData.order) <= 0) {
+        toast.error("Video Order values should be bigger than 0.");
+        return;
+      }
+      if (
+        eachData.url === "http://" ||
+        eachData.url === "" ||
+        eachData.url === "https://"
+      ) {
+        toast.error("Invalid Video URL value.");
+        return;
+      }
+      VideoOrderList.push(Number(eachData.order));
       mutationData.videos.push({
         url: eachData.url,
         order: eachData.order,
@@ -272,7 +387,30 @@ export default ({ match }) => {
       });
     }
 
+    let ProductIdList = [];
+    let ProductOrderList = [];
     for (const eachData of postState.subProductManagement) {
+      if (ProductOrderList.includes(Number(eachData.order))) {
+        toast.error("Product Order values should not be the same.");
+        return;
+      }
+      if (isNaN(Number(eachData.order))) {
+        toast.error("Invalid Product Order Value.");
+        return;
+      }
+      if (Number(eachData.order) <= 0) {
+        toast.error("Product Order Value should be bigger than 0");
+      }
+      if (Number(eachData.productId) === 0) {
+        toast.error("Please choose Sub Product.");
+        return;
+      }
+      if (ProductIdList.includes(Number(eachData.productId))) {
+        toast.error("Sub Product should not be the same.");
+        return;
+      }
+      ProductOrderList.push(Number(eachData.order));
+      ProductIdList.push(Number(eachData.productId));
       mutationData.subProducts.push({
         id: eachData.productId,
       });
@@ -285,13 +423,19 @@ export default ({ match }) => {
         id: Number(match.params.postId),
         mainProductId: postState.basicInfo.mainProductId,
         priority: postState.basicStatus.priority,
-        isDescriptionChange: false,
-        description: postState.postDescription,
+        isDescriptionChange: true,
+        description: postState.postDescription
+          ? postState.postDescription
+          : null,
         tags: mutationData.tags,
-        externalLinks: mutationData.externalLinks,
-        images: mutationData.images,
-        videos: mutationData.videos,
-        subProducts: mutationData.subProducts,
+        externalLinks:
+          mutationData.externalLinks.length > 0
+            ? mutationData.externalLinks
+            : null,
+        images: mutationData.images.length > 0 ? mutationData.images : null,
+        videos: mutationData.videos.length > 0 ? mutationData.videos : null,
+        subProducts:
+          mutationData.subProducts.length > 0 ? mutationData.subProducts : null,
       },
     });
 
@@ -318,7 +462,6 @@ export default ({ match }) => {
       Expires: signedUrlExpireSeconds,
     };
     const url = s3.getSignedUrl("putObject", params);
-    console.log("This is a presigned Url! : ", url);
     return url;
   };
 

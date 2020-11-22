@@ -3,7 +3,7 @@ import styled from "styled-components";
 import WrapPage from "../../Styles/WrapPageStyles";
 import PageTitle from "../../Components/PageTitle";
 import { ClassInfoContext } from "./CreateClassContainer";
-import { Link } from "react-router-dom";
+import PageChangeButton from "../../Components/PageChangeButton";
 import SectionTitle from "../../Components/SectionTitle";
 import Button from "../../Components/Button";
 
@@ -67,47 +67,47 @@ export default ({ onSubmit }) => {
           <TitleBox>
             <SectionTitle text={"Create Tag Class Information"} />
             <ButtonBox>
-              <Link to="/">
-                <Button text="Back To Main"></Button>
-              </Link>
+              <PageChangeButton text="Back To Main" href="/" />
               <Button type="submit" text="Confirm"></Button>
             </ButtonBox>
           </TitleBox>
           <Table>
-            <tr>
-              <td>Tag Category</td>
-              <td>
-                <select
-                  name="category"
-                  value={category}
-                  onChange={onChange}
-                  required
-                >
-                  {category === "" ? (
-                    <option value="==choose==">{"-- CHOOSE --"}</option>
-                  ) : (
-                    <></>
-                  )}
-                  <option value="Style">Style</option>
-                  <option value="Location">Location</option>
-                  <option value="ProductClass">ProductClass</option>
-                  <option value="Price">Price</option>
-                  <option value="Feature">Feature</option>
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td>Class Name</td>
-              <td>
-                <input
-                  name="className"
-                  type="text"
-                  value={className}
-                  onChange={onChange}
-                  required
-                />
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td>Tag Category</td>
+                <td>
+                  <select
+                    name="category"
+                    value={category}
+                    onChange={onChange}
+                    required
+                  >
+                    {category === "" ? (
+                      <option value="==choose==">{"-- CHOOSE --"}</option>
+                    ) : (
+                      <></>
+                    )}
+                    <option value="Style">Style</option>
+                    <option value="Location">Location</option>
+                    <option value="ProductClass">ProductClass</option>
+                    <option value="Price">Price</option>
+                    <option value="Feature">Feature</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>Class Name</td>
+                <td>
+                  <input
+                    name="className"
+                    type="text"
+                    value={className}
+                    onChange={onChange}
+                    required
+                  />
+                </td>
+              </tr>
+            </tbody>
           </Table>
         </form>
       </WrapPage>

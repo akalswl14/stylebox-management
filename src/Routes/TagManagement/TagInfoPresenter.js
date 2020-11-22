@@ -4,7 +4,7 @@ import WrapPage from "../../Styles/WrapPageStyles";
 import PageTitle from "../../Components/PageTitle";
 import Loader from "../../Components/Loader";
 import { TagInfoContext } from "./TagInfoContainer";
-import { Link } from "react-router-dom";
+import PageChangeButton from "../../Components/PageChangeButton";
 import SectionTitle from "../../Components/SectionTitle";
 import Button from "../../Components/Button";
 import TagTdTable from "./TagTdTable";
@@ -137,8 +137,6 @@ export default ({ loading, data, error, onSubmit }) => {
     const ChangeImage = (e) => {
       let reader = new FileReader();
       let file = e.target.files[0];
-      console.log("check");
-      console.log(imageInput);
       reader.onloadend = () => {
         tagDispatch({
           type: "UPDATE_IMAGE",
@@ -173,101 +171,114 @@ export default ({ loading, data, error, onSubmit }) => {
       );
     }
 
-    return (
-      <>
-        <WrapPage>
-          <form onSubmit={onSubmit}>
-            <PageTitle text={"Tag Management"} />
-            <TitleBox>
-              <SectionTitle text={"Tag Information"} />
-              <ButtonBox>
-                <Link to="/">
-                  <Button text="Back To Main"></Button>
-                </Link>
-                <Button type="submit" text="Confirm"></Button>
-              </ButtonBox>
-            </TitleBox>
-            <Table>
-              <tr>
-                <td>Tag Id</td>
-                <td>{tagId}</td>
-                <td rowSpan="3">Tag Image</td>
-                <td rowSpan="3">
-                  <ImageInputBox>
-                    <Input
-                      type="file"
-                      accept="image/jpg,image/png,image/jpeg"
-                      name="TagLogoInput"
-                      onChange={(e) => ChangeImage(e)}
-                      ref={imageInput}
-                    />
-                    {tagState.tagLogoFile === "" &&
-                    tagState.tagInfo.tagImage ? (
-                      <PreviewImage
-                        className="TagLogo_Preview"
-                        src={S3_URL + tagState.tagInfo.tagImage}
+    if (!tagState.isData) {
+      return (
+        <Wrapper>
+          <Loader />
+        </Wrapper>
+      );
+    } else {
+      return (
+        <>
+          <WrapPage>
+            <form onSubmit={onSubmit}>
+              <PageTitle text={"Tag Management"} />
+              <TitleBox>
+                <SectionTitle text={"Tag Information"} />
+                <ButtonBox>
+                  <PageChangeButton text="Back To Main" href="/" />
+                  <Button type="submit" text="Confirm"></Button>
+                </ButtonBox>
+              </TitleBox>
+              <Table>
+                <tbody>
+                  <tr>
+                    <td>Tag Id</td>
+                    <td>{tagId}</td>
+                    <td rowSpan="3">Tag Image</td>
+                    <td rowSpan="3">
+                      <ImageInputBox>
+                        <Input
+                          type="file"
+                          accept="image/jpg,image/png,image/jpeg"
+                          name="TagLogoInput"
+                          onChange={(e) => ChangeImage(e)}
+                          ref={imageInput}
+                        />
+                        {tagState.tagLogoFile === "" &&
+                        tagState.tagInfo.tagImage ? (
+                          <PreviewImage
+                            className="TagLogo_Preview"
+                            src={S3_URL + tagState.tagInfo.tagImage}
+                          />
+                        ) : (
+                          <></>
+                        )}
+                        {TagLogo_Preview}
+                      </ImageInputBox>
+                      <ButtonBox onClick={onClick}>
+                        <Button text="Delete"></Button>
+                      </ButtonBox>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Tag Name</td>
+                    <td>
+                      <input
+                        name="tagName"
+                        type="text"
+                        value={tagName}
+                        required
+                        onChange={onChange}
                       />
-                    ) : (
-                      <></>
-                    )}
-                    {TagLogo_Preview}
-                  </ImageInputBox>
-                  <ButtonBox onClick={onClick}>
-                    <Button text="Delete"></Button>
-                  </ButtonBox>
-                </td>
-              </tr>
-              <tr>
-                <td>Tag Name</td>
-                <td>
-                  <input
-                    name="tagName"
-                    type="text"
-                    value={tagName}
-                    onChange={onChange}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Tag Category</td>
-                <td>
-                  <select name="category" value={category} onChange={onChange}>
-                    <option value="Style">Style</option>
-                    <option value="Location">Location</option>
-                    <option value="ProductClass">ProductClass</option>
-                    <option value="Price">Price</option>
-                    <option value="Feature">Feature</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td>Tag Class</td>
-                <td colSpan="3">
-                  <TagTdTable category={category} />
-                </td>
-              </tr>
-              <tr>
-                <td>Posts</td>
-                <td>{postNum} Posts</td>
-                <td>Shops</td>
-                <td>{shopNum} Shops</td>
-              </tr>
-              <tr>
-                <td>Products</td>
-                <td colSpan="3">{productNum} Products</td>
-              </tr>
-              <tr>
-                <td>Registration Date</td>
-                <td>{RegistrationDate[0]}</td>
-                <td>Last Updated</td>
-                <td>
-                  {UpdatedDate[0]} {UpdatedTime[0]}
-                </td>
-              </tr>
-            </Table>
-          </form>
-        </WrapPage>
-      </>
-    );
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Tag Category</td>
+                    <td>
+                      <select
+                        name="category"
+                        value={category}
+                        onChange={onChange}
+                      >
+                        <option value="Style">Style</option>
+                        <option value="Location">Location</option>
+                        <option value="ProductClass">ProductClass</option>
+                        <option value="Price">Price</option>
+                        <option value="Feature">Feature</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Tag Class</td>
+                    <td colSpan="3">
+                      <TagTdTable category={category} />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Posts</td>
+                    <td>{postNum} Posts</td>
+                    <td>Shops</td>
+                    <td>{shopNum} Shops</td>
+                  </tr>
+                  <tr>
+                    <td>Products</td>
+                    <td colSpan="3">{productNum} Products</td>
+                  </tr>
+                  <tr>
+                    <td>Registration Date</td>
+                    <td>{RegistrationDate[0]}</td>
+                    <td>Last Updated</td>
+                    <td>
+                      {UpdatedDate[0]} {UpdatedTime[0]}
+                    </td>
+                  </tr>
+                </tbody>
+              </Table>
+            </form>
+          </WrapPage>
+        </>
+      );
+    }
   }
 };

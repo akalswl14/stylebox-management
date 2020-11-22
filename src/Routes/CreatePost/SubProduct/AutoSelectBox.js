@@ -29,7 +29,9 @@ const AutoSelectBox = ({
         option: classes.option,
       }}
       autoHighlight
-      getOptionLabel={(option) => option.productName}
+      getOptionLabel={(option) =>
+        option.productName ? option.productName : ""
+      }
       defaultValue={defaultValue}
       renderOption={(option) => (
         <React.Fragment>

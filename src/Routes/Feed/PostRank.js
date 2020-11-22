@@ -39,37 +39,51 @@ const ButtonBox = styled.div`
   justify-content: center;
 `;
 
-const PostRank = ({feedState, onChange, onPostReset}) => {
+const PostRank = ({ feedState, onChange, onPostReset }) => {
   return (
     <>
       <TitleBox>
         <SectionTitle text={"Post(Best) Rank Algorithm"} />
       </TitleBox>
       <Table>
-        <tr>
-          <td>From</td>
-          <td>ax+by</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>Weight of Constants</td>
-          <td> 
-            <span>
-              a = <input name ="postConstA" type="text" value={feedState.postConstA} onChange={onChange} />
-            </span> 
-          </td>
-          <td>
-            <span> 
-              b = <input name ="postConstB" type="text" value={feedState.postConstB} onChange={onChange} />
-            </span> 
-          </td>
-          <td>
-            <ButtonBox onClick={onPostReset}>
-              <Button text="Reset All"></Button>
-            </ButtonBox>
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>From</td>
+            <td>ax+by</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Weight of Constants</td>
+            <td>
+              <span>
+                a ={" "}
+                <input
+                  name="postConstA"
+                  type="text"
+                  value={feedState.postConstA}
+                  onChange={onChange}
+                />
+              </span>
+            </td>
+            <td>
+              <span>
+                b ={" "}
+                <input
+                  name="postConstB"
+                  type="text"
+                  value={feedState.postConstB}
+                  onChange={onChange}
+                />
+              </span>
+            </td>
+            <td>
+              <ButtonBox onClick={onPostReset}>
+                <Button text="Reset All"></Button>
+              </ButtonBox>
+            </td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );
