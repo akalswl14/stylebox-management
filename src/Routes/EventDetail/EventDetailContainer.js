@@ -114,6 +114,10 @@ export default ({ match }) => {
     let TagOrderList = [];
     let TagIdList = [];
     let rtnTagList = [];
+    if (EventInfoState.TagInformation.value.length > 10) {
+      toast.error("Up to 10 Tags can be registered.");
+      return;
+    }
     if (EventInfoState.TagInformation.isChange) {
       let inputTagList = EventInfoState.TagInformation.value;
       inputTagList.sort((a, b) => a.order - b.order);
@@ -189,6 +193,10 @@ export default ({ match }) => {
       return;
     }
 
+    if (EventInfoState.MainImages.value.length > 10) {
+      toast.error("Up to 10 Tags can be registered.");
+      return;
+    }
     if (EventInfoState.MainImages.isChange) {
       let mainImageOrderList = [];
       for (const eachImage of EventInfoState.MainImages.value) {
@@ -239,6 +247,10 @@ export default ({ match }) => {
 
     let VideoOrderList = [];
     let rtnVideoList = [];
+    if (EventInfoState.MainVideos.value.length > 1) {
+      toast.error("Up to 10 Tags can be registered.");
+      return;
+    }
     if (EventInfoState.MainVideos.isChange) {
       for (const eachVideo of EventInfoState.MainVideos.value) {
         if (VideoOrderList.includes(Number(eachVideo.order))) {

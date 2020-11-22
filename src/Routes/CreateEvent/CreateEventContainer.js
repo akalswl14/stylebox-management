@@ -93,6 +93,10 @@ export default () => {
     let TagOrderList = [];
     let TagIdList = [];
     let rtnTagList = [];
+    if (EventInfoState.TagInformation.value.length > 10) {
+      toast.error("Up to 10 Tags can be registered.");
+      return;
+    }
     let inputTagList = EventInfoState.TagInformation.value;
     inputTagList.sort((a, b) => a.order - b.order);
     for (const eachTag of inputTagList) {
@@ -159,6 +163,10 @@ export default () => {
     }
 
     let mainImageOrderList = [];
+    if (EventInfoState.MainImages.value.length > 10) {
+      toast.error("Up to 10 Tags can be registered.");
+      return;
+    }
     for (const eachImage of EventInfoState.MainImages.value) {
       if (eachImage.ImageFile === "" || !eachImage.ImageFile) {
         toast.error("Please upload a Main Image.");
@@ -197,6 +205,10 @@ export default () => {
 
     let VideoOrderList = [];
     let rtnVideoList = [];
+    if (EventInfoState.MainVideos.value.length > 1) {
+      toast.error("Up to 10 Tags can be registered.");
+      return;
+    }
     for (const eachVideo of EventInfoState.MainVideos.value) {
       if (VideoOrderList.includes(Number(eachVideo.order))) {
         toast.error("Video Order values should not be the same.");

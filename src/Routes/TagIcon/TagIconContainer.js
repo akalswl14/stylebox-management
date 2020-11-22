@@ -97,10 +97,7 @@ export default () => {
     error: error_CategoryData,
     data: data_CategoryData,
   } = useQuery(CATEGORY_OPTION);
-  const [
-    updateTagIcon,
-    { loading: mutationLoading, error: mutationError },
-  ] = useMutation(UPDATE_TAGICON);
+  const [updateTagIcon, { error: mutationError }] = useMutation(UPDATE_TAGICON);
   const onSubmit = async (e) => {
     e.preventDefault();
     let orderArr = [],
@@ -110,6 +107,18 @@ export default () => {
         bestBubbleTags: [],
         shopBubbleTags: [],
       };
+    if (TagIconState.MainIconRowData.length > 10) {
+      toast.error("Main Page Tag Icon : Up to 10 Tag Icons can be registered.");
+      return;
+    }
+    if (TagIconState.BestIconRowData.length > 10) {
+      toast.error("Best Page Tag Icon : Up to 10 Tag Icons can be registered.");
+      return;
+    }
+    if (TagIconState.ShopIconRowData.length > 10) {
+      toast.error("Shop Page Tag Icon : Up to 10 Tag Icons can be registered.");
+      return;
+    }
     for (const eachTag of TagIconState.MainIconRowData) {
       if (orderArr.includes(eachTag.order)) {
         toast.error(

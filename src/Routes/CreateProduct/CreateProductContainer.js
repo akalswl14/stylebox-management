@@ -97,6 +97,10 @@ export default () => {
     let TagIdList = [];
     let rtnTagList = [];
     let inputTagList = ProductInfoState.TagInformation.value;
+    if (inputTagList.length > 10) {
+      toast.error("Up to 10 Tags can be registered.");
+      return;
+    }
     inputTagList.sort((a, b) => a.order - b.order);
     for (const eachTag of inputTagList) {
       if (TagOrderList.includes(Number(eachTag.order))) {
