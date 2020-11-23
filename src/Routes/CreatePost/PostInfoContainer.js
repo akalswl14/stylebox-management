@@ -219,171 +219,188 @@ export default () => {
       subProducts: [],
     };
 
-    let TagOrderList = [];
-    let TagIdList = [];
-    for (const eachData of postState.tagInfoData) {
-      if (TagOrderList.includes(Number(eachData.order))) {
-        toast.error("Tag Order values should not be the same.");
-        return;
+    let web_order = 1;
+
+    if (postState.tagInfoData.length !== 0) {
+      web_order = 1;
+      let TagOrderList = [];
+      let TagIdList = [];
+      for (const eachData of postState.tagInfoData) {
+        if (TagOrderList.includes(Number(eachData.order))) {
+          toast.error("Tag Order values should not be the same.");
+          return;
+        }
+        if (isNaN(Number(eachData.order))) {
+          toast.error("Invalid Tag Order Value.");
+          return;
+        }
+        if (Number(eachData.order) <= 0) {
+          toast.error("Tag Order Value should be bigger than 0");
+        }
+        if (
+          Number(eachData.tagId) === 0 ||
+          Number(eachData.classId) === 0 ||
+          eachData.category === "-- CHOOSE DATA --" ||
+          eachData.category === "-- LOADING --"
+        ) {
+          toast.error("Please choose Tag.");
+          return;
+        }
+        if (TagIdList.includes(Number(eachData.tagId))) {
+          toast.error("Tag should not be the same.");
+          return;
+        }
+        TagOrderList.push(Number(eachData.order));
+        TagIdList.push(Number(eachData.tagId));
+        mutationData.tags.push({
+          id: Number(eachData.tagId),
+          order: Number(web_order++),
+        });
       }
-      if (isNaN(Number(eachData.order))) {
-        toast.error("Invalid Tag Order Value.");
-        return;
-      }
-      if (Number(eachData.order) <= 0) {
-        toast.error("Tag Order Value should be bigger than 0");
-      }
-      if (
-        Number(eachData.tagId) === 0 ||
-        Number(eachData.classId) === 0 ||
-        eachData.category === "-- CHOOSE DATA --" ||
-        eachData.category === "-- LOADING --"
-      ) {
-        toast.error("Please choose Tag.");
-        return;
-      }
-      if (TagIdList.includes(Number(eachData.tagId))) {
-        toast.error("Tag should not be the same.");
-        return;
-      }
-      TagOrderList.push(Number(eachData.order));
-      TagIdList.push(Number(eachData.tagId));
-      mutationData.tags.push({
-        id: eachData.tagId,
-        order: eachData.order,
-      });
     }
 
-    let LinkOrderList = [];
-    for (const eachData of postState.externalLink) {
-      if (LinkOrderList.includes(Number(eachData.order))) {
-        toast.error("External Link Order values should not be the same.");
-        return;
+    if (postState.externalLink.length !== 0) {
+      web_order = 1;
+      let LinkOrderList = [];
+      for (const eachData of postState.externalLink) {
+        if (LinkOrderList.includes(Number(eachData.order))) {
+          toast.error("External Link Order values should not be the same.");
+          return;
+        }
+        if (isNaN(Number(eachData.order))) {
+          toast.error("Invalid External Link Order value.");
+          return;
+        }
+        if (Number(eachData.order) <= 0) {
+          toast.error("External Link Order values should be bigger than 0.");
+          return;
+        }
+        if (eachData.linkType === "-- CHOOSE DATA --") {
+          toast.error("Please choose Link Type on External Link.");
+          return;
+        }
+        if (
+          eachData.url === "http://" ||
+          eachData.url === "" ||
+          eachData.url === "https://"
+        ) {
+          toast.error("Invalid External Link URL.");
+          return;
+        }
+        LinkOrderList.push(Number(eachData.order));
+        mutationData.externalLinks.push({
+          url: eachData.url,
+          order: Number(web_order++),
+          linkType: eachData.linkType,
+          isShown: eachData.isShown,
+        });
       }
-      if (isNaN(Number(eachData.order))) {
-        toast.error("Invalid External Link Order value.");
-        return;
-      }
-      if (Number(eachData.order) <= 0) {
-        toast.error("External Link Order values should be bigger than 0.");
-        return;
-      }
-      if (eachData.linkType === "-- CHOOSE DATA --") {
-        toast.error("Please choose Link Type on External Link.");
-        return;
-      }
-      if (
-        eachData.url === "http://" ||
-        eachData.url === "" ||
-        eachData.url === "https://"
-      ) {
-        toast.error("Invalid External Link URL.");
-        return;
-      }
-      LinkOrderList.push(Number(eachData.order));
-      mutationData.externalLinks.push({
-        url: eachData.url,
-        order: eachData.order,
-        linkType: eachData.linkType,
-        isShown: eachData.isShown,
-      });
     }
 
     let TimeNumber = new Date();
-    let ImageOrderList = [];
-    for (const eachData of postState.postImageManagement) {
-      let imageUpdateInfo;
-      if (ImageOrderList.includes(Number(eachData.order))) {
-        toast.error("Image Order values should not be the same.");
-        return;
-      }
-      if (isNaN(Number(eachData.order))) {
-        toast.error("Invalid Image Order value.");
-        return;
-      }
-      if (Number(eachData.order) <= 0) {
-        toast.error("Image Order values should be bigger than 0.");
-        return;
-      }
-      if (eachData.imageInput.current) {
-        if (eachData.imageFile === "") {
-          toast.error("Please choose Shop Image.");
+
+    if (postState.postImageManagement.length !== 0) {
+      web_order = 1;
+      let ImageOrderList = [];
+      for (const eachData of postState.postImageManagement) {
+        let imageUpdateInfo;
+        if (ImageOrderList.includes(Number(eachData.order))) {
+          toast.error("Image Order values should not be the same.");
           return;
         }
-        const ImageType = eachData.imageFile.type.substring(6);
-        const fileName =
-          TimeNumber.getTime() + "_" + eachData.order + "." + ImageType;
-        imageUpdateInfo = {
-          url: fileName,
-          order: eachData.order,
-        };
-      } else {
-        imageUpdateInfo = {
+        if (isNaN(Number(eachData.order))) {
+          toast.error("Invalid Image Order value.");
+          return;
+        }
+        if (Number(eachData.order) <= 0) {
+          toast.error("Image Order values should be bigger than 0.");
+          return;
+        }
+        if (eachData.imageInput.current) {
+          if (eachData.imageFile === "") {
+            toast.error("Please choose Shop Image.");
+            return;
+          }
+          const ImageType = eachData.imageFile.type.substring(6);
+          const fileName =
+            TimeNumber.getTime() + "_" + eachData.order + "." + ImageType;
+          imageUpdateInfo = {
+            url: fileName,
+            order: Number(eachData.order),
+          };
+        } else {
+          imageUpdateInfo = {
+            url: eachData.url,
+            order: Number(web_order++),
+          };
+        }
+        ImageOrderList.push(Number(eachData.order));
+        mutationData.images.push(imageUpdateInfo);
+      }
+    }
+
+    if (postState.postVideoManagement.length !== 0) {
+      web_order = 1;
+      let VideoOrderList = [];
+      for (const eachData of postState.postVideoManagement) {
+        if (VideoOrderList.includes(Number(eachData.order))) {
+          toast.error("Video Order values should not be the same.");
+          return;
+        }
+        if (isNaN(Number(eachData.order))) {
+          toast.error("Invalid Video Order value.");
+          return;
+        }
+        if (Number(eachData.order) <= 0) {
+          toast.error("Video Order values should be bigger than 0.");
+          return;
+        }
+        if (
+          eachData.url === "http://" ||
+          eachData.url === "" ||
+          eachData.url === "https://"
+        ) {
+          toast.error("Invalid Video URL value.");
+          return;
+        }
+        VideoOrderList.push(Number(eachData.order));
+        mutationData.videos.push({
           url: eachData.url,
-          order: eachData.order,
-        };
+          order: Number(web_order++),
+          isYoutube: true,
+        });
       }
-      ImageOrderList.push(Number(eachData.order));
-      mutationData.images.push(imageUpdateInfo);
     }
 
-    let VideoOrderList = [];
-    for (const eachData of postState.postVideoManagement) {
-      if (VideoOrderList.includes(Number(eachData.order))) {
-        toast.error("Video Order values should not be the same.");
-        return;
+    if (postState.subProductManagement.length !== 0) {
+      let ProductIdList = [];
+      let ProductOrderList = [];
+      for (const eachData of postState.subProductManagement) {
+        if (ProductOrderList.includes(Number(eachData.order))) {
+          toast.error("Product Order values should not be the same.");
+          return;
+        }
+        if (isNaN(Number(eachData.order))) {
+          toast.error("Invalid Product Order Value.");
+          return;
+        }
+        if (Number(eachData.order) <= 0) {
+          toast.error("Product Order Value should be bigger than 0");
+        }
+        if (Number(eachData.productId) === 0) {
+          toast.error("Please choose Sub Product.");
+          return;
+        }
+        if (ProductIdList.includes(Number(eachData.productId))) {
+          toast.error("Sub Product should not be the same.");
+          return;
+        }
+        ProductOrderList.push(Number(eachData.order));
+        ProductIdList.push(Number(eachData.productId));
+        mutationData.subProducts.push({
+          id: Number(eachData.productId),
+        });
       }
-      if (isNaN(Number(eachData.order))) {
-        toast.error("Invalid Video Order value.");
-        return;
-      }
-      if (Number(eachData.order) <= 0) {
-        toast.error("Video Order values should be bigger than 0.");
-        return;
-      }
-      if (
-        eachData.url === "http://" ||
-        eachData.url === "" ||
-        eachData.url === "https://"
-      ) {
-        toast.error("Invalid Video URL value.");
-        return;
-      }
-      VideoOrderList.push(Number(eachData.order));
-      mutationData.videos.push({
-        url: eachData.url,
-        order: eachData.order,
-        isYoutube: true,
-      });
-    }
-
-    let ProductIdList = [];
-    let ProductOrderList = [];
-    for (const eachData of postState.subProductManagement) {
-      if (ProductOrderList.includes(Number(eachData.order))) {
-        toast.error("Product Order values should not be the same.");
-        return;
-      }
-      if (isNaN(Number(eachData.order))) {
-        toast.error("Invalid Product Order Value.");
-        return;
-      }
-      if (Number(eachData.order) <= 0) {
-        toast.error("Product Order Value should be bigger than 0");
-      }
-      if (Number(eachData.productId) === 0) {
-        toast.error("Please choose Sub Product.");
-        return;
-      }
-      if (ProductIdList.includes(Number(eachData.productId))) {
-        toast.error("Sub Product should not be the same.");
-        return;
-      }
-      ProductOrderList.push(Number(eachData.order));
-      ProductIdList.push(Number(eachData.productId));
-      mutationData.subProducts.push({
-        id: eachData.productId,
-      });
     }
 
     const {
@@ -391,20 +408,15 @@ export default () => {
     } = await createPost({
       variables: {
         mainProductId: postState.basicInfo.mainProductId,
-        priority:
-          postState.basicStatus === {} ? postState.basicStatus.priority : 1,
+        priority: postState.basicStatus.priority,
         description: postState.postDescription
           ? postState.postDescription
           : null,
         tags: mutationData.tags,
-        externalLinks:
-          mutationData.externalLinks.length > 0
-            ? mutationData.externalLinks
-            : null,
-        images: mutationData.images.length > 0 ? mutationData.images : null,
-        videos: mutationData.videos.length > 0 ? mutationData.videos : null,
-        subProducts:
-          mutationData.subProducts.length > 0 ? mutationData.subProducts : null,
+        externalLinks: mutationData.externalLinks,
+        images: mutationData.images,
+        videos: mutationData.videos,
+        subProducts: mutationData.subProducts,
       },
     });
 
@@ -437,7 +449,7 @@ export default () => {
         }
       }
 
-      toast.success("Sucessfully Update Data!");
+      toast.success("Sucessfully Create Data!");
       setTimeout(() => {
         window.location.reload();
       }, 5000);
