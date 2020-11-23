@@ -225,6 +225,7 @@ export default ({ match }) => {
       subProducts: [],
     };
 
+    let web_order = 1;
     let TagOrderList = [];
     let TagIdList = [];
     for (const eachData of postState.tagInfoData) {
@@ -256,10 +257,11 @@ export default ({ match }) => {
       TagIdList.push(Number(eachData.tagId));
       mutationData.tags.push({
         id: eachData.tagId,
-        order: eachData.order,
+        order: web_order++,
       });
     }
 
+    web_order = 1;
     let LinkOrderList = [];
     for (const eachData of postState.externalLink) {
       if (LinkOrderList.includes(Number(eachData.order))) {
@@ -289,12 +291,13 @@ export default ({ match }) => {
       LinkOrderList.push(Number(eachData.order));
       mutationData.externalLinks.push({
         url: eachData.url,
-        order: eachData.order,
+        order: web_order++,
         linkType: eachData.linkType,
         isShown: eachData.isShown,
       });
     }
 
+    web_order = 1;
     let TimeNumber = new Date();
     let ImageOrderList = [];
     for (const eachData of postState.postImageManagement) {
@@ -339,24 +342,25 @@ export default ({ match }) => {
 
           imageUpdateInfo = {
             url: "Post/" + fileName,
-            order: eachData.order,
+            order: web_order++,
           };
         } else {
           imageUpdateInfo = {
             url: null,
-            order: eachData.order,
+            order: web_order++,
           };
         }
       } else {
         imageUpdateInfo = {
           url: eachData.url,
-          order: eachData.order,
+          order: web_order++,
         };
       }
       ImageOrderList.push(Number(eachData.order));
       mutationData.images.push(imageUpdateInfo);
     }
 
+    web_order = 1;
     let VideoOrderList = [];
     for (const eachData of postState.postVideoManagement) {
       if (VideoOrderList.includes(Number(eachData.order))) {
@@ -382,7 +386,7 @@ export default ({ match }) => {
       VideoOrderList.push(Number(eachData.order));
       mutationData.videos.push({
         url: eachData.url,
-        order: eachData.order,
+        order: web_order++,
         isYoutube: true,
       });
     }
