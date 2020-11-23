@@ -20,6 +20,7 @@ const initialState = {
     MainMapUrl: "",
     ShopLogoFile: "",
     ShopLogoPreviewUrl: "",
+    CheckShopName: false,
   },
   BasicStatus: {
     ShopRank: "-",
@@ -87,7 +88,7 @@ export default () => {
     data: data_LinkTypeData,
   } = useQuery(GET_LINKTYPE);
 
-  const [CreateShopMutaion, { error: CreateError }] = useMutation(CREATE_SHOP);
+  const [CreateShopMutation, { error: CreateError }] = useMutation(CREATE_SHOP);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -96,6 +97,10 @@ export default () => {
 
     if (ShopInfoState.BasicInformation.shopName === "") {
       toast.error("Please enter Shop Name.");
+      return;
+    }
+    if (!ShopInfoState.BasicInformation.CheckShopName) {
+      toast.error("Invalid Shop Name. Please check Shop Name.");
       return;
     }
     if (ShopInfoState.BasicInformation.phoneNumber === "") {
@@ -125,6 +130,10 @@ export default () => {
     let TagOrderList = [];
     let TagIdList = [];
     let rtnTagList = [];
+    if (ShopInfoState.TagInformation.length > 10) {
+      toast.error("Up to 10 Tags can be registered.");
+      return;
+    }
     for (const eachTag of ShopInfoState.TagInformation) {
       if (TagOrderList.includes(Number(eachTag.order))) {
         toast.error("Tag Order values should not be the same.");
@@ -160,6 +169,10 @@ export default () => {
     rtnTagList.sort((a, b) => a.order - b.order);
     let LinkOrderList = [];
     let rtnExternalLinkList = [];
+    if (ShopInfoState.ExternalLink.length > 10) {
+      toast.error("Up to 10 External Links can be registered.");
+      return;
+    }
     for (const eachLink of ShopInfoState.ExternalLink) {
       if (LinkOrderList.includes(Number(eachLink.order))) {
         toast.error("External Link Order values should not be the same.");
@@ -196,6 +209,10 @@ export default () => {
     let ImageOrderList = [];
     let rtnImageList = [];
     let s3ImageList = [];
+    if (ShopInfoState.ShopImagesManagement.length > 10) {
+      toast.error("Up to 10 Shop Images can be registered.");
+      return;
+    }
     for (const eachImage of ShopInfoState.ShopImagesManagement) {
       if (ImageOrderList.includes(Number(eachImage.order))) {
         toast.error("Image Order values should not be the same.");
@@ -223,6 +240,10 @@ export default () => {
     }
     let VideoOrderList = [];
     let rtnVideoList = [];
+    if (ShopInfoState.ShopVideoManagement.length > 5) {
+      toast.error("Up to 10 Videos can be registered.");
+      return;
+    }
     for (const eachVideo of ShopInfoState.ShopVideoManagement) {
       if (VideoOrderList.includes(Number(eachVideo.order))) {
         toast.error("Video Order values should not be the same.");
@@ -248,6 +269,10 @@ export default () => {
       rtnVideoList.push({ order: Number(eachVideo.order), url: eachVideo.url });
     }
     let rtnBranchList = [];
+    if (ShopInfoState.BranchManagement.length > 5) {
+      toast.error("Up to 10 Branches can be registered.");
+      return;
+    }
     for (const eachBranch of ShopInfoState.BranchManagement) {
       if (eachBranch.BranchName === "") {
         toast.error("Please enter Branch Name.");
@@ -317,7 +342,7 @@ export default () => {
 
     const {
       data: { createShop },
-    } = await CreateShopMutaion({
+    } = await CreateShopMutation({
       variables: mutationData,
     });
     if (!createShop || CreateError) {

@@ -11,7 +11,12 @@ export const ShopInfoContext = React.createContext(null);
 const initialState = {
   BasicInformation: {
     shopId: "-",
-    shopName: { value: "", isChange: false },
+    shopName: {
+      value: "",
+      isChange: false,
+      originalValue: "",
+      CheckShopName: false,
+    },
     phoneNumber: { value: "", isChange: false },
     MainAddress: { value: "", isChange: false },
     MainMapUrl: { value: "", isChange: false },
@@ -92,6 +97,10 @@ export default ({ match }) => {
       toast.error("Please enter Shop Name.");
       return;
     }
+    if (!ShopInfoState.BasicInformation.shopName.CheckShopName) {
+      toast.error("Invalid Shop Name. Please check Shop Name.");
+      return;
+    }
     if (ShopInfoState.BasicInformation.phoneNumber.value === "") {
       toast.error("Please enter Shop Phone Number.");
       return;
@@ -119,6 +128,10 @@ export default ({ match }) => {
     let TagOrderList = [];
     let TagIdList = [];
     let rtnTagList = [];
+    if (ShopInfoState.TagInformation.value.length > 10) {
+      toast.error("Up to 10 Tags can be registered.");
+      return;
+    }
     if (ShopInfoState.TagInformation.isChange) {
       for (const eachTag of ShopInfoState.TagInformation.value) {
         if (TagOrderList.includes(Number(eachTag.order))) {
@@ -156,6 +169,10 @@ export default ({ match }) => {
     rtnTagList.sort((a, b) => a.order - b.order);
     let LinkOrderList = [];
     let rtnExternalLinkList = [];
+    if (ShopInfoState.ExternalLink.value.length > 10) {
+      toast.error("Up to 10 External Links can be registered.");
+      return;
+    }
     if (ShopInfoState.ExternalLink.isChange) {
       for (const eachLink of ShopInfoState.ExternalLink.value) {
         if (LinkOrderList.includes(Number(eachLink.order))) {
@@ -194,6 +211,10 @@ export default ({ match }) => {
     let ImageOrderList = [];
     let rtnImageList = [];
     let s3ImageList = [];
+    if (ShopInfoState.ShopImagesManagement.value.length > 10) {
+      toast.error("Up to 10 Shop Images can be registered.");
+      return;
+    }
     if (ShopInfoState.ShopImagesManagement.isChange) {
       for (const eachImage of ShopInfoState.ShopImagesManagement.value) {
         if (ImageOrderList.includes(Number(eachImage.order))) {
@@ -235,6 +256,10 @@ export default ({ match }) => {
     }
     let VideoOrderList = [];
     let rtnVideoList = [];
+    if (ShopInfoState.ShopVideoManagement.value.length > 5) {
+      toast.error("Up to 10 Videos can be registered.");
+      return;
+    }
     if (ShopInfoState.ShopVideoManagement.isChange) {
       for (const eachVideo of ShopInfoState.ShopVideoManagement.value) {
         if (VideoOrderList.includes(Number(eachVideo.order))) {
@@ -265,6 +290,10 @@ export default ({ match }) => {
       }
     }
     let rtnBranchList = [];
+    if (ShopInfoState.BranchManagement.value.length > 5) {
+      toast.error("Up to 10 Branches can be registered.");
+      return;
+    }
     if (ShopInfoState.BranchManagement.isChange) {
       for (const eachBranch of ShopInfoState.BranchManagement.value) {
         if (eachBranch.BranchName === "") {

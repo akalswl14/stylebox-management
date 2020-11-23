@@ -132,6 +132,8 @@ export default ({ onSubmit, loading, data, error }) => {
             shopName: {
               value: data.getShopBasicInfo.shopName,
               isChange: false,
+              originalValue: data.getShopBasicInfo.shopName,
+              CheckShopName: true,
             },
             phoneNumber: {
               value: data.getShopBasicInfo.phoneNumber,

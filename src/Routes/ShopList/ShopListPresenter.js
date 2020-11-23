@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import PageTitle from "../../Components/PageTitle";
 import WrapPage from "../../Styles/WrapPageStyles";
@@ -262,7 +262,7 @@ export default ({ onSubmit, loading, error, data }) => {
   }
   if (!loading && data) {
     if (!data.getShopList || !data.getShopList.shops) {
-      toast.error("Error occured gettig data.");
+      toast.error("Error occured getting data.");
       return (
         <WrapPage>
           <TitleBox>
