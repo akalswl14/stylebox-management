@@ -69,3 +69,9 @@ export const GET_LINKTYPE = gql`
     getLinkTypeOption
   }
 `;
+
+export const CHECK_SHOPNAME = gql`
+  mutation CheckShopName($shopName: String!) {
+    getShopNameExists(shopName: $shopName)
+  }
+`;

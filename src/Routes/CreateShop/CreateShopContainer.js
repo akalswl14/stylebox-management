@@ -20,6 +20,7 @@ const initialState = {
     MainMapUrl: "",
     ShopLogoFile: "",
     ShopLogoPreviewUrl: "",
+    CheckShopName: false,
   },
   BasicStatus: {
     ShopRank: "-",
@@ -87,7 +88,7 @@ export default () => {
     data: data_LinkTypeData,
   } = useQuery(GET_LINKTYPE);
 
-  const [CreateShopMutaion, { error: CreateError }] = useMutation(CREATE_SHOP);
+  const [CreateShopMutation, { error: CreateError }] = useMutation(CREATE_SHOP);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -96,6 +97,10 @@ export default () => {
 
     if (ShopInfoState.BasicInformation.shopName === "") {
       toast.error("Please enter Shop Name.");
+      return;
+    }
+    if (!ShopInfoState.BasicInformation.CheckShopName) {
+      toast.error("Invalid Shop Name. Please check Shop Name.");
       return;
     }
     if (ShopInfoState.BasicInformation.phoneNumber === "") {
@@ -337,7 +342,7 @@ export default () => {
 
     const {
       data: { createShop },
-    } = await CreateShopMutaion({
+    } = await CreateShopMutation({
       variables: mutationData,
     });
     if (!createShop || CreateError) {

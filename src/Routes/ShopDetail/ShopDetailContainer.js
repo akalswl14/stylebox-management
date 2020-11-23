@@ -11,7 +11,12 @@ export const ShopInfoContext = React.createContext(null);
 const initialState = {
   BasicInformation: {
     shopId: "-",
-    shopName: { value: "", isChange: false },
+    shopName: {
+      value: "",
+      isChange: false,
+      originalValue: "",
+      CheckShopName: false,
+    },
     phoneNumber: { value: "", isChange: false },
     MainAddress: { value: "", isChange: false },
     MainMapUrl: { value: "", isChange: false },
@@ -90,6 +95,10 @@ export default ({ match }) => {
 
     if (ShopInfoState.BasicInformation.shopName.value === "") {
       toast.error("Please enter Shop Name.");
+      return;
+    }
+    if (!ShopInfoState.BasicInformation.shopName.CheckShopName) {
+      toast.error("Invalid Shop Name. Please check Shop Name.");
       return;
     }
     if (ShopInfoState.BasicInformation.phoneNumber.value === "") {

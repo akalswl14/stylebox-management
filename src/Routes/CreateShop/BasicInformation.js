@@ -1,9 +1,12 @@
 import React, { useContext } from "react";
+import { useMutation } from "react-apollo-hooks";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import Button from "../../Components/Button";
+import { ImpossibleIcon, PossibleIcon } from "../../Components/Icons";
 import SectionTitle from "../../Components/SectionTitle";
 import { ShopInfoContext } from "./CreateShopContainer";
+import { CHECK_SHOPNAME } from "./CreateShopQueries";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -29,7 +32,7 @@ const Table = styled.table`
     font-weight: 500;
   }
   .smallerCell {
-    width: 400px;
+    width: 600px;
   }
 `;
 
@@ -75,9 +78,21 @@ const MapUrlWrapper = styled.span`
   width: 600px;
 `;
 
+const CheckStatusIcon = styled.span`
+  height: 35px;
+  padding: 0px 10px;
+  line-height: 35px;
+  width: 35px;
+  justify-content: center;
+  vertical-align: middle;
+  display: inline-block;
+`;
+
 export default () => {
   const { ShopInfoState, ShopInfoDispatch } = useContext(ShopInfoContext);
-
+  const [CheckShopNameMutation, { error: CheckError }] = useMutation(
+    CHECK_SHOPNAME
+  );
   let ShopLogo_Preview = null;
   if (ShopInfoState.BasicInformation.ShopLogoFile !== "") {
     ShopLogo_Preview = (
@@ -116,6 +131,7 @@ export default () => {
           BasicInformation: {
             ...ShopInfoState.BasicInformation,
             shopName: e.target.value,
+            CheckShopName: false,
           },
         },
       });
@@ -174,6 +190,50 @@ export default () => {
     });
   };
 
+  const CheckName = async (e) => {
+    const InputShopName = ShopInfoState.BasicInformation.shopName;
+    if (InputShopName.length <= 0) {
+      toast.error("Invalid Shop Name.");
+      return;
+    } else {
+      const {
+        data: { getShopNameExists },
+      } = await CheckShopNameMutation({
+        variables: { shopName: InputShopName },
+      });
+      if (getShopNameExists == null || CheckError) {
+        toast.error("Error occured while checking shopName.");
+        return;
+      } else {
+        if (getShopNameExists) {
+          toast.info("🚫  This Shop Name already Exists.");
+          ShopInfoDispatch({
+            type: "UPDATE_BASICINFO",
+            data: {
+              BasicInformation: {
+                ...ShopInfoState.BasicInformation,
+                CheckShopName: false,
+              },
+            },
+          });
+          return;
+        } else {
+          toast.info("✅  Valid Shop Name.");
+          ShopInfoDispatch({
+            type: "UPDATE_BASICINFO",
+            data: {
+              BasicInformation: {
+                ...ShopInfoState.BasicInformation,
+                CheckShopName: true,
+              },
+            },
+          });
+          return;
+        }
+      }
+    }
+  };
+
   const DeleteImage = (e) => {
     ShopInfoDispatch({
       type: "UPDATE_BASICINFO",
@@ -226,6 +286,18 @@ export default () => {
                 name="ShopNameInput"
                 value={ShopInfoState.BasicInformation.shopName}
                 onChange={(e) => onChange(e)}
+              />
+              <CheckStatusIcon>
+                {ShopInfoState.BasicInformation.CheckShopName ? (
+                  <PossibleIcon />
+                ) : (
+                  <ImpossibleIcon />
+                )}
+              </CheckStatusIcon>
+              <Button
+                text={"Check"}
+                isButtonType={true}
+                ClickEvent={CheckName}
               />
             </td>
           </tr>

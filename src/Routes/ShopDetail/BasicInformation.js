@@ -1,9 +1,12 @@
 import React, { useContext } from "react";
+import { useMutation } from "react-apollo-hooks";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import Button from "../../Components/Button";
 import SectionTitle from "../../Components/SectionTitle";
+import { CHECK_SHOPNAME } from "./ShopDetailQueries";
 import { ShopInfoContext } from "./ShopDetailContainer";
+import { ImpossibleIcon, PossibleIcon } from "../../Components/Icons";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -29,7 +32,7 @@ const Table = styled.table`
     font-weight: 500;
   }
   .smallerCell {
-    width: 400px;
+    width: 600px;
   }
 `;
 
@@ -75,8 +78,21 @@ const MapUrlWrapper = styled.span`
   width: 600px;
 `;
 
+const CheckStatusIcon = styled.span`
+  height: 35px;
+  padding: 0px 10px;
+  line-height: 35px;
+  width: 35px;
+  justify-content: center;
+  vertical-align: middle;
+  display: inline-block;
+`;
+
 export default () => {
   const { ShopInfoState, ShopInfoDispatch } = useContext(ShopInfoContext);
+  const [CheckShopNameMutation, { error: CheckError }] = useMutation(
+    CHECK_SHOPNAME
+  );
 
   let ShopLogo_Preview = null;
   if (ShopInfoState.BasicInformation.ShopLogo.PreviewUrl !== "") {
@@ -138,15 +154,38 @@ export default () => {
   const onChange = (e) => {
     e.preventDefault();
     if (e.target.name === "ShopNameInput") {
-      ShopInfoDispatch({
-        type: "UPDATE_BASICINFO",
-        data: {
-          BasicInformation: {
-            ...ShopInfoState.BasicInformation,
-            shopName: { value: e.target.value, isChange: true },
+      const StateShopName = ShopInfoState.BasicInformation.shopName;
+      if (StateShopName.originalValue === e.target.value) {
+        ShopInfoDispatch({
+          type: "UPDATE_BASICINFO",
+          data: {
+            BasicInformation: {
+              ...ShopInfoState.BasicInformation,
+              shopName: {
+                ...StateShopName,
+                value: e.target.value,
+                isChange: false,
+                CheckShopName: true,
+              },
+            },
           },
-        },
-      });
+        });
+      } else {
+        ShopInfoDispatch({
+          type: "UPDATE_BASICINFO",
+          data: {
+            BasicInformation: {
+              ...ShopInfoState.BasicInformation,
+              shopName: {
+                ...StateShopName,
+                value: e.target.value,
+                isChange: true,
+                CheckShopName: false,
+              },
+            },
+          },
+        });
+      }
     } else if (e.target.name === "PhoneNumberInput") {
       ShopInfoDispatch({
         type: "UPDATE_BASICINFO",
@@ -240,6 +279,59 @@ export default () => {
     document.getElementsByName("ShopLogoInput")[0].value = null;
   };
 
+  const CheckName = async (e) => {
+    const InputShopName = ShopInfoState.BasicInformation.shopName;
+    if (!InputShopName.isChange) {
+      toast.info("Original Shop Name");
+      return;
+    }
+    if (InputShopName.value.length <= 0) {
+      toast.error("Invalid Shop Name.");
+      return;
+    } else {
+      const {
+        data: { getShopNameExists },
+      } = await CheckShopNameMutation({
+        variables: { shopName: InputShopName.value },
+      });
+      if (getShopNameExists == null || CheckError) {
+        toast.error("Error occured while checking shopName.");
+        return;
+      } else {
+        if (getShopNameExists) {
+          toast.info("🚫  This Shop Name already Exists.");
+          ShopInfoDispatch({
+            type: "UPDATE_BASICINFO",
+            data: {
+              BasicInformation: {
+                ...ShopInfoState.BasicInformation,
+                shopName: {
+                  ...InputShopName,
+                  CheckShopName: false,
+                },
+              },
+            },
+          });
+          return;
+        } else {
+          toast.info("✅  Valid Shop Name.");
+          ShopInfoDispatch({
+            type: "UPDATE_BASICINFO",
+            data: {
+              BasicInformation: {
+                ...ShopInfoState.BasicInformation,
+                shopName: {
+                  ...InputShopName,
+                  CheckShopName: true,
+                },
+              },
+            },
+          });
+          return;
+        }
+      }
+    }
+  };
   return (
     <>
       <SectionTitle text="Basic Information" />
@@ -277,6 +369,18 @@ export default () => {
                 name="ShopNameInput"
                 value={ShopInfoState.BasicInformation.shopName.value}
                 onChange={(e) => onChange(e)}
+              />
+              <CheckStatusIcon>
+                {ShopInfoState.BasicInformation.shopName.CheckShopName ? (
+                  <PossibleIcon />
+                ) : (
+                  <ImpossibleIcon />
+                )}
+              </CheckStatusIcon>
+              <Button
+                text={"Check"}
+                isButtonType={true}
+                ClickEvent={CheckName}
               />
             </td>
           </tr>
