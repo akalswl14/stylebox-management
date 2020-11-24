@@ -130,7 +130,7 @@ export default ({ match }) => {
     if (tagState.isTagImageChange) {
       if (tagState.imageInput.current) {
         if (tagState.tagLogoFile === "") {
-          toast.error("Please choose Shop Image.");
+          toast.error("Please choose tag Image.");
           return;
         }
         const { imageInput } = tagState;
@@ -143,7 +143,7 @@ export default ({ match }) => {
           const preSignedUrl = await getPreSignedUrl(fileName);
           await uploadToBucket(preSignedUrl, file);
         } catch (e) {
-          toast.error("Error occured while create data.");
+          toast.error("Error occured while update data.");
           return;
         }
 

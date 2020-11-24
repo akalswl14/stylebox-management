@@ -147,7 +147,7 @@ export default () => {
     } = await createTag({ variables: tagUpdateInfo });
 
     if (!createTagInfo || createError) {
-      toast.error("Error occured while update data.");
+      toast.error("Error occured while create data.");
       return;
     }
 

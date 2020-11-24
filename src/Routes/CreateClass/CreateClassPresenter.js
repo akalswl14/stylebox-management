@@ -77,7 +77,7 @@ export default ({ onSubmit }) => {
   const onClick = (e) => {
     e.preventDefault();
     if (!category) {
-      toast.error("Please select a category first");
+      toast.error("Please select a category first.");
       return;
     }
     const isCheck = data.getClassDuplication;
@@ -91,9 +91,9 @@ export default ({ onSubmit }) => {
         },
       });
       if (!isCheck) {
-        toast.info("🚫  The Tag already exists. Please check it again.");
+        toast.info("🚫  The Class already exists. Please check it again.");
       } else {
-        toast.info("✅  Valid Tag.");
+        toast.info("✅  Valid Class.");
       }
     }
   };

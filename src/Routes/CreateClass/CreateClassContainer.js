@@ -71,11 +71,11 @@ export default () => {
     } = await createClass({ variables: classUpdateInfo });
 
     if (!createClassInfo || createError) {
-      toast.error("Error occured while update data.");
+      toast.error("Error occured while create data.");
       return;
     }
     if (createClassInfo) {
-      toast.success("Sucessfullly Update Data!");
+      toast.success("Sucessfullly Create Data!");
       setTimeout(() => {
         window.location.reload();
       }, 1200);
