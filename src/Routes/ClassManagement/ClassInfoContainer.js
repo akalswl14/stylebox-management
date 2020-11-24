@@ -9,6 +9,8 @@ export const ClassInfoContext = React.createContext(null);
 const initialState = {
   classInfo: {},
   isData: false,
+  isCheck: true,
+  originalClassName: "",
 };
 
 function reducer(state, action) {
@@ -19,11 +21,28 @@ function reducer(state, action) {
       const { name, value } = action.data;
       return {
         ...state,
+        isCheck: action.data.isCheck,
         classInfo: {
           ...state.classInfo,
           [name]: value,
         },
       };
+    case "CLASSNAME_CHECK":
+      if (action.data.isCheck) {
+        return {
+          ...state,
+          isCheck: action.data.isCheck,
+        };
+      } else {
+        return {
+          ...state,
+          classInfo: {
+            ...state.classInfo,
+            className: "",
+          },
+          isCheck: action.data.isCheck,
+        };
+      }
     default:
       return state;
   }
@@ -38,6 +57,11 @@ export default ({ match }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    if (!classState.isCheck) {
+      toast.error("Invalid class name.");
+      return;
+    }
 
     if (classState.classInfo.className === "") {
       toast.error("Please write class name.");

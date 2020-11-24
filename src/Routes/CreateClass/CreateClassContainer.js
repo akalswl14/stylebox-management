@@ -11,6 +11,7 @@ const initialState = {
     className: "",
     category: "",
   },
+  isCheck: false,
 };
 
 function reducer(state, action) {
@@ -22,7 +23,23 @@ function reducer(state, action) {
           ...state.classInfo,
           [name]: value,
         },
+        isCheck: false,
       };
+    case "CLASSNAME_CHECK":
+      if (action.data.isCheck) {
+        return {
+          ...state,
+          isCheck: action.data.isCheck,
+        };
+      } else {
+        return {
+          classInfo: {
+            ...state.classInfo,
+            className: "",
+          },
+          isCheck: action.data.isCheck,
+        };
+      }
     default:
       return state;
   }
@@ -35,6 +52,11 @@ export default () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    if (!classState.isCheck) {
+      toast.error("Invalid class name.");
+      return;
+    }
 
     if (
       classState.classInfo.category === "==choose==" ||

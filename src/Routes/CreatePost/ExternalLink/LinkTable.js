@@ -95,7 +95,7 @@ const LinkTable = ({ linkTypes, data }) => {
     if (url.includes("https://") || url.includes("http://")) {
       window.open(`${data.url}`, "_blank");
     } else {
-      alert("This is not a valid address");
+      alert("This is not a valid address.");
     }
   };
 

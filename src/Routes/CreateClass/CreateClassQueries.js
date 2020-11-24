@@ -5,3 +5,9 @@ export const CREATE_CLASS = gql`
     createClassInfo(className: $className, category: $category)
   }
 `;
+
+export const CHECK_CLASSNAME = gql`
+  query CHECK_CLASSNAME($className: String!) {
+    getClassDuplication(className: $className)
+  }
+`;

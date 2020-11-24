@@ -7,6 +7,9 @@ import { ClassInfoContext } from "./ClassInfoContainer";
 import PageChangeButton from "../../Components/PageChangeButton";
 import SectionTitle from "../../Components/SectionTitle";
 import Button from "../../Components/Button";
+import { useQuery } from "react-apollo-hooks";
+import { CHECK_CLASSNAME } from "./ClassInfoQueries";
+import { PossibleIcon, ImpossibleIcon } from "../../Components/Icons";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -52,6 +55,28 @@ const ButtonBox = styled.div`
   justify-content: flex-end;
 `;
 
+const CheckStatusIcon = styled.span`
+  height: 35px;
+  padding: 0px 10px;
+  line-height: 35px;
+  width: 35px;
+  justify-content: center;
+  vertical-align: middle;
+  display: inline-block;
+`;
+
+const Input = styled.input`
+  width: ${(props) => {
+    if (props.InputWidth) {
+      return props.InputWidth.toString() + "px";
+    } else {
+      return null;
+    }
+  }};
+  height: 35px;
+  font-size: 15px;
+`;
+
 export default ({ loading, data, error, onSubmit }) => {
   if (error) return `Error! ${error.message}`;
   if (loading)
@@ -73,6 +98,10 @@ export default ({ loading, data, error, onSubmit }) => {
       updatedAt,
     } = classState.classInfo;
 
+    const { data: checkData } = useQuery(CHECK_CLASSNAME, {
+      variables: { className: className ? className : "" },
+    });
+
     useEffect(() => {
       const classData = data.getClassInfo;
       let classInfo = {
@@ -90,19 +119,49 @@ export default ({ loading, data, error, onSubmit }) => {
         data: {
           classInfo,
           isData: true,
+          isCheck: true,
+          originalClassName: classData.className,
         },
       });
     }, []);
 
     const onChange = (e) => {
       const { name, value } = e.target;
+      let isCheck = false;
+      if (classState.originalClassName === value) {
+        isCheck = true;
+      }
       classDispatch({
         type: "CLASSINFO_CHANGE",
         data: {
           name,
           value,
+          isCheck,
         },
       });
+    };
+
+    const onClick = (e) => {
+      e.preventDefault();
+      if (!category) {
+        alert("Please select a category first.");
+        return;
+      }
+      let isCheck = checkData.getClassDuplication;
+      if (!className || className === "") {
+        alert("Please write a class name.");
+      } else {
+        if (classState.originalClassName === className) isCheck = true;
+        classDispatch({
+          type: "CLASSNAME_CHECK",
+          data: {
+            isCheck,
+          },
+        });
+        if (!isCheck) {
+          alert("Duplicate class name.");
+        }
+      }
     };
 
     let RegistrationDate = String(createdAt).split("T");
@@ -139,13 +198,26 @@ export default ({ loading, data, error, onSubmit }) => {
                   <tr>
                     <td>Class Name</td>
                     <td>
-                      <input
+                      <Input
+                        InputWidth={100}
                         name="className"
                         type="text"
                         value={className}
                         onChange={onChange}
                         required
                       />
+                      <CheckStatusIcon>
+                        {classState.isCheck ? (
+                          <PossibleIcon />
+                        ) : (
+                          <ImpossibleIcon />
+                        )}
+                      </CheckStatusIcon>
+                      <Button
+                        text={"Check"}
+                        isButtonType={true}
+                        ClickEvent={onClick}
+                      ></Button>
                     </td>
                     <td>Posts</td>
                     <td>{postNum} posts</td>

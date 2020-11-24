@@ -28,6 +28,8 @@ const initialState = {
   tagLogoPreviewUrl: "",
   imageInput: { current: null },
   isData: false,
+  isCheck: true,
+  originalTagName: "",
 };
 
 function reducer(state, action) {
@@ -37,6 +39,8 @@ function reducer(state, action) {
         ...state,
         tagInfo: action.data.tagInfo,
         isData: true,
+        isCheck: true,
+        originalTagName: action.data.originalTagName,
       };
     case "TAGINFO_CHANGE":
       const { name, value } = action.data;
@@ -62,6 +66,7 @@ function reducer(state, action) {
       } else {
         return {
           ...state,
+          isCheck: action.data.isCheck,
           tagInfo: {
             ...state.tagInfo,
             [name]: value,
@@ -90,6 +95,22 @@ function reducer(state, action) {
         tagLogoPreviewUrl: "",
         imageInput: { current: null },
       };
+    case "TAGNAME_CHECK":
+      if (action.data.isCheck) {
+        return {
+          ...state,
+          isCheck: action.data.isCheck,
+        };
+      } else {
+        return {
+          ...state,
+          tagInfo: {
+            ...state.tagInfo,
+            tagName: "",
+          },
+          isCheck: action.data.isCheck,
+        };
+      }
     default:
       return state;
   }
@@ -106,8 +127,13 @@ export default ({ match }) => {
     e.preventDefault();
     let tagUpdateInfo;
 
+    if (!tagState.isCheck) {
+      toast.error("Invalid tag name.");
+      return;
+    }
+
     if (tagState.tagInfo.classId === 0) {
-      toast.error("Please Select Class");
+      toast.error("Please Select Class.");
       return;
     }
 

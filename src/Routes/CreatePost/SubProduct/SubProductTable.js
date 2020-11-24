@@ -84,18 +84,12 @@ const SubProductTable = ({ data }) => {
     if (url.includes("https://") || url.includes("http://")) {
       window.open(`${data.link}`, "_blank");
     } else {
-      alert("유효한 주소가 아닙니다.");
+      alert("This is not a valid address.");
     }
   };
 
   const onProductNameChange = (e) => {
     const value = e.target.value;
-    // if (value === postState.basicInfo.mainProductName) {
-    //   toast.error("Main Product and Sub Product are the same");
-    //   return;
-    // }
-    // console.log(value.productId);
-    // console.log(postState.basicInfo.mainProductId);
     for (const eachOption of data_subProduct.getProductByName) {
       if (eachOption.productName === value) {
         postDispatch({

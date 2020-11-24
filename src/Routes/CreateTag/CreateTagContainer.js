@@ -31,6 +31,7 @@ const initialState = {
   tagLogoFile: "",
   tagLogoPreviewUrl: "",
   imageInput: { current: null },
+  isCheck: false,
 };
 
 function reducer(state, action) {
@@ -40,6 +41,7 @@ function reducer(state, action) {
       if (name === "classId") {
         return {
           ...state,
+          isCheck: false,
           tagInfo: {
             ...state.tagInfo,
             [name]: Number(value),
@@ -48,6 +50,7 @@ function reducer(state, action) {
       } else if (name === "category") {
         return {
           ...state,
+          isCheck: false,
           tagInfo: {
             ...state.tagInfo,
             [name]: value,
@@ -57,6 +60,7 @@ function reducer(state, action) {
       } else {
         return {
           ...state,
+          isCheck: false,
           tagInfo: {
             ...state.tagInfo,
             [name]: value,
@@ -83,6 +87,21 @@ function reducer(state, action) {
         tagLogoPreviewUrl: "",
         imageInput: { current: null },
       };
+    case "TAGNAME_CHECK":
+      if (action.data.isCheck) {
+        return {
+          ...state,
+          isCheck: action.data.isCheck,
+        };
+      } else {
+        return {
+          tagInfo: {
+            ...state.tagInfo,
+            tagName: "",
+          },
+          isCheck: action.data.isCheck,
+        };
+      }
     default:
       return state;
   }
@@ -95,6 +114,11 @@ export default () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     let tagUpdateInfo;
+
+    if (!tagState.isCheck) {
+      toast.error("Invalid tag name.");
+      return;
+    }
 
     if (
       tagState.tagInfo.category === "==choose==" ||
@@ -152,7 +176,7 @@ export default () => {
           return;
         }
       }
-      toast.success("Sucessfullly Update Data!");
+      toast.success("Sucessfullly Create Data!");
       setTimeout(() => {
         window.location.reload();
       }, 5000);

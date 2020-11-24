@@ -28,3 +28,9 @@ export const UPDATE_CLASS = gql`
     )
   }
 `;
+
+export const CHECK_CLASSNAME = gql`
+  query CHECK_CLASSNAME($className: String!) {
+    getClassDuplication(className: $className)
+  }
+`;
