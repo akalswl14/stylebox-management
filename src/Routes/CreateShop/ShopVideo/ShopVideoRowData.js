@@ -23,6 +23,8 @@ const Input = styled.input`
   width: ${(props) => {
     if (props.InputWidth) {
       return props.InputWidth.toString() + "px";
+    } else if (props.InputPercentWidth) {
+      return props.InputPercentWidth.toString() + "%";
     } else {
       return null;
     }
@@ -119,14 +121,14 @@ export default ({ data }) => {
       </td>
       <td>
         <Input
-          InputWidth={1000}
+          InputPercentWidth={100}
           type="text"
           name="VideoLinkInput"
           value={data.url}
           onChange={(e) => onChange(e)}
         />
       </td>
-      <td>
+      <td className="ThumbnailCell">
         <YoutubeThumbnail url={data.url} />
       </td>
       <td className="checkButtonCell">

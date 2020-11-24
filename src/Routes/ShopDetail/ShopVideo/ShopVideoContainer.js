@@ -35,7 +35,10 @@ const Table = styled.table`
   }
   .orderInputCell,
   .buttonCell {
-    width: 120px;
+    width: 10%;
+  }
+  .ThumbnailCell {
+    width: 18%;
   }
   .checkButtonCell {
     width: 180px;
@@ -84,7 +87,7 @@ export default () => {
           <tr>
             <th className="orderInputCell">Order</th>
             <th>Youtube URL</th>
-            <th>Youtube Thumbnail</th>
+            <th className="ThumbnailCell">Youtube Thumbnail</th>
             <th className="checkButtonCell">Check</th>
             <th className="buttonCell">
               <RowButton onClick={(e) => addRow(e)}>

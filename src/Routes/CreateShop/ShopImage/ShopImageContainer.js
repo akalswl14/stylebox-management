@@ -35,7 +35,7 @@ const Table = styled.table`
   }
   .orderInputCell,
   .buttonCell {
-    width: 120px;
+    width: 10%;
   }
   .checkButtonCell {
     width: 180px;
