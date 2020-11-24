@@ -26,20 +26,10 @@ function reducer(state, action) {
         isCheck: false,
       };
     case "CLASSNAME_CHECK":
-      if (action.data.isCheck) {
-        return {
-          ...state,
-          isCheck: action.data.isCheck,
-        };
-      } else {
-        return {
-          classInfo: {
-            ...state.classInfo,
-            className: "",
-          },
-          isCheck: action.data.isCheck,
-        };
-      }
+      return {
+        ...state,
+        isCheck: action.data.isCheck,
+      };
     default:
       return state;
   }
@@ -81,11 +71,11 @@ export default () => {
     } = await createClass({ variables: classUpdateInfo });
 
     if (!createClassInfo || createError) {
-      toast.error("Error occured while update data.");
+      toast.error("Error occured while create data.");
       return;
     }
     if (createClassInfo) {
-      toast.success("Sucessfullly Update Data!");
+      toast.success("Sucessfullly Create Data!");
       setTimeout(() => {
         window.location.reload();
       }, 1200);

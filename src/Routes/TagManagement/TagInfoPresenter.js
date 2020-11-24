@@ -199,7 +199,9 @@ export default ({ loading, data, error, onSubmit }) => {
           },
         });
         if (!isCheck) {
-          toast.error("The Tag already exists. Please check it again.");
+          toast.info("🚫  The Tag already exists. Please check it again.");
+        } else {
+          toast.info("✅  Valid Tag.");
         }
       }
     };
@@ -233,6 +235,7 @@ export default ({ loading, data, error, onSubmit }) => {
               <TitleBox>
                 <SectionTitle text={"Tag Information"} />
                 <ButtonBox>
+                  <PageChangeButton text="Back to List" href="/taglist" />
                   <PageChangeButton text="Back To Main" href="/" />
                   <Button type="submit" text="Confirm"></Button>
                 </ButtonBox>
