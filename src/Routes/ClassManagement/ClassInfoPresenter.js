@@ -10,6 +10,7 @@ import Button from "../../Components/Button";
 import { useQuery } from "react-apollo-hooks";
 import { CHECK_CLASSNAME } from "./ClassInfoQueries";
 import { PossibleIcon, ImpossibleIcon } from "../../Components/Icons";
+import { toast } from "react-toastify";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -144,12 +145,12 @@ export default ({ loading, data, error, onSubmit }) => {
     const onClick = (e) => {
       e.preventDefault();
       if (!category) {
-        alert("Please select a category first.");
+        toast.error("Please select a category first");
         return;
       }
       let isCheck = checkData.getClassDuplication;
       if (!className || className === "") {
-        alert("Please write a class name.");
+        toast.error("Please write a class name.");
       } else {
         if (classState.originalClassName === className) isCheck = true;
         classDispatch({
@@ -159,7 +160,9 @@ export default ({ loading, data, error, onSubmit }) => {
           },
         });
         if (!isCheck) {
-          alert("Duplicate class name.");
+          toast.info("🚫  The Tag already exists. Please check it again.");
+        } else {
+          toast.info("✅  Valid Class.");
         }
       }
     };
@@ -183,6 +186,7 @@ export default ({ loading, data, error, onSubmit }) => {
               <TitleBox>
                 <SectionTitle text={"Tag Class Information"} />
                 <ButtonBox>
+                  <PageChangeButton text="Back to Map" href="/tagmap" />
                   <PageChangeButton text="Back to Main" href="/" />
                   <Button type="submit" text="Confirm"></Button>
                 </ButtonBox>

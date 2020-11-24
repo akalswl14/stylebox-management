@@ -9,6 +9,7 @@ import Button from "../../Components/Button";
 import { useQuery } from "react-apollo-hooks";
 import { CHECK_CLASSNAME } from "./CreateClassQueries";
 import { PossibleIcon, ImpossibleIcon } from "../../Components/Icons";
+import { toast } from "react-toastify";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -76,12 +77,12 @@ export default ({ onSubmit }) => {
   const onClick = (e) => {
     e.preventDefault();
     if (!category) {
-      alert("Please select a category first.");
+      toast.error("Please select a category first");
       return;
     }
     const isCheck = data.getClassDuplication;
     if (!className || className === "") {
-      alert("Please write a class name.");
+      toast.error("Please write a class name.");
     } else {
       classDispatch({
         type: "CLASSNAME_CHECK",
@@ -90,7 +91,9 @@ export default ({ onSubmit }) => {
         },
       });
       if (!isCheck) {
-        alert("Duplicate class name.");
+        toast.info("🚫  The Tag already exists. Please check it again.");
+      } else {
+        toast.info("✅  Valid Tag.");
       }
     }
   };
@@ -107,6 +110,7 @@ export default ({ onSubmit }) => {
           <TitleBox>
             <SectionTitle text={"Create Tag Class Information"} />
             <ButtonBox>
+              <PageChangeButton text="Back to Map" href="/tagmap" />
               <PageChangeButton text="Back To Main" href="/" />
               <Button type="submit" text="Confirm"></Button>
             </ButtonBox>

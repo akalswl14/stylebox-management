@@ -26,20 +26,10 @@ function reducer(state, action) {
         isCheck: false,
       };
     case "CLASSNAME_CHECK":
-      if (action.data.isCheck) {
-        return {
-          ...state,
-          isCheck: action.data.isCheck,
-        };
-      } else {
-        return {
-          classInfo: {
-            ...state.classInfo,
-            className: "",
-          },
-          isCheck: action.data.isCheck,
-        };
-      }
+      return {
+        ...state,
+        isCheck: action.data.isCheck,
+      };
     default:
       return state;
   }

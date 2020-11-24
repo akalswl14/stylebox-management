@@ -166,6 +166,7 @@ export default ({ onSubmit }) => {
           <TitleBox>
             <SectionTitle text={"Tag Information"} />
             <ButtonBox>
+              <PageChangeButton text="Back to List" href="/taglist" />
               <PageChangeButton text="Back To Main" href="/" />
               <Button type="submit" text="Confirm"></Button>
             </ButtonBox>

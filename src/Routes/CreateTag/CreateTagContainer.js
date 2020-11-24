@@ -88,20 +88,10 @@ function reducer(state, action) {
         imageInput: { current: null },
       };
     case "TAGNAME_CHECK":
-      if (action.data.isCheck) {
-        return {
-          ...state,
-          isCheck: action.data.isCheck,
-        };
-      } else {
-        return {
-          tagInfo: {
-            ...state.tagInfo,
-            tagName: "",
-          },
-          isCheck: action.data.isCheck,
-        };
-      }
+      return {
+        ...state,
+        isCheck: action.data.isCheck,
+      };
     default:
       return state;
   }
