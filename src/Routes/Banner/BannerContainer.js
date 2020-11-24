@@ -44,10 +44,7 @@ function reducer(state, action) {
 export default () => {
   const [BannerState, BannerDispatch] = useReducer(reducer, initialState);
   const { loading, error, data } = useQuery(GET_BANNERS);
-  const [
-    updateBanner,
-    { loading: mutationLoading, error: mutationError },
-  ] = useMutation(UPDATE_BANNERS);
+  const [updateBanner, { error: mutationError }] = useMutation(UPDATE_BANNERS);
 
   const onSubmit = async (e) => {
     e.preventDefault();

@@ -12,7 +12,7 @@ export const GET_BANNERS = gql`
 `;
 
 export const UPDATE_BANNERS = gql`
-  mutation updateBanner($events: [IdOrderInputType!]) {
+  mutation updateBanner($events: [IdOrderInputType!]!) {
     updateSettingEventBanner(events: $events)
   }
 `;
