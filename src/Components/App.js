@@ -47,7 +47,17 @@ export default () => {
       <Router>
         <Wrapper>
           <Routes isLoggedIn={isLoggedIn} />
-          <ToastContainer position={toast.POSITION.TOP_RIGHT} />
+          <ToastContainer
+            position="top-right"
+            autoClose={1000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable
+            pauseOnHover
+          />
           {isLoggedIn && (
             <SidebarWrapper>
               <SideBar />
