@@ -12,11 +12,11 @@ const s3 = new AWS.S3({
 
 const signedUrlExpireSeconds = 60 * 5;
 
-const getPreSignedUrl = async (fileName) => {
+const getPreSignedUrl = async (fileName, fileType) => {
   const params = {
     Bucket: BUCKET_NAME,
     Key: fileName,
-    ContentType: "image/*",
+    ContentType: "image/" + fileType,
     ACL: "public-read",
     Expires: signedUrlExpireSeconds,
   };
@@ -24,12 +24,12 @@ const getPreSignedUrl = async (fileName) => {
   return url;
 };
 
-const uploadToBucket = async (preSignedUrl, file) => {
+const uploadToBucket = async (preSignedUrl, file, fileType) => {
   const option = {
     method: "PUT",
     body: file,
     headers: {
-      "Content-Type": "image/*",
+      "Content-Type": "image/" + fileType,
       "x-amz-acl": "public-read",
     },
   };
@@ -39,8 +39,9 @@ const uploadToBucket = async (preSignedUrl, file) => {
 
 export default async ({ file, fileName }) => {
   try {
-    const preSignedUrl = await getPreSignedUrl(fileName);
-    await uploadToBucket(preSignedUrl, file);
+    const fileType = file.type.substring(6);
+    const preSignedUrl = await getPreSignedUrl(fileName, fileType);
+    await uploadToBucket(preSignedUrl, file, fileType);
     return { data: true, error: false };
   } catch (e) {
     return { data: false, error: e };

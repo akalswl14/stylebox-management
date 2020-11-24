@@ -159,8 +159,8 @@ export default () => {
         const fileName =
           createTagInfo.tagId + "/" + TimeNumber.getTime() + "." + ImageType;
         try {
-          const preSignedUrl = await getPreSignedUrl(fileName);
-          await uploadToBucket(preSignedUrl, file);
+          const preSignedUrl = await getPreSignedUrl(fileName, ImageType);
+          await uploadToBucket(preSignedUrl, file, ImageType);
         } catch (e) {
           toast.error("Error occured while create data.");
           return;
@@ -174,11 +174,11 @@ export default () => {
     }
   };
 
-  const getPreSignedUrl = async (fileName) => {
+  const getPreSignedUrl = async (fileName, fileType) => {
     const params = {
       Bucket: BUCKET_NAME,
       Key: "Tag/" + fileName,
-      ContentType: "image/*",
+      ContentType: "image/" + fileType,
       ACL: "public-read",
       Expires: signedUrlExpireSeconds,
     };
@@ -186,12 +186,12 @@ export default () => {
     return url;
   };
 
-  const uploadToBucket = async (preSignedUrl, file) => {
+  const uploadToBucket = async (preSignedUrl, file, fileType) => {
     const option = {
       method: "PUT",
       body: file,
       headers: {
-        "Content-Type": "image/*",
+        "Content-Type": "image/" + fileType,
         "x-amz-acl": "public-read",
       },
     };
