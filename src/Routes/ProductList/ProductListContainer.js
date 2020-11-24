@@ -175,7 +175,7 @@ export default () => {
         toast.success("Sucessfully Delete Data!");
         setTimeout(() => {
           window.location.reload();
-        }, 5000);
+        }, 1200);
         return;
       }
     }
@@ -213,7 +213,7 @@ export default () => {
         toast.success("Sucessfully Edit Data!");
         setTimeout(() => {
           window.location.reload();
-        }, 5000);
+        }, 1200);
         return;
       }
     }

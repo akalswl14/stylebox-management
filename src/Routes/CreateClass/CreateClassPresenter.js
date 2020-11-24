@@ -148,8 +148,8 @@ export default ({ onSubmit }) => {
                 </td>
                 <td>
                   <ClickBox onClick={onClick}>
-                    <Button text="Check"></Button>
                     {classState.isCheck ? <PossibleIcon /> : <ImpossibleIcon />}
+                    <Button text="Check"></Button>
                   </ClickBox>
                 </td>
               </tr>

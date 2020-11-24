@@ -206,7 +206,9 @@ export default () => {
         return;
       } else {
         if (getShopNameExists) {
-          toast.info("🚫  This Shop Name already Exists.");
+          toast.info(
+            "🚫  The Shop Name already exists. Please check it again."
+          );
           ShopInfoDispatch({
             type: "UPDATE_BASICINFO",
             data: {

@@ -403,9 +403,9 @@ export default ({ match }) => {
         return;
       }
       toast.success("Sucessfullly update Data!");
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 5000);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1200);
       return;
     }
   };

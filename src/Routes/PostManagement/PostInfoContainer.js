@@ -300,6 +300,10 @@ export default ({ match }) => {
     web_order = 1;
     let TimeNumber = new Date();
     let ImageOrderList = [];
+    if (postState.postImageManagement.length <= 0) {
+      toast.error("Please add a post Image.");
+      return;
+    }
     for (const eachData of postState.postImageManagement) {
       let imageUpdateInfo;
       if (ImageOrderList.includes(Number(eachData.order))) {
@@ -452,7 +456,7 @@ export default ({ match }) => {
       toast.success("Sucessfully Update Data!");
       setTimeout(() => {
         window.location.reload();
-      }, 5000);
+      }, 1200);
       return;
     }
   };

@@ -298,7 +298,10 @@ export default () => {
     }
 
     let TimeNumber = new Date();
-
+    if (postState.postImageManagement.length <= 0) {
+      toast.error("Please add a post Image.");
+      return;
+    }
     if (postState.postImageManagement.length !== 0) {
       web_order = 1;
       let ImageOrderList = [];
@@ -454,7 +457,7 @@ export default () => {
       toast.success("Sucessfully Create Data!");
       setTimeout(() => {
         window.location.reload();
-      }, 5000);
+      }, 1200);
       return;
     }
   };

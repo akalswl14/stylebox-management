@@ -10,6 +10,7 @@ import TagTdTable from "./TagTdTable";
 import { useQuery } from "react-apollo-hooks";
 import { CHECK_TAGNAME } from "./CreateTagQueries";
 import { PossibleIcon, ImpossibleIcon } from "../../Components/Icons";
+import { toast } from "react-toastify";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -126,12 +127,12 @@ export default ({ onSubmit }) => {
   const onCheck = (e) => {
     e.preventDefault();
     if (!category) {
-      alert("Please select a category first.");
+      toast.error("Please select a category first.");
       return;
     }
     const isCheck = data.getTagDuplication;
     if (!tagName || tagName === "") {
-      alert("Please write a tag name.");
+      toast.error("Please write a tag name.");
     } else {
       tagDispatch({
         type: "TAGNAME_CHECK",
@@ -140,7 +141,9 @@ export default ({ onSubmit }) => {
         },
       });
       if (!isCheck) {
-        alert("Duplicate tag name.");
+        toast.info("🚫  The Tag already exists. Please check it again.");
+      } else {
+        toast.info("✅  Valid Tag.");
       }
     }
   };

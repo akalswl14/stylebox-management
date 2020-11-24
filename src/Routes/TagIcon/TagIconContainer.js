@@ -234,6 +234,9 @@ export default () => {
     }
     if (updateSettingBubbles) {
       toast.success("Sucessfullly Update Data!");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1200);
       return;
     }
   };

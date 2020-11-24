@@ -12,6 +12,7 @@ import { S3_URL } from "../../AWS_IAM";
 import { useQuery } from "react-apollo-hooks";
 import { CHECK_TAGNAME } from "./TagInfoQueries";
 import { PossibleIcon, ImpossibleIcon } from "../../Components/Icons";
+import { toast } from "react-toastify";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -183,12 +184,12 @@ export default ({ loading, data, error, onSubmit }) => {
     const onCheck = (e) => {
       e.preventDefault();
       if (!category) {
-        alert("Please select a category first.");
+        toast.error("Please select a category first.");
         return;
       }
       let isCheck = checkData.getTagDuplication;
       if (!tagName || tagName === "") {
-        alert("Please write a tag name.");
+        toast.error("Please write a tag name.");
       } else {
         if (tagState.originalTagName === tagName) isCheck = true;
         tagDispatch({
@@ -198,7 +199,7 @@ export default ({ loading, data, error, onSubmit }) => {
           },
         });
         if (!isCheck) {
-          alert("Duplicate tag name.");
+          toast.error("The Tag already exists. Please check it again.");
         }
       }
     };

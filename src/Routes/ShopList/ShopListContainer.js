@@ -177,7 +177,7 @@ export default () => {
         toast.success("Sucessfullly Delete Data!");
         setTimeout(() => {
           window.location.reload();
-        }, 5000);
+        }, 1200);
         return;
       }
     } else if (e.target.name === "EditButton") {
@@ -213,7 +213,7 @@ export default () => {
         toast.success("Sucessfullly Edit Data!");
         setTimeout(() => {
           window.location.reload();
-        }, 5000);
+        }, 1200);
         return;
       }
     }

@@ -428,7 +428,7 @@ export default ({ match }) => {
       toast.success("Sucessfullly update Data!");
       setTimeout(() => {
         window.location.reload();
-      }, 5000);
+      }, 1200);
       return;
     }
   };
