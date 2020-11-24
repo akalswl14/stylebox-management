@@ -7,6 +7,9 @@ import PageChangeButton from "../../Components/PageChangeButton";
 import SectionTitle from "../../Components/SectionTitle";
 import Button from "../../Components/Button";
 import TagTdTable from "./TagTdTable";
+import { useQuery } from "react-apollo-hooks";
+import { CHECK_TAGNAME } from "./CreateTagQueries";
+import { PossibleIcon, ImpossibleIcon } from "../../Components/Icons";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -54,6 +57,16 @@ const PreviewImage = styled.img`
   height: 170px;
 `;
 
+const CheckStatusIcon = styled.span`
+  height: 35px;
+  padding: 0px 10px;
+  line-height: 35px;
+  width: 35px;
+  justify-content: center;
+  vertical-align: middle;
+  display: inline-block;
+`;
+
 const Input = styled.input`
   width: ${(props) => {
     if (props.InputWidth) {
@@ -71,6 +84,10 @@ export default ({ onSubmit }) => {
   const { tagDispatch, tagState } = useContext(TagInfoContext);
 
   const { tagName, category } = tagState.tagInfo;
+
+  const { data } = useQuery(CHECK_TAGNAME, {
+    variables: { tagName: tagName ? tagName : "" },
+  });
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -106,6 +123,28 @@ export default ({ onSubmit }) => {
     });
   };
 
+  const onCheck = (e) => {
+    e.preventDefault();
+    if (!category) {
+      alert("Please select a category first.");
+      return;
+    }
+    const isCheck = data.getTagDuplication;
+    if (!tagName || tagName === "") {
+      alert("Please write a tag name.");
+    } else {
+      tagDispatch({
+        type: "TAGNAME_CHECK",
+        data: {
+          isCheck,
+        },
+      });
+      if (!isCheck) {
+        alert("Duplicate tag name.");
+      }
+    }
+  };
+
   let TagLogo_Preview = null;
   if (tagState.tagLogoFile !== "") {
     TagLogo_Preview = (
@@ -133,13 +172,22 @@ export default ({ onSubmit }) => {
               <tr>
                 <td>Tag Name</td>
                 <td>
-                  <input
+                  <Input
+                    InputWidth={100}
                     name="tagName"
                     type="text"
                     value={tagName}
                     onChange={onChange}
                     required
                   />
+                  <CheckStatusIcon>
+                    {tagState.isCheck ? <PossibleIcon /> : <ImpossibleIcon />}
+                  </CheckStatusIcon>
+                  <Button
+                    text={"Check"}
+                    isButtonType={true}
+                    ClickEvent={onCheck}
+                  ></Button>
                 </td>
                 <td rowSpan="3">Tag Image</td>
                 <td rowSpan="3">

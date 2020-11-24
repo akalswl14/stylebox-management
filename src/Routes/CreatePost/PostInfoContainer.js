@@ -408,7 +408,9 @@ export default () => {
     } = await createPost({
       variables: {
         mainProductId: postState.basicInfo.mainProductId,
-        priority: postState.basicStatus.priority,
+        priority: postState.basicStatus.priority
+          ? postState.basicStatus.priority
+          : 1,
         description: postState.postDescription
           ? postState.postDescription
           : null,

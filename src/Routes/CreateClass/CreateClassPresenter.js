@@ -6,6 +6,9 @@ import { ClassInfoContext } from "./CreateClassContainer";
 import PageChangeButton from "../../Components/PageChangeButton";
 import SectionTitle from "../../Components/SectionTitle";
 import Button from "../../Components/Button";
+import { useQuery } from "react-apollo-hooks";
+import { CHECK_CLASSNAME } from "./CreateClassQueries";
+import { PossibleIcon, ImpossibleIcon } from "../../Components/Icons";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -19,8 +22,9 @@ const Table = styled.table`
   }
   td {
     width: 25%;
+    padding: 15px 0px 15px 0px;
   }
-  td:nth-child(odd) {
+  td:first-child {
     border: 1px solid #858585;
     padding: 8px;
     background-color: #f2f2f2;
@@ -43,10 +47,20 @@ const ButtonBox = styled.div`
   justify-content: flex-end;
 `;
 
+const ClickBox = styled.div`
+  padding: 15px 10px 15px 10px;
+  display: flex;
+  width: 25%;
+  align-items: center;
+  justify-content: middle;
+`;
+
 export default ({ onSubmit }) => {
   const { classDispatch, classState } = useContext(ClassInfoContext);
-
   const { className, category } = classState.classInfo;
+  const { data } = useQuery(CHECK_CLASSNAME, {
+    variables: { className },
+  });
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -57,6 +71,32 @@ export default ({ onSubmit }) => {
         value,
       },
     });
+  };
+
+  const onClick = (e) => {
+    e.preventDefault();
+    if (!category) {
+      alert("Please select a category first.");
+      return;
+    }
+    const isCheck = data.getClassDuplication;
+    if (!className || className === "") {
+      alert("Please write a class name.");
+    } else {
+      classDispatch({
+        type: "CLASSNAME_CHECK",
+        data: {
+          isCheck,
+        },
+      });
+      if (!isCheck) {
+        alert("Duplicate class name.");
+      }
+    }
+  };
+
+  const style = {
+    textAlign: "right",
   };
 
   return (
@@ -75,7 +115,7 @@ export default ({ onSubmit }) => {
             <tbody>
               <tr>
                 <td>Tag Category</td>
-                <td>
+                <td colSpan="2">
                   <select
                     name="category"
                     value={category}
@@ -97,7 +137,7 @@ export default ({ onSubmit }) => {
               </tr>
               <tr>
                 <td>Class Name</td>
-                <td>
+                <td style={style}>
                   <input
                     name="className"
                     type="text"
@@ -105,6 +145,12 @@ export default ({ onSubmit }) => {
                     onChange={onChange}
                     required
                   />
+                </td>
+                <td>
+                  <ClickBox onClick={onClick}>
+                    <Button text="Check"></Button>
+                    {classState.isCheck ? <PossibleIcon /> : <ImpossibleIcon />}
+                  </ClickBox>
                 </td>
               </tr>
             </tbody>

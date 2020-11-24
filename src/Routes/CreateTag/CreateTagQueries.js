@@ -26,3 +26,9 @@ export const GET_CLASS = gql`
     }
   }
 `;
+
+export const CHECK_TAGNAME = gql`
+  query CHECK_TAGNAME($tagName: String!) {
+    getTagDuplication(tagName: $tagName)
+  }
+`;

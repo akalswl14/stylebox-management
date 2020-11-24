@@ -9,6 +9,9 @@ import SectionTitle from "../../Components/SectionTitle";
 import Button from "../../Components/Button";
 import TagTdTable from "./TagTdTable";
 import { S3_URL } from "../../AWS_IAM";
+import { useQuery } from "react-apollo-hooks";
+import { CHECK_TAGNAME } from "./TagInfoQueries";
+import { PossibleIcon, ImpossibleIcon } from "../../Components/Icons";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -77,6 +80,16 @@ const Input = styled.input`
   font-size: 15px;
 `;
 
+const CheckStatusIcon = styled.span`
+  height: 35px;
+  padding: 0px 10px;
+  line-height: 35px;
+  width: 35px;
+  justify-content: center;
+  vertical-align: middle;
+  display: inline-block;
+`;
+
 export default ({ loading, data, error, onSubmit }) => {
   const imageInput = React.createRef();
   if (error) return `Error! ${error.message}`;
@@ -99,6 +112,10 @@ export default ({ loading, data, error, onSubmit }) => {
       updatedAt,
     } = tagState.tagInfo;
 
+    const { data: checkData } = useQuery(CHECK_TAGNAME, {
+      variables: { tagName: tagName ? tagName : "" },
+    });
+
     useEffect(() => {
       const tagData = data.getTagInfo;
       let tagInfo = {
@@ -119,17 +136,23 @@ export default ({ loading, data, error, onSubmit }) => {
         type: "SET_DATA",
         data: {
           tagInfo,
+          originalTagName: tagData.tagName,
         },
       });
     }, []);
 
     const onChange = (e) => {
       const { name, value } = e.target;
+      let isCheck = false;
+      if (tagState.originalTagName === value) {
+        isCheck = true;
+      }
       tagDispatch({
         type: "TAGINFO_CHANGE",
         data: {
           name,
           value,
+          isCheck,
         },
       });
     };
@@ -155,6 +178,29 @@ export default ({ loading, data, error, onSubmit }) => {
       tagDispatch({
         type: "DELETE_IMAGE",
       });
+    };
+
+    const onCheck = (e) => {
+      e.preventDefault();
+      if (!category) {
+        alert("Please select a category first.");
+        return;
+      }
+      let isCheck = checkData.getTagDuplication;
+      if (!tagName || tagName === "") {
+        alert("Please write a tag name.");
+      } else {
+        if (tagState.originalTagName === tagName) isCheck = true;
+        tagDispatch({
+          type: "TAGNAME_CHECK",
+          data: {
+            isCheck,
+          },
+        });
+        if (!isCheck) {
+          alert("Duplicate tag name.");
+        }
+      }
     };
 
     let RegistrationDate = String(createdAt).split("T");
@@ -224,13 +270,26 @@ export default ({ loading, data, error, onSubmit }) => {
                   <tr>
                     <td>Tag Name</td>
                     <td>
-                      <input
+                      <Input
+                        InputWidth={100}
                         name="tagName"
                         type="text"
                         value={tagName}
-                        required
                         onChange={onChange}
+                        required
                       />
+                      <CheckStatusIcon>
+                        {tagState.isCheck ? (
+                          <PossibleIcon />
+                        ) : (
+                          <ImpossibleIcon />
+                        )}
+                      </CheckStatusIcon>
+                      <Button
+                        text={"Check"}
+                        isButtonType={true}
+                        ClickEvent={onCheck}
+                      ></Button>
                     </td>
                   </tr>
                   <tr>
