@@ -52,7 +52,7 @@ export default () => {
   );
 
   const CheckLink = () => {
-    let InputLink = ProductInfoState.BasicInformation.SelectedShop.shopLink;
+    let InputLink = ProductInfoState.SelectedShop.shopLink;
     try {
       window.open(InputLink, "_blank");
     } catch (e) {
