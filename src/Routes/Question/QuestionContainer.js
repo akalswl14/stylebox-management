@@ -73,7 +73,7 @@ export default () => {
     let questionStateArr = [];
 
     if (questionState.length < 1) {
-      toast.error("Question Page : Please write questionType");
+      toast.error("Question Page : Please write questionType.");
       return;
     }
 
@@ -91,7 +91,7 @@ export default () => {
         return;
       }
       if (question.questionType === "") {
-        toast.error("Question Page : Please write questionType");
+        toast.error("Question Page : Please write questionType.");
         return;
       }
       orderArr.push(question.order);

@@ -238,7 +238,7 @@ export default ({ match }) => {
         return;
       }
       if (Number(eachData.order) <= 0) {
-        toast.error("Tag Order Value should be bigger than 0");
+        toast.error("Tag Order Value should be bigger than 0.");
       }
       if (
         Number(eachData.tagId) === 0 ||
@@ -407,7 +407,7 @@ export default ({ match }) => {
         return;
       }
       if (Number(eachData.order) <= 0) {
-        toast.error("Product Order Value should be bigger than 0");
+        toast.error("Product Order Value should be bigger than 0.");
       }
       if (Number(eachData.productId) === 0) {
         toast.error("Please choose Sub Product.");
@@ -432,10 +432,8 @@ export default ({ match }) => {
         mainProductId: postState.basicInfo.mainProductId,
         priority: postState.basicStatus.priority,
         isDescriptionChange: true,
-        description: postState.postDescription
-          ? postState.postDescription
-          : null,
-        tags: mutationData.tags,
+        description: postState.postDescription ? postState.postDescription : "",
+        tags: mutationData.tags.length > 0 ? mutationData.tags : null,
         externalLinks:
           mutationData.externalLinks.length > 0
             ? mutationData.externalLinks

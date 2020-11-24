@@ -34,7 +34,7 @@ const SubProductTable = ({ data }) => {
     },
   });
 
-  if (error_subProduct) toast.error("Error Occured while Searching products");
+  if (error_subProduct) toast.error("Error Occured while Searching products.");
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -84,7 +84,7 @@ const SubProductTable = ({ data }) => {
     if (url.includes("https://") || url.includes("http://")) {
       window.open(`${data.link}`, "_blank");
     } else {
-      alert("This is not a valid address.");
+      toast.error("This is not a valid address.");
     }
   };
 

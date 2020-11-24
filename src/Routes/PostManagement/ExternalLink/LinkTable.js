@@ -3,6 +3,7 @@ import { DeleteIcon } from "../../../Components/Icons";
 import styled from "styled-components";
 import { PostInfoContext } from "../PostInfoContainer";
 import Button from "../../../Components/Button";
+import { toast } from "react-toastify";
 
 const OrderInputBox = styled.input`
   width: 30px;
@@ -95,7 +96,7 @@ const LinkTable = ({ linkTypes, data }) => {
     if (url.includes("https://") || url.includes("http://")) {
       window.open(`${data.url}`, "_blank");
     } else {
-      alert("This is not a valid address");
+      toast.error("This is not a valid address.");
     }
   };
 
