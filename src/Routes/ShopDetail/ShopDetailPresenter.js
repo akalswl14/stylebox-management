@@ -49,8 +49,6 @@ const SectionWrapper = styled.div`
 const Form = styled.form``;
 
 export default ({ onSubmit, loading, data, error }) => {
-  const { ShopInfoState, ShopInfoDispatch } = useContext(ShopInfoContext);
-
   if (error) {
     return <WrapPage>`Error! ${error.message}`</WrapPage>;
   }
@@ -62,6 +60,7 @@ export default ({ onSubmit, loading, data, error }) => {
     );
   }
   if (!loading && data) {
+    const { ShopInfoState, ShopInfoDispatch } = useContext(ShopInfoContext);
     useEffect(() => {
       try {
         let cnt = 1,
