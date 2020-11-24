@@ -290,7 +290,7 @@ export default ({ match }) => {
       }
     }
     let rtnBranchList = [];
-    if (ShopInfoState.BranchManagement.value.length > 5) {
+    if (ShopInfoState.BranchManagement.value.length > 20) {
       toast.error("Up to 10 Branches can be registered.");
       return;
     }

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import SectionTitle from "../../Components/SectionTitle";
 import Button from "../../Components/Button";
+import ParsePrice from "../../Styles/ParsePrice";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -97,7 +98,7 @@ export const DashboardTopPost = ({ data, setAction }) => {
                 <td>{eachPost.No}</td>
                 <td>{eachPost.postId}</td>
                 <td>{eachPost.mainProductName}</td>
-                <td>{eachPost.price}</td>
+                <td>{ParsePrice(eachPost.price)}</td>
                 <td>{eachPost.shopId}</td>
                 <td>{eachPost.priority}</td>
                 <td className="tagNameCell">

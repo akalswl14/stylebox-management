@@ -7,6 +7,7 @@ import { useQuery } from "react-apollo-hooks";
 import { GET_SUBPRODUCT } from "../PostInfoQueries";
 import { toast } from "react-toastify";
 import AutoSelectBox from "./AutoSelectBox";
+import ParsePrice from "../../../Styles/ParsePrice";
 
 const OrderInputBox = styled.input`
   width: 30px;
@@ -205,7 +206,7 @@ const SubProductTable = ({ data }) => {
           onTitleSelectFunc={onProductNameSelect}
         />
       </td>
-      <td>{data.price}</td>
+      <td>{ParsePrice(data.price)}</td>
       <td>{data.link}</td>
       <td>
         <Button text={"Check"} ClickEvent={ClickEvent} />

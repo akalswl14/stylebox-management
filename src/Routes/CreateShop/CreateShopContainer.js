@@ -269,7 +269,7 @@ export default () => {
       rtnVideoList.push({ order: Number(eachVideo.order), url: eachVideo.url });
     }
     let rtnBranchList = [];
-    if (ShopInfoState.BranchManagement.length > 5) {
+    if (ShopInfoState.BranchManagement.length > 20) {
       toast.error("Up to 10 Branches can be registered.");
       return;
     }

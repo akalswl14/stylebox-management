@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { PostListContext } from "./PostListContainer";
 import SortButton from "../../Components/SortButton";
 import PageChangeButton from "../../Components/PageChangeButton";
+import ParsePrice from "../../Styles/ParsePrice";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -281,7 +282,7 @@ const PostListTable = ({ data }) => {
             </td>
             <td>{post.postId}</td>
             <td>{post.mainProductName}</td>
-            <td>{post.price}</td>
+            <td>{ParsePrice(post.price)}</td>
             <td>{post.shopName}</td>
             <td>
               <select
