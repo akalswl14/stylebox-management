@@ -118,7 +118,11 @@ export default () => {
         InputLink.includes("http://") || InputLink.includes("https://")
           ? InputLink
           : "http://" + InputLink;
-      window.open(InputLink, "_blank");
+      try {
+        window.open(InputLink, "_blank");
+      } catch (e) {
+        toast.error("You are checking invalid URL");
+      }
       ShopInfoDispatch({
         type: "UPDATE_SNSLINK",
         data: {
@@ -134,7 +138,11 @@ export default () => {
         InputLink.includes("http://") || InputLink.includes("https://")
           ? InputLink
           : "http://" + InputLink;
-      window.open(InputLink, "_blank");
+      try {
+        window.open(InputLink, "_blank");
+      } catch (e) {
+        toast.error("You are checking invalid URL");
+      }
       ShopInfoDispatch({
         type: "UPDATE_SNSLINK",
         data: {
