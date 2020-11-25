@@ -109,14 +109,6 @@ export default ({ match }) => {
       toast.error("Please enter Shop Main Address.");
       return;
     }
-    if (
-      ShopInfoState.BasicInformation.MainMapUrl.value === "http://" ||
-      ShopInfoState.BasicInformation.MainMapUrl.value === "" ||
-      ShopInfoState.BasicInformation.MainMapUrl.value === "https://"
-    ) {
-      toast.error("Invalid Shop Main Map URL.");
-      return;
-    }
     if (isNaN(Number(ShopInfoState.BasicStatus.RankingWeight.value))) {
       toast.error("Invalid Weight Value.");
       return;
@@ -308,14 +300,6 @@ export default ({ match }) => {
           toast.error("Please enter Branch Address.");
           return;
         }
-        if (
-          eachBranch.MapUrl === "http://" ||
-          eachBranch.MapUrl === "" ||
-          eachBranch.MapUrl === "https://"
-        ) {
-          toast.error("Invalid Branch Map URL.");
-          return;
-        }
         rtnBranchList.push({
           id: eachBranch.BranchId,
           branchName: eachBranch.BranchName,
@@ -393,7 +377,6 @@ export default ({ match }) => {
         ? ShopInfoState.BasicInformation.MainMapUrl.value
         : null,
     };
-
     const {
       data: { updateShop },
     } = await UpdateShopMutation({

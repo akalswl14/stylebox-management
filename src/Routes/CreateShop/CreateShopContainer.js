@@ -111,14 +111,6 @@ export default () => {
       toast.error("Please enter Shop Main Address.");
       return;
     }
-    if (
-      ShopInfoState.BasicInformation.MainMapUrl === "http://" ||
-      ShopInfoState.BasicInformation.MainMapUrl === "" ||
-      ShopInfoState.BasicInformation.MainMapUrl === "https://"
-    ) {
-      toast.error("Invalid Shop Main Map URL.");
-      return;
-    }
     if (isNaN(Number(ShopInfoState.BasicStatus.RankingWeight))) {
       toast.error("Invalid Weight Value.");
       return;
@@ -284,14 +276,6 @@ export default () => {
       }
       if (eachBranch.Address === "") {
         toast.error("Please enter Branch Address.");
-        return;
-      }
-      if (
-        eachBranch.MapUrl === "http://" ||
-        eachBranch.MapUrl === "" ||
-        eachBranch.MapUrl === "https://"
-      ) {
-        toast.error("Invalid Branch Map URL.");
         return;
       }
       rtnBranchList.push({
