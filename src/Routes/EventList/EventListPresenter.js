@@ -10,6 +10,7 @@ import "react-pagination-js/dist/styles.css";
 import SearchButton from "../../Components/SearchButton";
 import EventListTable from "./EventListTable";
 import PageChangeButton from "../../Components/PageChangeButton";
+import { toast } from "react-toastify";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -93,6 +94,12 @@ export default ({ loading, data, error, onSubmit }) => {
 
   const SearchEventList = (e) => {
     e.preventDefault();
+    if (eventState.searchOption.searchSelectBox === "eventId") {
+      if (isNaN(eventState.searchOption.searchKeyWord)) {
+        toast.error("Id must be a number.");
+        return;
+      }
+    }
     eventDispatch({
       type: "UPDATE_SEARCHOPTION",
       data: {

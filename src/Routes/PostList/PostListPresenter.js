@@ -4,13 +4,13 @@ import WrapPage from "../../Styles/WrapPageStyles";
 import PageTitle from "../../Components/PageTitle";
 import Loader from "../../Components/Loader";
 import { PostListContext } from "./PostListContainer";
-import { Link } from "react-router-dom";
 import Button from "../../Components/Button";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import SearchButton from "../../Components/SearchButton";
 import PostListTable from "./PostListTable";
 import PageChangeButton from "../../Components/PageChangeButton";
+import { toast } from "react-toastify";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -94,6 +94,12 @@ export default ({ loading, data, error, onSubmit }) => {
 
   const SearchPostList = (e) => {
     e.preventDefault();
+    if (postState.searchOption.searchSelectBox === "postId") {
+      if (isNaN(postState.searchOption.searchKeyWord)) {
+        toast.error("Id must be a number.");
+        return;
+      }
+    }
     postDispatch({
       type: "UPDATE_SEARCHOPTION",
       data: {

@@ -145,8 +145,6 @@ export default () => {
       },
     });
 
-    console.log(deleteSelectedTags);
-
     if (!deleteSelectedTags || mutationError) {
       toast.error("Error occured while delete data.");
       return;

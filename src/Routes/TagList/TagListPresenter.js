@@ -102,6 +102,12 @@ export default ({ loading, data, error, onSubmit }) => {
         return;
       }
     }
+    if (tagState.searchOption.searchSelectBox === "tagId") {
+      if (isNaN(tagState.searchOption.searchKeyWord)) {
+        toast.error("Id must be a number.");
+        return;
+      }
+    }
     tagDispatch({
       type: "UPDATE_SEARCHOPTION",
       data: {

@@ -10,6 +10,7 @@ import SortButton from "../../Components/SortButton";
 import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css";
 import SearchButton from "../../Components/SearchButton";
+import { toast } from "react-toastify";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -169,6 +170,12 @@ export default ({ onSubmit, loading, error, data }) => {
 
   const SearchUserList = (e) => {
     e.preventDefault();
+    if (UserListState.SearchOption.SearchSelectBox === "UserID") {
+      if (isNaN(UserListState.SearchOption.SearchKeyWord)) {
+        toast.error("Id must be a number.");
+        return;
+      }
+    }
     UserListDispatch({
       type: "UPDATE_SEARCHOPTION",
       data: {

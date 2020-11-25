@@ -10,6 +10,7 @@ import "react-pagination-js/dist/styles.css";
 import SearchButton from "../../Components/SearchButton";
 import ProductListTable from "./ProductListTable";
 import PageChangeButton from "../../Components/PageChangeButton";
+import { toast } from "react-toastify";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -97,6 +98,12 @@ export default ({ loading, data, error, onSubmit }) => {
 
   const SearchProductList = (e) => {
     e.preventDefault();
+    if (productState.searchOption.searchSelectBox === "productId") {
+      if (isNaN(productState.searchOption.searchKeyWord)) {
+        toast.error("Id must be a number.");
+        return;
+      }
+    }
     productDispatch({
       type: "UPDATE_SEARCHOPTION",
       data: {
