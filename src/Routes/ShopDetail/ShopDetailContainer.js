@@ -120,7 +120,7 @@ export default ({ match }) => {
     let TagOrderList = [];
     let TagIdList = [];
     let rtnTagList = [];
-    if (ShopInfoState.TagInformation.value.length > 10) {
+    if (ShopInfoState.TagInformation.value.length > 20) {
       toast.error("Up to 10 Tags can be registered.");
       return;
     }

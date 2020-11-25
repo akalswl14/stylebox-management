@@ -66,8 +66,8 @@ export default ({ categories }) => {
   const addRow = (e) => {
     e.preventDefault();
     const PrevMainRowData = postState.tagInfoData;
-    if (PrevMainRowData.length >= 10) {
-      toast.error("Up to 10 is possible.");
+    if (PrevMainRowData.length >= 20) {
+      toast.error("Up to 20 is possible.");
       return;
     }
     const newData = {
