@@ -3,11 +3,11 @@ import styled from "styled-components";
 import SectionTitle from "../../Components/SectionTitle";
 import { PostInfoContext } from "./PostInfoContainer";
 import Button from "../../Components/Button";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import AutoSelectBox from "./AutoSelectBox";
 import { useQuery } from "react-apollo-hooks";
 import { GET_BASICINFO } from "./PostInfoQueries";
+import PageChangeButton from "../../Components/PageChangeButton";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -67,7 +67,7 @@ const PostBasicInfo = () => {
     variables: { productName: "" },
   });
 
-  if (error_Shop) toast.error("Error Occured while Searching products");
+  if (error_Shop) toast.error("Error Occured while Searching products.");
 
   const onProductNameChange = (e) => {
     const value = e.target.value;
@@ -160,9 +160,8 @@ const PostBasicInfo = () => {
       <TitleBox>
         <SectionTitle text={"Basic Information"} />
         <ButtonBox>
-          <Link to="/">
-            <Button text="Back To Main"></Button>
-          </Link>
+          <PageChangeButton text="Back to List" href="/postlist" />
+          <PageChangeButton text="Back to Main" href="/" />
           <Button type="submit" text="Confirm"></Button>
         </ButtonBox>
       </TitleBox>

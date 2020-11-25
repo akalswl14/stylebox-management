@@ -123,7 +123,7 @@ export default ({ loading, data, error, onSubmit }) => {
                 >
                   <option value="tagId">tagId</option>
                   <option value="tagName">tagName</option>
-                  <option value="category">category</option>
+                  <option value="category">TagType</option>
                   <option value="className">className</option>
                 </SelectBox>
                 &nbsp;

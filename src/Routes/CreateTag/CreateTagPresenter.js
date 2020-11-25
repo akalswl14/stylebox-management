@@ -211,7 +211,7 @@ export default ({ onSubmit }) => {
                 </td>
               </tr>
               <tr>
-                <td>Tag Category</td>
+                <td>Tag Type</td>
                 <td>
                   <select
                     name="category"

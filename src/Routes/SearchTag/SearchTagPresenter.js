@@ -111,7 +111,7 @@ export default ({ loading, data, error, onSubmit }) => {
             order: idIdx,
             tagId: eachData.id,
             tagName: eachData.tagName,
-            category: eachData.Category,
+            category: eachData.category,
             className: eachData.className,
             classId: eachData.classId,
           };
@@ -173,7 +173,7 @@ export default ({ loading, data, error, onSubmit }) => {
               <thead>
                 <tr>
                   <th>Order</th>
-                  <th>Category</th>
+                  <th>Tag Type</th>
                   <th>Class</th>
                   <th>Tag</th>
                   <th>

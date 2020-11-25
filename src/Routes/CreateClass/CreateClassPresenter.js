@@ -118,7 +118,7 @@ export default ({ onSubmit }) => {
           <Table>
             <tbody>
               <tr>
-                <td>Tag Category</td>
+                <td>Tag Type</td>
                 <td colSpan="2">
                   <select
                     name="category"

@@ -235,7 +235,7 @@ export default () => {
           return;
         }
         if (Number(eachData.order) <= 0) {
-          toast.error("Tag Order Value should be bigger than 0");
+          toast.error("Tag Order Value should be bigger than 0.");
         }
         if (
           Number(eachData.tagId) === 0 ||
@@ -319,9 +319,13 @@ export default () => {
           toast.error("Image Order values should be bigger than 0.");
           return;
         }
+        if (!eachData.imageInput) {
+          toast.error("Please add a post Image.");
+          return;
+        }
         if (eachData.imageInput.current) {
           if (eachData.imageFile === "") {
-            toast.error("Please choose Shop Image.");
+            toast.error("Please choose Post Image.");
             return;
           }
           const ImageType = eachData.imageFile.type.substring(6);
@@ -388,7 +392,7 @@ export default () => {
           return;
         }
         if (Number(eachData.order) <= 0) {
-          toast.error("Product Order Value should be bigger than 0");
+          toast.error("Product Order Value should be bigger than 0.");
         }
         if (Number(eachData.productId) === 0) {
           toast.error("Please choose Sub Product.");
@@ -414,9 +418,7 @@ export default () => {
         priority: postState.basicStatus.priority
           ? postState.basicStatus.priority
           : 1,
-        description: postState.postDescription
-          ? postState.postDescription
-          : null,
+        description: postState.postDescription ? postState.postDescription : "",
         tags: mutationData.tags,
         externalLinks: mutationData.externalLinks,
         images: mutationData.images,
@@ -426,7 +428,7 @@ export default () => {
     });
 
     if (!createPostManage || createError) {
-      toast.error("Error occured while update data.");
+      toast.error("Error occured while create data.");
       return;
     }
 

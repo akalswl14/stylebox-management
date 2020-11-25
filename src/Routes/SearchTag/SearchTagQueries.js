@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
 export const SETTING_POPULAR_TAGS = gql`
   query SETTING_POPULAR_TAGS {
@@ -6,7 +6,7 @@ export const SETTING_POPULAR_TAGS = gql`
       order
       id
       tagName
-      Category
+      category
       className
       classId
     }
@@ -32,12 +32,8 @@ export const GET_TAG = gql`
   }
 `;
 
-export const POPULAR_TAG_MUTATION= gql`
-  mutation updateSettingPopularTags (
-    $popularTags : [PopularTagInputType!]!
-  ) {
-    updateSettingPopularTags (
-      popularTags : $popularTags ,
-    )
+export const POPULAR_TAG_MUTATION = gql`
+  mutation updateSettingPopularTags($popularTags: [PopularTagInputType!]!) {
+    updateSettingPopularTags(popularTags: $popularTags)
   }
 `;

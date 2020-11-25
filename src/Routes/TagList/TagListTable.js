@@ -173,7 +173,7 @@ const TagListTable = ({ data }) => {
             />
           </th>
           <th>
-            <SortText>Category</SortText>
+            <SortText>Tag Type</SortText>
             <SortButton
               type={
                 !tagState.sortOption.sortCategory

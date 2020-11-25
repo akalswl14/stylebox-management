@@ -123,7 +123,7 @@ export default () => {
       feedState.TodaysStylesPeriod === "T00:00:00.000Z" ||
       feedState.SearchPeriod === "T00:00:00.000Z"
     ) {
-      toast.error("Feed Page : Please select a date");
+      toast.error("Feed Page : Please select a date.");
       return;
     }
 
