@@ -10,6 +10,7 @@ import "react-pagination-js/dist/styles.css";
 import SearchButton from "../../Components/SearchButton";
 import PageChangeButton from "../../Components/PageChangeButton";
 import Button from "../../Components/Button";
+import { toast } from "react-toastify";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -71,6 +72,15 @@ export default ({ loading, data, error, onSubmit }) => {
     });
   };
 
+  const categoryArr = [
+    "Location",
+    "ProductClass",
+    "Style",
+    "Price",
+    "Feature",
+    "ShopName",
+  ];
+
   const ChangeSearch = (e) => {
     const { value, name } = e.target;
     tagDispatch({
@@ -84,6 +94,14 @@ export default ({ loading, data, error, onSubmit }) => {
 
   const SearchTagList = (e) => {
     e.preventDefault();
+    if (tagState.searchOption.searchSelectBox === "category") {
+      if (!categoryArr.includes(tagState.searchOption.searchKeyWord)) {
+        toast.error(
+          "Invalid tag type. TagType : Location, ProductClass, Style, Price, Feature, ShopName."
+        );
+        return;
+      }
+    }
     tagDispatch({
       type: "UPDATE_SEARCHOPTION",
       data: {
