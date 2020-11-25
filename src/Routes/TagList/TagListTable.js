@@ -44,7 +44,10 @@ const TagListTable = ({ data }) => {
     let saveList = tagState.selectedTagIdList.slice();
     if (e.target.checked) {
       for (const eachtag of data.getTagList.tags) {
-        if (!saveList.includes(eachtag.tagId)) {
+        if (
+          !saveList.includes(eachtag.tagId) &&
+          eachtag.category !== "ShopName"
+        ) {
           saveList.push(eachtag.tagId);
         }
       }
@@ -71,7 +74,10 @@ const TagListTable = ({ data }) => {
 
   const AllCheckBoxStatus = () => {
     for (const eachTag of data.getTagList.tags) {
-      if (!tagState.selectedTagIdList.includes(eachTag.tagId)) {
+      if (
+        !tagState.selectedTagIdList.includes(eachTag.tagId) &&
+        eachTag.category !== "ShopName"
+      ) {
         return false;
       }
     }
@@ -196,14 +202,18 @@ const TagListTable = ({ data }) => {
         {data.getTagList.tags.map((tag) => (
           <tr key={tag.tagId}>
             <td>
-              <input
-                type="checkbox"
-                name="tagId"
-                onChange={() => onCheckBoxChange(tag.tagId)}
-                checked={
-                  tagState.selectedTagIdList.includes(tag.tagId) ? true : false
-                }
-              />
+              {tag.category !== "ShopName" && (
+                <input
+                  type="checkbox"
+                  name="tagId"
+                  onChange={() => onCheckBoxChange(tag.tagId)}
+                  checked={
+                    tagState.selectedTagIdList.includes(tag.tagId)
+                      ? true
+                      : false
+                  }
+                />
+              )}
             </td>
             <td>{tag.tagId}</td>
             <td>{tag.tagName}</td>

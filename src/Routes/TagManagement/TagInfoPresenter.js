@@ -247,75 +247,98 @@ export default ({ loading, data, error, onSubmit }) => {
                     <td>{tagId}</td>
                     <td rowSpan="3">Tag Image</td>
                     <td rowSpan="3">
-                      <ImageInputBox>
-                        <Input
-                          type="file"
-                          accept="image/jpg,image/png,image/jpeg"
-                          name="TagLogoInput"
-                          onChange={(e) => ChangeImage(e)}
-                          ref={imageInput}
-                        />
-                        {tagState.tagLogoFile === "" &&
-                        tagState.tagInfo.tagImage ? (
-                          <PreviewImage
-                            className="TagLogo_Preview"
-                            src={S3_URL + tagState.tagInfo.tagImage}
-                          />
-                        ) : (
-                          <></>
-                        )}
-                        {TagLogo_Preview}
-                      </ImageInputBox>
-                      <ButtonBox onClick={onClick}>
-                        <Button text="Delete"></Button>
-                      </ButtonBox>
+                      {category !== "ShopName" ? (
+                        <>
+                          {" "}
+                          <ImageInputBox>
+                            <Input
+                              type="file"
+                              accept="image/jpg,image/png,image/jpeg"
+                              name="TagLogoInput"
+                              onChange={(e) => ChangeImage(e)}
+                              ref={imageInput}
+                            />
+                            {tagState.tagLogoFile === "" &&
+                            tagState.tagInfo.tagImage ? (
+                              <PreviewImage
+                                className="TagLogo_Preview"
+                                src={S3_URL + tagState.tagInfo.tagImage}
+                              />
+                            ) : (
+                              <></>
+                            )}
+                            {TagLogo_Preview}
+                          </ImageInputBox>
+                          <ButtonBox onClick={onClick}>
+                            <Button text="Delete"></Button>
+                          </ButtonBox>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </td>
                   </tr>
                   <tr>
                     <td>Tag Name</td>
                     <td>
-                      <Input
-                        InputWidth={100}
-                        name="tagName"
-                        type="text"
-                        value={tagName}
-                        onChange={onChange}
-                        required
-                      />
-                      <CheckStatusIcon>
-                        {tagState.isCheck ? (
-                          <PossibleIcon />
-                        ) : (
-                          <ImpossibleIcon />
-                        )}
-                      </CheckStatusIcon>
-                      <Button
-                        text={"Check"}
-                        isButtonType={true}
-                        ClickEvent={onCheck}
-                      ></Button>
+                      {category !== "ShopName" ? (
+                        <>
+                          <Input
+                            InputWidth={100}
+                            name="tagName"
+                            type="text"
+                            value={tagName}
+                            onChange={onChange}
+                            required
+                          />
+                          <CheckStatusIcon>
+                            {tagState.isCheck ? (
+                              <PossibleIcon />
+                            ) : (
+                              <ImpossibleIcon />
+                            )}
+                          </CheckStatusIcon>
+                          <Button
+                            text={"Check"}
+                            isButtonType={true}
+                            ClickEvent={onCheck}
+                          ></Button>{" "}
+                        </>
+                      ) : (
+                        tagName
+                      )}
                     </td>
                   </tr>
                   <tr>
                     <td>Tag Type</td>
                     <td>
-                      <select
-                        name="category"
-                        value={category}
-                        onChange={onChange}
-                      >
-                        <option value="Style">Style</option>
-                        <option value="Location">Location</option>
-                        <option value="ProductClass">ProductClass</option>
-                        <option value="Price">Price</option>
-                        <option value="Feature">Feature</option>
-                      </select>
+                      {category !== "ShopName" ? (
+                        <>
+                          <select
+                            name="category"
+                            value={category}
+                            onChange={onChange}
+                          >
+                            <option value="Style">Style</option>
+                            <option value="Location">Location</option>
+                            <option value="ProductClass">ProductClass</option>
+                            <option value="Price">Price</option>
+                            <option value="Feature">Feature</option>
+                          </select>
+                        </>
+                      ) : (
+                        category
+                      )}
                     </td>
                   </tr>
                   <tr>
                     <td>Tag Class</td>
                     <td colSpan="3">
-                      <TagTdTable category={category} />
+                      {category !== "ShopName" ? (
+                        <TagTdTable category={category} />
+                      ) : (
+                        tagName
+                      )}
                     </td>
                   </tr>
                   <tr>
