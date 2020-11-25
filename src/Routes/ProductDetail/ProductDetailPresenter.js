@@ -133,7 +133,7 @@ export default ({ onSubmit, loading, data, error }) => {
         });
       }
     }, []);
-    if (!ProductInfoState.isDataUpdated === "-") {
+    if (ProductInfoState.isDataUpdated === false) {
       return (
         <Wrapper>
           <Loader />
