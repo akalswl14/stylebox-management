@@ -129,9 +129,8 @@ const EventListTable = ({ data }) => {
     });
   };
 
-  const SortClick = (e) => {
+  const SortClick = (e, name) => {
     e.preventDefault();
-    const { name } = e.target;
     let sortOption = {
       sortEventId: false,
       sortEventTitle: false,
