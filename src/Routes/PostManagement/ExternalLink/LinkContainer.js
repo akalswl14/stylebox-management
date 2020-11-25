@@ -97,7 +97,7 @@ export default ({ linkTypes }) => {
         <thead>
           <tr>
             <th>Order</th>
-            <th>Category</th>
+            <th>Link Type</th>
             <th>Link URL</th>
             <th>Show</th>
             <th>Check</th>

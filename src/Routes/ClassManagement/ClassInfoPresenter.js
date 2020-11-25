@@ -227,7 +227,7 @@ export default ({ loading, data, error, onSubmit }) => {
                     <td>{postNum} posts</td>
                   </tr>
                   <tr>
-                    <td>Tag Category</td>
+                    <td>Tag Type</td>
                     <td>
                       <select
                         name="category"

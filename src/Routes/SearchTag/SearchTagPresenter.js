@@ -173,7 +173,7 @@ export default ({ loading, data, error, onSubmit }) => {
               <thead>
                 <tr>
                   <th>Order</th>
-                  <th>Category</th>
+                  <th>Tag Type</th>
                   <th>Class</th>
                   <th>Tag</th>
                   <th>
