@@ -116,7 +116,7 @@ export default () => {
       feedState.postConstA === 0 ||
       feedState.postConstB === 0
     ) {
-      toast.error("Feed Page : Order values should be bigger than 0.");
+      toast.error("Feed Page : Values should be bigger than 0.");
       return;
     }
     if (

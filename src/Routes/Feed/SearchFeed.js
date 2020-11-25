@@ -9,23 +9,25 @@ import DateFnsUtils from "@date-io/date-fns";
 
 const Table = styled.table`
   border-collapse: collapse;
+  border: 1px solid lightgrey;
   width: 100%;
   text-align: center;
-  input {
-    text-align: center;
-  }
-  tr {
-    border: 1px solid #858585;
-  }
   td {
+    padding: 5px;
     vertical-align: middle;
+  }
+  .orderInputCell,
+  .buttonCell {
+    width: 90px;
   }
   td:first-child {
-    border: 1px solid #858585;
-    padding: 8px;
-    background-color: #f2f2f2;
     width: 25%;
-    vertical-align: middle;
+    background-color: #f2f2f2;
+    border-right: 0.5px solid black;
+  }
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
 `;
 
