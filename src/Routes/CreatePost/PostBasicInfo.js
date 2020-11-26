@@ -11,25 +11,26 @@ import PageChangeButton from "../../Components/PageChangeButton";
 
 const Table = styled.table`
   border-collapse: collapse;
+  border: 1px solid lightgrey;
   width: 100%;
-  input {
-    text-align: center;
-    width: 180px;
-  }
-  tr {
-    border: 1px solid #858585;
-  }
+  text-align: center;
   td {
-    width: 25%;
-    vertical-align: middle;
     padding: 10px;
+    vertical-align: middle;
+    width: 25%;
+  }
+  .orderInputCell,
+  .buttonCell {
+    width: 90px;
   }
   td:nth-child(odd) {
-    text-align: center;
-    width: 13%;
-    border: 1px solid #858585;
-    padding: 8px;
+    width: 15%;
     background-color: #f2f2f2;
+    border-right: 0.5px solid black;
+  }
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
 `;
 

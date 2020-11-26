@@ -8,28 +8,27 @@ const Table = styled.table`
   border-collapse: collapse;
   width: 100%;
   text-align: center;
-  input {
-    text-align: center;
-  }
-  th:first-child {
-    width: 13%;
-    padding: 12px;
-    border-right: 1px solid #858585;
-    background-color: #f2f2f2;
+  td,
+  th {
+    padding: 6px 2px;
   }
   th {
-    padding: 12px;
-    border: 1px solid #858585;
     background-color: #f2f2f2;
+    font-weight: 500;
+    font-size: 13px;
+    vertical-align: middle;
   }
-  tr {
-    border: 1px solid #858585;
+  th:first-child,
+  th:last-child {
+    width: 5%;
   }
   td {
-    padding: 3px;
+    font-size: 13px;
+    vertical-align: middle;
   }
-  td:first-child {
-    border: 1px solid #858585;
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
 `;
 
@@ -233,6 +232,7 @@ const ProductListTable = ({ data }) => {
             <td>{product.link}</td>
             <td>
               <PageChangeButton
+                width="50"
                 text="edit"
                 href={"/productdetail/" + product.productId}
               />

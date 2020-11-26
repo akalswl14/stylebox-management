@@ -13,23 +13,32 @@ import { toast } from "react-toastify";
 
 const Table = styled.table`
   border-collapse: collapse;
+  border: 1px solid lightgrey;
   width: 100%;
   text-align: center;
-  input {
-    text-align: center;
-  }
-  tr {
-    border: 1px solid #858585;
-  }
-  td {
-    width: 25%;
-    padding: 15px 0px 15px 0px;
-  }
-  td:first-child {
-    border: 1px solid #858585;
+  td,
+  th {
     padding: 8px;
+    vertical-align: middle;
+  }
+  th {
     background-color: #f2f2f2;
-    width: 4%;
+    font-weight: 500;
+    border-bottom: 0.5px solid black;
+  }
+  .orderInputCell,
+  .buttonCell {
+    width: 90px;
+  }
+  td:first-child,
+  th:first-child {
+    width: 10%;
+    background-color: #f2f2f2;
+    border-right: 0.5px solid black;
+  }
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
 `;
 
