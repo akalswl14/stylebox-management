@@ -1,14 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-apollo-hooks";
 import { GET_CLASS, GET_TAG } from "../ProductDetailQueries";
 import { DeleteIcon } from "../../../Components/Icons";
 import { ProductInfoContext } from "../ProductDetailContainer";
-
-const OrderInputBox = styled.input`
-  width: 30px;
-  text-align: center;
-`;
 
 const SelectBox = styled.select`
   width: 200px;
@@ -34,6 +29,10 @@ export default ({ data }) => {
   const [classIdInputState, setClassIdInputState] = useState(
     Number(data.classId)
   );
+  useEffect(() => {
+    setCategoryInputState(data.category);
+    setClassIdInputState(Number(data.classId));
+  }, [data.category, Number(data.classId)]);
   const { loading: classLoading, data: classData } = useQuery(GET_CLASS, {
     variables: { category: categoryInputState },
   });
@@ -107,8 +106,7 @@ export default ({ data }) => {
   const deleteRow = (e, rowId) => {
     e.preventDefault();
     let PrevData = ProductInfoState.TagInformation.value;
-    const idx = PrevData.findIndex((item) => item.id === Number(rowId));
-    if (idx > -1) PrevData.splice(idx, 1);
+    PrevData = PrevData.filter((item) => item.id !== Number(rowId));
     ProductInfoDispatch({
       type: "UPDATE_TAGINFO",
       data: {
