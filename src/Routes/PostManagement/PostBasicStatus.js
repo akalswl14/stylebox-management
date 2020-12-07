@@ -35,6 +35,23 @@ const TitleBox = styled.div`
   width: 100%;
 `;
 
+const getFormatDate = (date) => {
+  let year = date.getFullYear();
+  let month = 1 + date.getMonth();
+  month = month >= 10 ? month : "0" + month;
+  let day = date.getDate();
+  day = day >= 10 ? day : "0" + day;
+  let hour = date.getHours();
+  hour = hour >= 10 ? hour : "0" + hour;
+  let minute = date.getMinutes();
+  minute = minute >= 10 ? minute : "0" + minute;
+  let seconds = date.getSeconds();
+  seconds = seconds >= 10 ? seconds : "0" + seconds;
+  return (
+    year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + seconds
+  );
+};
+
 const PostBasicStatus = () => {
   const { postDispatch, postState } = useContext(PostInfoContext);
 
@@ -49,9 +66,10 @@ const PostBasicStatus = () => {
     updatedAt,
   } = postState.basicStatus;
 
-  let RegistrationDate = String(createdAt).split("T");
-  let UpdatedDate = String(updatedAt).split("T");
-  let UpdatedTime = String(UpdatedDate[1]).split(".");
+  const registrationDate = getFormatDate(new Date(createdAt));
+  const updatedDate = getFormatDate(new Date(updatedAt));
+  console.log(updatedAt);
+  console.log(updatedDate);
 
   const onChange = (e) => {
     const { value } = e.target;
@@ -95,11 +113,9 @@ const PostBasicStatus = () => {
           </tr>
           <tr>
             <td>Registration Date</td>
-            <td>{RegistrationDate[0]}</td>
+            <td>{registrationDate}</td>
             <td>Last Updated</td>
-            <td>
-              {UpdatedDate[0]} {UpdatedTime[0]}
-            </td>
+            <td>{updatedDate}</td>
           </tr>
         </tbody>
       </Table>

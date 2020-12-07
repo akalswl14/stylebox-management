@@ -31,6 +31,23 @@ const Table = styled.table`
   }
 `;
 
+const getFormatDate = (date) => {
+  let year = date.getFullYear();
+  let month = 1 + date.getMonth();
+  month = month >= 10 ? month : "0" + month;
+  let day = date.getDate();
+  day = day >= 10 ? day : "0" + day;
+  let hour = date.getHours();
+  hour = hour >= 10 ? hour : "0" + hour;
+  let minute = date.getMinutes();
+  minute = minute >= 10 ? minute : "0" + minute;
+  let seconds = date.getSeconds();
+  seconds = seconds >= 10 ? seconds : "0" + seconds;
+  return (
+    year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + seconds
+  );
+};
+
 const Input = styled.input`
   width: ${(props) => {
     if (props.InputWidth) {
@@ -47,6 +64,13 @@ const Input = styled.input`
 export default () => {
   const { ProductInfoState } = useContext(ProductInfoContext);
 
+  const registrationDate = getFormatDate(
+    new Date(ProductInfoState.BasicStatus.RegistrationData)
+  );
+  const updatedDate = getFormatDate(
+    new Date(ProductInfoState.BasicStatus.LastUpdated)
+  );
+
   return (
     <>
       <SectionTitle text="Basic Status" />
@@ -59,9 +83,9 @@ export default () => {
         </tr>
         <tr>
           <th>Registration Date</th>
-          <td>{ProductInfoState.BasicStatus.RegistrationData}</td>
+          <td>{registrationDate}</td>
           <th>Last Updated</th>
-          <td>{ProductInfoState.BasicStatus.LastUpdated}</td>
+          <td>{updatedDate}</td>
         </tr>
       </Table>
     </>

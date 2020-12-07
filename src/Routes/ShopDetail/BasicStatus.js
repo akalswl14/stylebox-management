@@ -45,8 +45,32 @@ const Input = styled.input`
   text-align: center;
 `;
 
+const getFormatDate = (date) => {
+  let year = date.getFullYear();
+  let month = 1 + date.getMonth();
+  month = month >= 10 ? month : "0" + month;
+  let day = date.getDate();
+  day = day >= 10 ? day : "0" + day;
+  let hour = date.getHours();
+  hour = hour >= 10 ? hour : "0" + hour;
+  let minute = date.getMinutes();
+  minute = minute >= 10 ? minute : "0" + minute;
+  let seconds = date.getSeconds();
+  seconds = seconds >= 10 ? seconds : "0" + seconds;
+  return (
+    year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + seconds
+  );
+};
+
 export default () => {
   const { ShopInfoState, ShopInfoDispatch } = useContext(ShopInfoContext);
+
+  const registrationDate = getFormatDate(
+    new Date(ShopInfoState.BasicStatus.RegistrationData)
+  );
+  const updatedDate = getFormatDate(
+    new Date(ShopInfoState.BasicStatus.LastUpdated)
+  );
 
   const onChange = (e) => {
     e.preventDefault();
@@ -104,14 +128,14 @@ export default () => {
             </td>
             <th>Total Views</th>
             <td className="smallerCell">
-              {ShopInfoState.BasicStatus.TotalViews} Likes
+              {ShopInfoState.BasicStatus.TotalViews} Views
             </td>
           </tr>
           <tr>
             <th>Registration Date</th>
-            <td>{ShopInfoState.BasicStatus.RegistrationData}</td>
+            <td>{registrationDate}</td>
             <th>Last Updated</th>
-            <td>{ShopInfoState.BasicStatus.LastUpdated}</td>
+            <td>{updatedDate}</td>
           </tr>
         </tbody>
       </Table>
