@@ -84,7 +84,7 @@ export default ({ categories }) => {
     });
 
     if (!getSubProductTag || getError) {
-      toast.error("Error occured while update data.");
+      toast.error("Error occured while get data.");
       return;
     }
 

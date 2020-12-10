@@ -38,7 +38,8 @@ function reducer(state, action) {
       return action.data;
     case "SET_PRODUCT_TAG":
       let tagInfo = [],
-        order = 1;
+        order = 1,
+        id = 1;
       for (const eachData of state.tagInfoData) {
         tagInfo.push(eachData);
       }
@@ -47,6 +48,7 @@ function reducer(state, action) {
       }
       tagInfo.map((tag) => {
         tag.order = order++;
+        tag.id = id++;
       });
       return {
         ...state,
