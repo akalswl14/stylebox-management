@@ -210,7 +210,7 @@ const Tags = () => {
         </thead>
         <tbody>
           {tagState.PriceTagData.map((tag) => (
-            <tr kety={tag.classId}>
+            <tr key={tag.classId}>
               <td>
                 {tag.className}
                 <Link to={{ pathname: `/classinfo/${tag.classId}` }}>
