@@ -186,12 +186,12 @@ export default ({
               <PageTitle text={"Post Management"} />
               <PostBasicInfo />
               <PostBasicStatus />
-              <TagInformation categories={categories} />
               <ExternalLink linkTypes={linkTypes} />
               <PostImages />
               <PostVideo />
               <PostDescription />
               <SubProduct />
+              <TagInformation categories={categories} />
             </form>
           </WrapPage>
         </>

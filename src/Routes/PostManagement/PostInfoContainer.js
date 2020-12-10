@@ -42,6 +42,24 @@ function reducer(state, action) {
   switch (action.type) {
     case "SET_DATA":
       return action.data;
+    case "SET_PRODUCT_TAG":
+      let tagInfo = [],
+        order = 1,
+        id = 1;
+      for (const eachData of state.tagInfoData) {
+        tagInfo.push(eachData);
+      }
+      for (const eachData of action.data.tagInfoData) {
+        tagInfo.push(eachData);
+      }
+      tagInfo.map((tag) => {
+        tag.id = id++;
+        tag.order = order++;
+      });
+      return {
+        ...state,
+        tagInfoData: tagInfo,
+      };
     case "CHANGE_BASICSTATUS":
       return {
         ...state,
