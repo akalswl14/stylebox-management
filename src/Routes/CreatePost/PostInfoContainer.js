@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import PostInfoPresenter from "./PostInfoPresenter";
 import { useQuery, useMutation } from "react-apollo-hooks";
 import AWS, { Credentials } from "aws-sdk";
@@ -36,6 +36,22 @@ function reducer(state, action) {
   switch (action.type) {
     case "SET_DATA":
       return action.data;
+    case "SET_PRODUCT_TAG":
+      let tagInfo = [],
+        order = 1;
+      for (const eachData of state.tagInfoData) {
+        tagInfo.push(eachData);
+      }
+      for (const eachData of action.data.tagInfoData) {
+        tagInfo.push(eachData);
+      }
+      tagInfo.map((tag) => {
+        tag.order = order++;
+      });
+      return {
+        ...state,
+        tagInfoData: tagInfo,
+      };
     case "CHANGE_BASICSTATUS":
       return {
         ...state,
@@ -184,6 +200,7 @@ function reducer(state, action) {
 
 export default () => {
   const [postState, postDispatch] = useReducer(reducer, initialState);
+  const [confirmState, setConfirm] = useState(false);
 
   const {
     loading: loading_CategoryData,
@@ -201,6 +218,11 @@ export default () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (confirmState) {
+      toast.error("You have already pressed the confirm button.");
+      return;
+    }
+    setConfirm(true);
 
     if (postState.basicInfo.mainProductId === 0) {
       toast.error("Select the main product name.");
