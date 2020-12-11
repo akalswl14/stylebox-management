@@ -24,8 +24,19 @@ const RowButton = styled.button`
 
 const TagInfoTable = ({ categories, data }) => {
   const { postDispatch } = useContext(PostInfoContext);
-  const [classState, setclassState] = useState("Style");
-  const [tagState, setTagState] = useState(1);
+  let categoryData;
+  let classIdData;
+
+  if (data.category === "-- CHOOSE DATA --") {
+    categoryData = "Style";
+    classIdData = 1;
+  } else {
+    categoryData = data.category;
+    classIdData = Number(data.classId);
+  }
+
+  const [classState, setclassState] = useState(categoryData);
+  const [tagState, setTagState] = useState(classIdData);
 
   const { loading: classLoading, data: classData } = useQuery(GET_CLASS, {
     variables: { category: classState },

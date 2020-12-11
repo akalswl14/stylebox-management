@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import PostInfoPresenter from "./PostInfoPresenter";
 import { useQuery, useMutation } from "react-apollo-hooks";
 import AWS, { Credentials } from "aws-sdk";
@@ -42,6 +42,24 @@ function reducer(state, action) {
   switch (action.type) {
     case "SET_DATA":
       return action.data;
+    case "SET_PRODUCT_TAG":
+      let tagInfo = [],
+        order = 1,
+        id = 1;
+      for (const eachData of state.tagInfoData) {
+        tagInfo.push(eachData);
+      }
+      for (const eachData of action.data.tagInfoData) {
+        tagInfo.push(eachData);
+      }
+      tagInfo.map((tag) => {
+        tag.id = id++;
+        tag.order = order++;
+      });
+      return {
+        ...state,
+        tagInfoData: tagInfo,
+      };
     case "CHANGE_BASICSTATUS":
       return {
         ...state,
@@ -191,6 +209,7 @@ function reducer(state, action) {
 
 export default ({ match }) => {
   const [postState, postDispatch] = useReducer(reducer, initialState);
+  const [confirmState, setConfirm] = useState(false);
   const { loading, error, data } = useQuery(GET_POST, {
     variables: { id: Number(match.params.postId) },
   });
@@ -211,9 +230,15 @@ export default ({ match }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (confirmState) {
+      toast.error("You have already pressed the confirm button.");
+      return;
+    }
+    setConfirm(true);
 
     if (postState.basicInfo.mainProductId === 0) {
       toast.error("Select the main product name.");
+      setConfirm(false);
       return;
     }
 
@@ -231,14 +256,18 @@ export default ({ match }) => {
     for (const eachData of postState.tagInfoData) {
       if (TagOrderList.includes(Number(eachData.order))) {
         toast.error("Tag Order values should not be the same.");
+        setConfirm(false);
         return;
       }
       if (isNaN(Number(eachData.order))) {
         toast.error("Invalid Tag Order Value.");
+        setConfirm(false);
         return;
       }
       if (Number(eachData.order) <= 0) {
         toast.error("Tag Order Value should be bigger than 0.");
+        setConfirm(false);
+        return;
       }
       if (
         Number(eachData.tagId) === 0 ||
@@ -247,10 +276,12 @@ export default ({ match }) => {
         eachData.category === "-- LOADING --"
       ) {
         toast.error("Please choose Tag.");
+        setConfirm(false);
         return;
       }
       if (TagIdList.includes(Number(eachData.tagId))) {
         toast.error("Tag should not be the same.");
+        setConfirm(false);
         return;
       }
       TagOrderList.push(Number(eachData.order));
@@ -266,18 +297,22 @@ export default ({ match }) => {
     for (const eachData of postState.externalLink) {
       if (LinkOrderList.includes(Number(eachData.order))) {
         toast.error("External Link Order values should not be the same.");
+        setConfirm(false);
         return;
       }
       if (isNaN(Number(eachData.order))) {
         toast.error("Invalid External Link Order value.");
+        setConfirm(false);
         return;
       }
       if (Number(eachData.order) <= 0) {
         toast.error("External Link Order values should be bigger than 0.");
+        setConfirm(false);
         return;
       }
       if (eachData.linkType === "-- CHOOSE DATA --") {
         toast.error("Please choose Link Type on External Link.");
+        setConfirm(false);
         return;
       }
       if (
@@ -286,6 +321,7 @@ export default ({ match }) => {
         eachData.url === "https://"
       ) {
         toast.error("Invalid External Link URL.");
+        setConfirm(false);
         return;
       }
       LinkOrderList.push(Number(eachData.order));
@@ -302,26 +338,31 @@ export default ({ match }) => {
     let ImageOrderList = [];
     if (postState.postImageManagement.length <= 0) {
       toast.error("Please add a post Image.");
+      setConfirm(false);
       return;
     }
     for (const eachData of postState.postImageManagement) {
       let imageUpdateInfo;
       if (ImageOrderList.includes(Number(eachData.order))) {
         toast.error("Image Order values should not be the same.");
+        setConfirm(false);
         return;
       }
       if (isNaN(Number(eachData.order))) {
         toast.error("Invalid Image Order value.");
+        setConfirm(false);
         return;
       }
       if (Number(eachData.order) <= 0) {
         toast.error("Image Order values should be bigger than 0.");
+        setConfirm(false);
         return;
       }
       if (eachData.isImageChange) {
         if (eachData.imageInput.current) {
           if (eachData.imageFile === "") {
             toast.error("Please choose Shop Image.");
+            setConfirm(false);
             return;
           }
           const { imageInput } = eachData;
@@ -341,6 +382,7 @@ export default ({ match }) => {
             await uploadToBucket(preSignedUrl, file, ImageType);
           } catch (e) {
             toast.error("Error occured while create data.");
+            setConfirm(false);
             return;
           }
 
@@ -369,14 +411,17 @@ export default ({ match }) => {
     for (const eachData of postState.postVideoManagement) {
       if (VideoOrderList.includes(Number(eachData.order))) {
         toast.error("Video Order values should not be the same.");
+        setConfirm(false);
         return;
       }
       if (isNaN(Number(eachData.order))) {
         toast.error("Invalid Video Order value.");
+        setConfirm(false);
         return;
       }
       if (Number(eachData.order) <= 0) {
         toast.error("Video Order values should be bigger than 0.");
+        setConfirm(false);
         return;
       }
       if (
@@ -385,6 +430,7 @@ export default ({ match }) => {
         eachData.url === "https://"
       ) {
         toast.error("Invalid Video URL value.");
+        setConfirm(false);
         return;
       }
       VideoOrderList.push(Number(eachData.order));
@@ -400,21 +446,27 @@ export default ({ match }) => {
     for (const eachData of postState.subProductManagement) {
       if (ProductOrderList.includes(Number(eachData.order))) {
         toast.error("Product Order values should not be the same.");
+        setConfirm(false);
         return;
       }
       if (isNaN(Number(eachData.order))) {
         toast.error("Invalid Product Order Value.");
+        setConfirm(false);
         return;
       }
       if (Number(eachData.order) <= 0) {
         toast.error("Product Order Value should be bigger than 0.");
+        setConfirm(false);
+        return;
       }
       if (Number(eachData.productId) === 0) {
         toast.error("Please choose Sub Product.");
+        setConfirm(false);
         return;
       }
       if (ProductIdList.includes(Number(eachData.productId))) {
         toast.error("Sub Product should not be the same.");
+        setConfirm(false);
         return;
       }
       ProductOrderList.push(Number(eachData.order));
@@ -447,6 +499,7 @@ export default ({ match }) => {
 
     if (!updatePostManage || updateError) {
       toast.error("Error occured while update data.");
+      setConfirm(false);
       return;
     }
 

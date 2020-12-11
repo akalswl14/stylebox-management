@@ -5,6 +5,9 @@ import SectionTitle from "../../../Components/SectionTitle";
 import { PostInfoContext } from "../PostInfoContainer";
 import TagInfoTable from "./TagInfoTable";
 import { toast } from "react-toastify";
+import Button from "../../../Components/Button";
+import { GET_PRODUCT_TAG } from "../PostInfoQueries";
+import { useMutation } from "react-apollo-hooks";
 
 const Table = styled.table`
   font-size: 15px;
@@ -56,6 +59,55 @@ const RowButton = styled.button`
 
 export default ({ categories }) => {
   const { postState, postDispatch } = useContext(PostInfoContext);
+  const [getProductTag, { error: getError }] = useMutation(GET_PRODUCT_TAG);
+
+  const handleTagClick = async (e) => {
+    e.preventDefault();
+    if (!postState.basicInfo.mainProductId) {
+      toast.info("Please select the main product.");
+      return;
+    }
+
+    let productIds = [];
+    productIds.push(postState.basicInfo.mainProductId);
+    for (const product of postState.subProductManagement) {
+      productIds.push(product.productId);
+    }
+
+    const {
+      data: { getSubProductTag },
+    } = await getProductTag({
+      variables: {
+        lang: "VI",
+        productIds,
+      },
+    });
+
+    if (!getSubProductTag || getError) {
+      toast.error("Error occured while get data.");
+      return;
+    }
+
+    let idIdx = 1;
+    let tagInfoData = getSubProductTag.map((eachData) => {
+      let tagData = {
+        id: idIdx,
+        order: eachData.order,
+        tagId: eachData.tagId,
+        tagName: eachData.tagName,
+        category: eachData.category,
+        className: eachData.className,
+        classId: eachData.classId,
+      };
+      idIdx++;
+      return tagData;
+    });
+
+    postDispatch({
+      type: "SET_PRODUCT_TAG",
+      data: { tagInfoData },
+    });
+  };
 
   const addRow = (e) => {
     e.preventDefault();
@@ -69,10 +121,7 @@ export default ({ categories }) => {
         PrevMainRowData.length > 0
           ? PrevMainRowData[PrevMainRowData.length - 1].id + 1
           : 1,
-      order:
-        PrevMainRowData.length > 0
-          ? PrevMainRowData[PrevMainRowData.length - 1].id + 1
-          : 1,
+      order: PrevMainRowData.length + 1,
       category: "-- CHOOSE DATA --",
       classId: 0,
       className: "-- CHOOSE DATA --",
@@ -84,10 +133,16 @@ export default ({ categories }) => {
       data: newData,
     });
   };
+
   return (
     <>
       <TitleBox>
         <SectionTitle text={"Tag Information"} />
+        <Button
+          text={"Get Tag"}
+          isButtonType={true}
+          ClickEvent={handleTagClick}
+        ></Button>
       </TitleBox>
       <Table>
         <thead>
