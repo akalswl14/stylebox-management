@@ -43,7 +43,15 @@ const SectionWrapper = styled.div`
 
 const Form = styled.form``;
 
-export default ({ onSubmit, loading, data, error }) => {
+export default ({
+  onSubmit,
+  loading,
+  data,
+  error,
+  tagMutation,
+  tagMutationError,
+  tagMutationLoading,
+}) => {
   const { ProductInfoState, ProductInfoDispatch } = useContext(
     ProductInfoContext
   );
@@ -107,7 +115,11 @@ export default ({ onSubmit, loading, data, error }) => {
               <BasicStatus />
             </SectionWrapper>
             <SectionWrapper>
-              <TagInformationContainer />
+              <TagInformationContainer
+                tagMutation={tagMutation}
+                tagMutationError={tagMutationError}
+                tagMutationLoading={tagMutationLoading}
+              />
             </SectionWrapper>
             <SectionWrapper>
               <BranchInfoContainer />
