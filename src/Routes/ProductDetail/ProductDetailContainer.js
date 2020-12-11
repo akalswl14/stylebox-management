@@ -5,6 +5,7 @@ import { GET_PRODUCT, UPDATE_PRODUCT } from "./ProductDetailQueries";
 import { toast } from "react-toastify";
 import putImagetoS3 from "./putImagetoS3";
 import deleteImagefromS3 from "./deleteImagefromS3";
+import { GET_TAGS_BYSHOP } from "../CreateProduct/CreateProductQueries";
 
 export const ProductInfoContext = React.createContext(null);
 
@@ -66,6 +67,11 @@ export default ({ match }) => {
   const [UpdateProductMutation, { error: UpdateError }] = useMutation(
     UPDATE_PRODUCT
   );
+
+  const [
+    getTagbyShop,
+    { error: getTagError, loading: getTagLoading },
+  ] = useMutation(GET_TAGS_BYSHOP);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -216,6 +222,9 @@ export default ({ match }) => {
         loading={loading}
         data={data}
         error={error}
+        tagMutation={getTagbyShop}
+        tagMutationError={getTagError}
+        tagMutationLoading={getTagLoading}
       />
     </ProductInfoContext.Provider>
   );
