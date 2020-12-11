@@ -67,7 +67,7 @@ export default ({ categories }) => {
   const handleTagClick = async (e) => {
     e.preventDefault();
     if (!postState.basicInfo.mainProductId) {
-      toast.info("Please select the main product.");
+      toast.error("Please select the main product.");
       return;
     }
 
