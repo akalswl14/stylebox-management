@@ -69,3 +69,16 @@ export const GET_TAG = gql`
     }
   }
 `;
+
+export const GET_TAGS_BYSHOP = gql`
+  mutation getTagsbyShop($shopId: Int!, $tags: [Int!]!) {
+    getTagsbyShop(shopId: $shopId, tags: $tags) {
+      tagId
+      tagName
+      classId
+      className
+      category
+      order
+    }
+  }
+`;
