@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import Button from "../../../Components/Button";
 import { GET_PRODUCT_TAG } from "../PostInfoQueries";
 import { useMutation } from "react-apollo-hooks";
+import MiniLoader from "../../../Components/MiniLoader";
 
 const Table = styled.table`
   font-size: 15px;
@@ -59,7 +60,9 @@ const RowButton = styled.button`
 
 export default ({ categories }) => {
   const { postState, postDispatch } = useContext(PostInfoContext);
-  const [getProductTag, { error: getError }] = useMutation(GET_PRODUCT_TAG);
+  const [getProductTag, { error: getError, loading: getLoading }] = useMutation(
+    GET_PRODUCT_TAG
+  );
 
   const handleTagClick = async (e) => {
     e.preventDefault();
@@ -137,6 +140,7 @@ export default ({ categories }) => {
     <>
       <TitleBox>
         <SectionTitle text={"Tag Information"} />
+        {getLoading ? <MiniLoader /> : <></>}
         <Button
           text={"Get Tag"}
           isButtonType={true}
