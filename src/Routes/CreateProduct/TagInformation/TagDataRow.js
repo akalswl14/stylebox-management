@@ -118,7 +118,11 @@ export default ({ data }) => {
     });
   };
 
-  if (classLoading || tagLoading) {
+  if (
+    classLoading ||
+    tagLoading ||
+    (data.tagId > 0 && !classLoading && !classData.getClassOptions)
+  ) {
     return (
       <tr>
         <td className="orderInputCell">{data.order}</td>
