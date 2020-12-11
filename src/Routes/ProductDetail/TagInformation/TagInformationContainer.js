@@ -130,7 +130,11 @@ export default ({ tagMutation, tagMutationError, tagMutationLoading }) => {
 
   return (
     <>
-      <SectionTitle text="Tag Information" />
+      <SectionContainer>
+        <SectionTitle text="Tag Information" />
+        {tagMutationLoading ? <MiniLoader /> : <></>}
+        <Button text="Get ShopTag" ClickEvent={handleTagUpdate} />
+      </SectionContainer>
       <Table>
         <tr>
           <th className="orderInputCell">No</th>
