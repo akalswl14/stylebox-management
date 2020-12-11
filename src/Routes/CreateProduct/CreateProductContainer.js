@@ -1,7 +1,11 @@
 import React, { useReducer } from "react";
 import CreateProductPresenter from "./CreateProductPresenter";
 import { useMutation, useQuery } from "react-apollo-hooks";
-import { CREATE_PRODUCT, GET_PRODUCTINFO } from "./CreateProductQueries";
+import {
+  CREATE_PRODUCT,
+  GET_PRODUCTINFO,
+  GET_TAGS_BYSHOP,
+} from "./CreateProductQueries";
 import { toast } from "react-toastify";
 import putImagetoS3 from "./putImagetoS3";
 
@@ -61,6 +65,11 @@ export default () => {
   const [CreateProductMutation, { error: CreateError }] = useMutation(
     CREATE_PRODUCT
   );
+
+  const [
+    getTagbyShop,
+    { error: getTagError, loading: getTagLoading },
+  ] = useMutation(GET_TAGS_BYSHOP);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -199,6 +208,9 @@ export default () => {
         loading={loading}
         data={data}
         error={error}
+        tagMutation={getTagbyShop}
+        tagMutationError={getTagError}
+        tagMutationLoading={getTagLoading}
       />
     </ProductInfoContext.Provider>
   );
