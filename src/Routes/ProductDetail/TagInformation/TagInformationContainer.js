@@ -1,6 +1,9 @@
 import React, { useContext } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
+import Button from "../../../Components/Button";
 import { PlusIcon } from "../../../Components/Icons";
+import MiniLoader from "../../../Components/MiniLoader";
 import SectionTitle from "../../../Components/SectionTitle";
 import { ProductInfoContext } from "../ProductDetailContainer";
 import TagDataRow from "./TagDataRow";
@@ -45,7 +48,15 @@ const RowButton = styled.button`
   margin: 0;
 `;
 
-export default () => {
+const SectionContainer = styled.div`
+  padding: 15px 0px 15px 0px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: flex-end;
+`;
+
+export default ({ tagMutation, tagMutationError, tagMutationLoading }) => {
   const { ProductInfoState, ProductInfoDispatch } = useContext(
     ProductInfoContext
   );
@@ -71,6 +82,50 @@ export default () => {
         TagInformation: { value: PrevTagData, isChange: true },
       },
     });
+  };
+
+  const handleTagUpdate = async (e) => {
+    e.preventDefault();
+    if (ProductInfoState.SelectedShop.shopId <= 0) {
+      toast.error("Please select Shop first.");
+      return;
+    }
+    const tagIds = ProductInfoState.TagInformation.value.map(
+      (eachData) => eachData.tagId
+    );
+    const {
+      data: { getTagsbyShop },
+    } = await tagMutation({
+      variables: {
+        shopId: ProductInfoState.SelectedShop.shopId,
+        tags: tagIds,
+      },
+    });
+    if (!getTagsbyShop || tagMutationError) {
+      toast.error("Error occured while get tag data.");
+      return;
+    }
+    if (getTagsbyShop) {
+      try {
+        ProductInfoDispatch({
+          type: "UPDATE_TAGINFO",
+          data: {
+            TagInformation: {
+              value: getTagsbyShop.map((eachData) => ({
+                ...eachData,
+                id: eachData.order,
+              })),
+              isChange: true,
+            },
+          },
+        });
+        return;
+      } catch (e) {
+        toast.error("Error occured while get tag data.");
+        return;
+      }
+    }
+    return;
   };
 
   return (
