@@ -7,6 +7,7 @@ import {
   UPDATE_EVENTS,
 } from "./EventListQueries";
 import { toast } from "react-toastify";
+import queryString from "query-string";
 
 export const EventListContext = React.createContext(null);
 
@@ -144,14 +145,14 @@ function reducer(state, action) {
   }
 }
 
-export default () => {
+export default ({ location }) => {
   const [eventState, eventDispatch] = useReducer(reducer, initialState);
   const [deleteEvents, { error: mutationError }] = useMutation(DELETE_EVENTS);
   const [updateEvents, { error: updateError }] = useMutation(UPDATE_EVENTS);
-
+  const queryInput = queryString.parse(location.search);
   const { loading, error, data } = useQuery(GET_EVENTLIST, {
     variables: {
-      pageNum: eventState.pageNum,
+      pageNum: Number(queryInput.page),
       eventId:
         eventState.searchOption.searchSelectBox === "eventId" &&
         eventState.searchOption.searchItemBoolean
