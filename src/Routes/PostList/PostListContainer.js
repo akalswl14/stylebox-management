@@ -10,18 +10,6 @@ export const PostListContext = React.createContext(null);
 const initialState = {
   selectedPostIdList: [],
   pageNum: 1,
-  sortOption: {
-    sortPostId: false,
-    sortMainProductName: false,
-    sortShopName: false,
-    sortPrice: false,
-    sortPriority: false,
-    postIdAsc: true,
-    mainProductNameAsc: true,
-    shopNameAsc: true,
-    priceAsc: true,
-    priorityAsc: true,
-  },
   searchOption: {
     searchSelectBox: "postId",
     searchKeyWord: "",
@@ -49,8 +37,6 @@ function reducer(state, action) {
         ...state,
         postInfo,
       };
-    case "UPDATE_PAGENUM":
-      return { ...state, pageNum: action.data.pageNum };
     case "UPDATE_SEARCH":
       const { name, value } = action.data;
       if (name === "searchSelectBox") {
@@ -72,12 +58,6 @@ function reducer(state, action) {
           [name]: value,
         },
       };
-    case "UPDATE_SORTOPTION":
-      return {
-        ...state,
-        pageNum: 1,
-        sortOption: action.data.sortOption,
-      };
     case "UPDATE_SELECTPOST":
       if (state.selectedPostIdList.includes(action.data.postId)) {
         let selectedPostIdList = state.selectedPostIdList.filter(
@@ -93,25 +73,6 @@ function reducer(state, action) {
       return {
         ...state,
         selectedPostIdList: action.data.saveList,
-      };
-    case "UPDATE_SEARCHOPTION":
-      return {
-        ...state,
-        selectedPostIdList: [],
-        pageNum: 1,
-        searchOption: action.data.searchOption,
-        sortOption: {
-          sortPostId: false,
-          sortMainProductName: false,
-          sortShopName: false,
-          sortPrice: false,
-          sortPriority: false,
-          postIdAsc: true,
-          mainProductNameAsc: true,
-          shopNameAsc: true,
-          priceAsc: true,
-          priorityAsc: true,
-        },
       };
     case "CHANGE_BUTTON":
       return {
@@ -134,36 +95,41 @@ export default ({ location }) => {
   const { loading, error, data } = useQuery(GET_POSTLIST, {
     variables: {
       pageNum: Number(queryInput.page),
-      postId:
-        postState.searchOption.searchSelectBox === "postId" &&
-        postState.searchOption.searchItemBoolean
-          ? Number(postState.searchOption.searchItem)
-          : null,
-      mainProductName:
-        postState.searchOption.searchSelectBox === "mainProductName" &&
-        postState.searchOption.searchItemBoolean
-          ? postState.searchOption.searchItem
-          : null,
-      shopName:
-        postState.searchOption.searchSelectBox === "shopName" &&
-        postState.searchOption.searchItemBoolean
-          ? postState.searchOption.searchItem
-          : null,
-      postIdAsc: postState.sortOption.sortPostId
-        ? postState.sortOption.postIdAsc
-        : null,
-      mainProductNameAsc: postState.sortOption.sortMainProductName
-        ? postState.sortOption.mainProductNameAsc
-        : null,
-      priceAsc: postState.sortOption.sortPrice
-        ? postState.sortOption.priceAsc
-        : null,
-      shopNameAsc: postState.sortOption.sortShopName
-        ? postState.sortOption.shopNameAsc
-        : null,
-      priorityAsc: postState.sortOption.sortPriority
-        ? postState.sortOption.priorityAsc
-        : null,
+      postId: isNaN(Number(queryInput.key_postid))
+        ? null
+        : Number(queryInput.key_postid),
+      mainProductName: queryInput.key_productname ?? null,
+      shopName: queryInput.key_shopname ?? null,
+      postIdAsc:
+        queryInput.sort_postid === undefined
+          ? null
+          : Number(queryInput.sort_postid) > 0
+          ? false
+          : true,
+      mainProductNameAsc:
+        queryInput.sort_productname === undefined
+          ? null
+          : Number(queryInput.sort_productname) > 0
+          ? false
+          : true,
+      priceAsc:
+        queryInput.sort_price === undefined
+          ? null
+          : Number(queryInput.sort_price) > 0
+          ? false
+          : true,
+      shopNameAsc:
+        queryInput.sort_shopname === undefined
+          ? null
+          : Number(queryInput.sort_shopname) > 0
+          ? false
+          : true,
+      priorityAsc:
+        queryInput.sort_priority === undefined
+          ? null
+          : Number(queryInput.sort_priority) > 0
+          ? false
+          : true,
     },
   });
 
