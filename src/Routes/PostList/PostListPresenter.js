@@ -12,6 +12,7 @@ import PostListTable from "./PostListTable";
 import PageChangeButton from "../../Components/PageChangeButton";
 import { toast } from "react-toastify";
 import queryString from "query-string";
+import RefreshButton from "../../Components/RefreshButton";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -117,6 +118,10 @@ export default ({ loading, data, error, onSubmit }) => {
     e.preventDefault();
   };
 
+  const refreshQuery = () => {
+    window.location.href = "/postlist";
+  };
+
   if (error) return `Error! ${error.message}`;
   if (loading)
     return (
@@ -183,6 +188,7 @@ export default ({ loading, data, error, onSubmit }) => {
               </SearchBox>
             </form>
             <ButtonBox>
+              <RefreshButton func={refreshQuery} />
               <PageChangeButton text="Add New Post" href="/createpost" />
               <Button text="Download List" ClickEvent={ExportToExcel}></Button>
             </ButtonBox>
