@@ -3,6 +3,7 @@ import PostListPresenter from "./PostListPresenter";
 import { useMutation, useQuery } from "react-apollo-hooks";
 import { GET_POSTLIST, DELETE_POSTS, UPDATE_POSTS } from "./PostListQueries";
 import { toast } from "react-toastify";
+import queryString from "query-string";
 
 export const PostListContext = React.createContext(null);
 
@@ -122,15 +123,17 @@ function reducer(state, action) {
   }
 }
 
-export default () => {
+export default ({ location }) => {
   const [postState, postDispatch] = useReducer(reducer, initialState);
 
   const [deletePosts, { error: mutationError }] = useMutation(DELETE_POSTS);
   const [updatePosts, { error: updateError }] = useMutation(UPDATE_POSTS);
 
+  const queryInput = queryString.parse(location.search);
+
   const { loading, error, data } = useQuery(GET_POSTLIST, {
     variables: {
-      pageNum: postState.pageNum,
+      pageNum: Number(queryInput.page),
       postId:
         postState.searchOption.searchSelectBox === "postId" &&
         postState.searchOption.searchItemBoolean
