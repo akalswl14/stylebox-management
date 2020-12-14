@@ -67,7 +67,6 @@ export default ({ loading, data, error, onSubmit }) => {
   const { postDispatch, postState } = useContext(PostListContext);
 
   const queryInput = queryString.parse(window.location.search);
-  console.log(queryInput);
 
   const onChangeCurrentPage = (pageNum) => {
     window.location.href = `/postlist?page=${pageNum}`;
