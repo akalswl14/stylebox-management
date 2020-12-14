@@ -101,17 +101,22 @@ export default ({ loading, data, error, onSubmit }) => {
         return;
       }
     }
-    postDispatch({
-      type: "UPDATE_SEARCHOPTION",
-      data: {
-        searchOption: {
-          ...postState.searchOption,
-          searchItemBoolean:
-            postState.searchOption.searchKeyWord !== "" ? true : false,
-          searchItem: postState.searchOption.searchKeyWord,
-        },
-      },
-    });
+    const changedQuery = {
+      page: 1,
+      key_postid:
+        postState.searchOption.searchSelectBox === "postId"
+          ? postState.searchOption.searchKeyWord
+          : undefined,
+      key_productname:
+        postState.searchOption.searchSelectBox === "mainProductName"
+          ? postState.searchOption.searchKeyWord
+          : undefined,
+      key_shopname:
+        postState.searchOption.searchSelectBox === "shopName"
+          ? postState.searchOption.searchKeyWord
+          : undefined,
+    };
+    window.location.href = `/postlist?${queryString.stringify(changedQuery)}`;
   };
 
   const ExportToExcel = (e) => {
