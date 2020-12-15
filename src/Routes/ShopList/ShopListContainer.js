@@ -128,23 +128,26 @@ export default ({ location }) => {
           ? false
           : true
         : null,
-      shopName: ShopListState.SearchOption.SearchShopName
-        ? ShopListState.SearchOption.ShopName
+      shopName: queryInput.key_shopname ?? null,
+      shopNameAsc: queryInput.sort_shopid
+        ? Number(queryInput.sort_shopid)
+          ? false
+          : true
         : null,
-      shopNameAsc: ShopListState.SortOption.SortShopName
-        ? ShopListState.SortOption.ShopNameAsc
+      tagName: queryInput.key_tag ?? null,
+      weightAsc: queryInput.sort_weight
+        ? Number(queryInput.sort_weight)
+          ? false
+          : true
         : null,
-      tagName: ShopListState.SearchOption.SearchTag
-        ? ShopListState.SearchOption.Tag
-        : null,
-      weightAsc: ShopListState.SortOption.SortWeight
-        ? ShopListState.SortOption.WeightAsc
-        : null,
-      rankAsc: ShopListState.SortOption.SortRank
-        ? ShopListState.SortOption.RankAsc
+      rankAsc: queryInput.sort_rank
+        ? Number(queryInput.sort_rank)
+          ? false
+          : true
         : null,
     },
   });
+
   const [
     DeleteShopsMutation,
     { loading: DeleteLoading, error: DeleteError },
