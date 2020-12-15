@@ -151,7 +151,7 @@ export default ({ tagMutation, tagMutationError, tagMutationLoading }) => {
         </thead>
         <tbody>
           {ProductInfoState.TagInformation.value.map((eachRow) => (
-            <TagDataRow data={eachRow} />
+            <TagDataRow data={eachRow} key={eachRow.id} />
           ))}
         </tbody>
       </Table>

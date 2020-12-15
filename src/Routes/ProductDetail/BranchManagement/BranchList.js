@@ -87,7 +87,7 @@ export default () => {
         </thead>
         <tbody>
           {branchData.getProductSellingShopBranch.branches.map((eachRow) => (
-            <BranchRowData data={eachRow} />
+            <BranchRowData data={eachRow} key={eachRow.id} />
           ))}
         </tbody>
       </Table>
