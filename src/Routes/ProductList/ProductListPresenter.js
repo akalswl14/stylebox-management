@@ -11,6 +11,8 @@ import SearchButton from "../../Components/SearchButton";
 import ProductListTable from "./ProductListTable";
 import PageChangeButton from "../../Components/PageChangeButton";
 import { toast } from "react-toastify";
+import queryString from "query-string";
+import RefreshButton from "../../Components/RefreshButton";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -64,12 +66,14 @@ const PaginationBox = styled.div`
 
 export default ({ loading, data, error, onSubmit }) => {
   const { productDispatch, productState } = useContext(ProductListContext);
+  const queryInput = queryString.parse(window.location.search);
 
   const onChangeCurrentPage = (pageNum) => {
-    productDispatch({
-      type: "UPDATE_PAGENUM",
-      data: { pageNum },
+    const changedQuery = queryString.stringify({
+      ...queryInput,
+      page: pageNum,
     });
+    window.location.href = `/productlist?${changedQuery}`;
   };
 
   const ChangeSearch = (e) => {
@@ -104,18 +108,29 @@ export default ({ loading, data, error, onSubmit }) => {
         return;
       }
     }
-    productDispatch({
-      type: "UPDATE_SEARCHOPTION",
-      data: {
-        searchOption: {
-          ...productState.searchOption,
-          searchItemBoolean:
-            productState.searchOption.searchKeyWord !== "" ? true : false,
-          searchItem: productState.searchOption.searchKeyWord,
-        },
-      },
-    });
+
+    const changedQuery = {
+      page: 1,
+      id:
+        productState.searchOption.searchSelectBox === "productId"
+          ? productState.searchOption.searchKeyWord
+          : undefined,
+      productname:
+        productState.searchOption.searchSelectBox === "productName"
+          ? productState.searchOption.searchKeyWord
+          : undefined,
+    };
+
+    window.location.href = `/productlist?${queryString.stringify(
+      changedQuery
+    )}`;
   };
+
+  const refreshQuery = (e) => {
+    e.preventDefault();
+    window.location.href = "/productlist";
+  };
+
   if (error) return `Error! ${error.message}`;
   if (loading)
     return (
@@ -175,6 +190,7 @@ export default ({ loading, data, error, onSubmit }) => {
               </SearchBox>
             </form>
             <ButtonBox>
+              <RefreshButton func={refreshQuery} />
               <PageChangeButton text="Add New Product" href="/createproduct" />
               <Button text="Download List" ClickEvent={ExportToExcel}></Button>
             </ButtonBox>
@@ -192,7 +208,11 @@ export default ({ loading, data, error, onSubmit }) => {
           </form>
           <PaginationBox>
             <Pagination
-              currentPage={productState.pageNum}
+              currentPage={
+                isNaN(Number(queryInput.page)) || Number(queryInput.page) <= 0
+                  ? 1
+                  : Number(queryInput.page)
+              }
               totalSize={data.getProductList.totalProductNum}
               sizePerPage={13}
               changeCurrentPage={onChangeCurrentPage}
