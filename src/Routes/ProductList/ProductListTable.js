@@ -208,7 +208,7 @@ const ProductListTable = ({ data }) => {
             <td>{product.link}</td>
             <td>
               <PageChangeButton
-                width="50"
+                width={50}
                 text="edit"
                 href={"/productdetail/" + product.productId}
               />
