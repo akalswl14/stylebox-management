@@ -70,15 +70,11 @@ export default ({ loading, data, error, onSubmit }) => {
   const queryInput = queryString.parse(window.location.search);
 
   const onChangeCurrentPage = (pageNum) => {
-    const locationSearch = window.location.search;
-    let locationSearchItem = locationSearch.split("&");
-    if (locationSearchItem.length === 2) {
-      window.location.href = `/eventlist?page=${pageNum}&${locationSearchItem[1]}`;
-    } else if (locationSearchItem.length === 3) {
-      window.location.href = `/eventlist?page=${pageNum}&${locationSearchItem[2]}`;
-    } else {
-      window.location.href = `/eventlist?page=${pageNum}`;
-    }
+    const changedQuery = queryString.stringify({
+      ...queryInput,
+      page: pageNum,
+    });
+    window.location.href = `/eventlist?${changedQuery}`;
   };
 
   const ChangeSearch = (e) => {
