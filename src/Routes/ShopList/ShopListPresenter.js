@@ -373,7 +373,7 @@ export default ({ onSubmit, loading, error, data }) => {
                 <th className="CheckBoxCell">
                   <input
                     type="checkbox"
-                    onClick={CheckAllCheckBox}
+                    onChange={CheckAllCheckBox}
                     checked={AllCheckBoxStatus()}
                   />
                 </th>
