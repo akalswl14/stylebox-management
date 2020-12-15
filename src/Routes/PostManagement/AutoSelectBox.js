@@ -24,7 +24,7 @@ const AutoSelectBox = ({
   return (
     <Autocomplete
       style={{ width: "100%" }}
-      options={data}
+      options={[...[defaultValue], ...data]}
       classes={{
         option: classes.option,
       }}
@@ -32,7 +32,10 @@ const AutoSelectBox = ({
       getOptionLabel={(option) =>
         option.productName ? option.productName : ""
       }
-      defaultValue={defaultValue}
+      getOptionSelected={(option, value) =>
+        option.productName === value.productName
+      }
+      value={defaultValue}
       renderOption={(option) => (
         <React.Fragment>
           <span>{option.productId}</span>
