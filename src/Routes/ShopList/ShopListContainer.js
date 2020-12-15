@@ -39,10 +39,6 @@ const initialState = {
 
 function reducer(state, action) {
   switch (action.type) {
-    case "UPDATE_PAGENUM":
-      return { ...state, pageNum: action.data.pageNum };
-    case "UPDATE_SORTOPTION":
-      return { ...state, pageNum: 1, SortOption: action.data.SortOption };
     case "UPDATE_SELECTSHOP":
       if (state.SelectedShopList.includes(action.data.shopId)) {
         let SelectedShopList = state.SelectedShopList.filter(
@@ -69,24 +65,6 @@ function reducer(state, action) {
         SearchKeyWord: action.data.SearchKeyWord,
       };
       return { ...state, SearchOption: UpdateSearchOption };
-
-    case "UPDATE_SEARCHOPTION":
-      return {
-        WeightData: [],
-        SelectedShopList: [],
-        pageNum: 1,
-        SearchOption: action.data.SearchOption,
-        SortOption: {
-          SortShopId: false,
-          SortShopName: false,
-          SortWeight: false,
-          SortRank: false,
-          shopIdAsc: true,
-          ShopNameAsc: true,
-          WeightAsc: true,
-          RankAsc: true,
-        },
-      };
     case "UPDATE_WEIGHT":
       let IsNewData = true;
       let ReturnWeightData = state.WeightData.map((eachShop) => {
@@ -103,8 +81,6 @@ function reducer(state, action) {
         });
       }
       return { ...state, WeightData: ReturnWeightData };
-    case "UPDATE_BATCH_WEIGHT":
-      return { ...state, WeightData: action.data.WeightData };
     case "UPDATE_BATCH":
       return action.data;
     default:
