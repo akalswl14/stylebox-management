@@ -129,8 +129,8 @@ export default ({ location }) => {
           : true
         : null,
       shopName: queryInput.key_shopname ?? null,
-      shopNameAsc: queryInput.sort_shopid
-        ? Number(queryInput.sort_shopid)
+      shopNameAsc: queryInput.sort_shopname
+        ? Number(queryInput.sort_shopname)
           ? false
           : true
         : null,
