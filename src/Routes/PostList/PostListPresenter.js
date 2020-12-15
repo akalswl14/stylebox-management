@@ -70,7 +70,11 @@ export default ({ loading, data, error, onSubmit }) => {
   const queryInput = queryString.parse(window.location.search);
 
   const onChangeCurrentPage = (pageNum) => {
-    window.location.href = `/postlist?page=${pageNum}`;
+    const changedQuery = queryString.stringify({
+      ...queryInput,
+      page: pageNum,
+    });
+    window.location.href = `/postlist?${changedQuery}`;
   };
 
   const ChangeSearch = (e) => {
@@ -123,7 +127,8 @@ export default ({ loading, data, error, onSubmit }) => {
     e.preventDefault();
   };
 
-  const refreshQuery = () => {
+  const refreshQuery = (e) => {
+    e.preventDefault();
     window.location.href = "/postlist";
   };
 
