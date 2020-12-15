@@ -370,7 +370,7 @@ export default ({ onSubmit, loading, error, data }) => {
               type="text"
               name="SearchKeywordInput"
               value={ShopListState.SearchOption.SearchKeyWord}
-              onChange={(e) => ChangeSearchKeyword(e)}
+              onChange={ChangeSearchKeyword}
               onKeyPress={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
@@ -386,7 +386,7 @@ export default ({ onSubmit, loading, error, data }) => {
                 <th className="CheckBoxCell">
                   <input
                     type="checkbox"
-                    onClick={(e) => CheckAllCheckBox(e)}
+                    onClick={CheckAllCheckBox}
                     checked={AllCheckBoxStatus()}
                   />
                 </th>
