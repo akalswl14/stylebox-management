@@ -12,6 +12,7 @@ import SearchButton from "../../Components/SearchButton";
 import PageChangeButton from "../../Components/PageChangeButton";
 import { toast } from "react-toastify";
 import queryString from "query-string";
+import RefreshButton from "../../Components/RefreshButton";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -225,6 +226,10 @@ export default ({ onSubmit, loading, error, data }) => {
     window.location.href = `/shoplist?${queryString.stringify(changedQuery)}`;
   };
 
+  const refreshQuery = () => {
+    window.location.href = "/shoplist";
+  };
+
   if (error) return <WrapPage>`Error! ${error.message}`</WrapPage>;
 
   if (loading) {
@@ -316,6 +321,7 @@ export default ({ onSubmit, loading, error, data }) => {
           <TitleBox>
             <PageTitle text={"Shop List"} />
             <ButtonBox>
+              <RefreshButton func={refreshQuery} />
               <PageChangeButton text="Add New Shop" href="/createshop" />
               <Button
                 text="Export to Excel"
