@@ -11,6 +11,8 @@ import SearchButton from "../../Components/SearchButton";
 import PageChangeButton from "../../Components/PageChangeButton";
 import Button from "../../Components/Button";
 import { toast } from "react-toastify";
+import queryString from "query-string";
+import RefreshButton from "../../Components/RefreshButton";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -65,11 +67,18 @@ const PaginationBox = styled.div`
 export default ({ loading, data, error, onSubmit }) => {
   const { tagDispatch, tagState } = useContext(TagListContext);
 
+  const queryInput = queryString.parse(window.location.search);
+
   const onChangeCurrentPage = (pageNum) => {
-    tagDispatch({
-      type: "UPDATE_PAGENUM",
-      data: { pageNum },
-    });
+    const locationSearch = window.location.search;
+    let locationSearchItem = locationSearch.split("&");
+    if (locationSearchItem.length === 2) {
+      window.location.href = `/taglist?page=${pageNum}&${locationSearchItem[1]}`;
+    } else if (locationSearchItem.length === 3) {
+      window.location.href = `/taglist?page=${pageNum}&${locationSearchItem[2]}`;
+    } else {
+      window.location.href = `/taglist?page=${pageNum}`;
+    }
   };
 
   const categoryArr = [
@@ -108,21 +117,36 @@ export default ({ loading, data, error, onSubmit }) => {
         return;
       }
     }
-    tagDispatch({
-      type: "UPDATE_SEARCHOPTION",
-      data: {
-        searchOption: {
-          ...tagState.searchOption,
-          searchItemBoolean:
-            tagState.searchOption.searchKeyWord !== "" ? true : false,
-          searchItem: tagState.searchOption.searchKeyWord,
-        },
-      },
-    });
+
+    const changedQuery = {
+      page: 1,
+      id:
+        tagState.searchOption.searchSelectBox === "tagId"
+          ? tagState.searchOption.searchKeyWord
+          : undefined,
+      tagname:
+        tagState.searchOption.searchSelectBox === "tagName"
+          ? tagState.searchOption.searchKeyWord
+          : undefined,
+      category:
+        tagState.searchOption.searchSelectBox === "category"
+          ? tagState.searchOption.searchKeyWord
+          : undefined,
+      classname:
+        tagState.searchOption.searchSelectBox === "className"
+          ? tagState.searchOption.searchKeyWord
+          : undefined,
+    };
+
+    window.location.href = `/taglist?${queryString.stringify(changedQuery)}`;
   };
 
   const ExportToExcel = (e) => {
     e.preventDefault();
+  };
+
+  const refreshQuery = () => {
+    window.location.href = "/taglist";
   };
 
   if (error) return `Error! ${error.message}`;
@@ -168,6 +192,7 @@ export default ({ loading, data, error, onSubmit }) => {
               </SearchBox>
             </form>
             <ButtonBox>
+              <RefreshButton func={refreshQuery} />
               <PageChangeButton text="See Tag Map" href="/tagmap" />
               <PageChangeButton text="Add New Class" href="/createclass" />
               <PageChangeButton text="Add New Tag" href="/createtag" />
@@ -182,7 +207,11 @@ export default ({ loading, data, error, onSubmit }) => {
           </form>
           <PaginationBox>
             <Pagination
-              currentPage={tagState.pageNum}
+              currentPage={
+                isNaN(Number(queryInput.page)) || Number(queryInput.page) <= 0
+                  ? 1
+                  : Number(queryInput.page)
+              }
               totalSize={data.getTagList.totalTagNum} //api 에서 전체 수 전달해주기
               sizePerPage={13}
               changeCurrentPage={onChangeCurrentPage}
