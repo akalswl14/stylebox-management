@@ -8,6 +8,7 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import queryString from "query-string";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -43,6 +44,8 @@ const SortText = styled.span`
 
 const EventListTable = ({ data }) => {
   const { eventState, eventDispatch } = useContext(EventListContext);
+
+  const queryInput = queryString.parse(window.location.search);
 
   const CheckAllCheckBox = (e) => {
     let saveList = eventState.selectedEventIdList.slice();
@@ -128,75 +131,44 @@ const EventListTable = ({ data }) => {
 
   const SortClick = (e, name) => {
     e.preventDefault();
-    let sortOption = {
-      sortEventId: false,
-      sortEventTitle: false,
-      sortStartDate: false,
-      sortEndDate: false,
-      eventIdAsc: true,
-      eventTitleAsc: true,
-      startDateAsc: true,
-      endDateAsc: true,
+
+    const changedQuery = {
+      page: 1,
+      id: queryInput.id ?? undefined,
+      eventtitle: queryInput.eventtitle ?? undefined,
     };
+
     if (name === "eventId") {
-      if (eventState.sortOption.sortEventId) {
-        if (eventState.sortOption.eventIdAsc) {
-          sortOption.sortEventId = true;
-          sortOption.eventIdAsc = false;
-        } else {
-          sortOption.sortEventId = false;
-          sortOption.eventIdAsc = true;
-        }
+      const sortid = queryInput.sortid;
+      if (sortid) {
+        if (Number(sortid) === 0) changedQuery.sortid = 1;
       } else {
-        sortOption.sortEventId = true;
-        sortOption.eventIdAsc = true;
+        changedQuery.sortid = 0;
       }
     } else if (name === "eventTitle") {
-      if (eventState.sortOption.sortEventTitle) {
-        if (eventState.sortOption.eventTitleAsc) {
-          sortOption.sortEventTitle = true;
-          sortOption.eventTitleAsc = false;
-        } else {
-          sortOption.sortEventTitle = false;
-          sortOption.eventTitleAsc = true;
-        }
+      const sorttitle = queryInput.sorttitle;
+      if (sorttitle) {
+        if (Number(sorttitle) === 0) changedQuery.sorttitle = 1;
       } else {
-        sortOption.sortEventTitle = true;
-        sortOption.eventTitleAsc = true;
+        changedQuery.sorttitle = 0;
       }
     } else if (name === "startDate") {
-      if (eventState.sortOption.sortStartDate) {
-        if (eventState.sortOption.startDateAsc) {
-          sortOption.sortStartDate = true;
-          sortOption.startDateAsc = false;
-        } else {
-          sortOption.sortStartDate = false;
-          sortOption.startDateAsc = true;
-        }
+      const sortstart = queryInput.sortstart;
+      if (sortstart) {
+        if (Number(sortstart) === 0) changedQuery.sortstart = 1;
       } else {
-        sortOption.sortStartDate = true;
-        sortOption.startDateAsc = true;
+        changedQuery.sortstart = 0;
       }
     } else if (name === "endDate") {
-      if (eventState.sortOption.sortEndDate) {
-        if (eventState.sortOption.endDateAsc) {
-          sortOption.sortEndDate = true;
-          sortOption.endDateAsc = false;
-        } else {
-          sortOption.sortEndDate = false;
-          sortOption.endDateAsc = true;
-        }
+      const sortend = queryInput.sortend;
+      if (sortend) {
+        if (Number(sortend) === 0) changedQuery.sortend = 1;
       } else {
-        sortOption.sortEndDate = true;
-        sortOption.endDateAsc = true;
+        changedQuery.sortend = 0;
       }
     }
-    eventDispatch({
-      type: "UPDATE_SORTOPTION",
-      data: {
-        sortOption,
-      },
-    });
+
+    window.location.href = `/eventlist?${queryString.stringify(changedQuery)}`;
   };
   return (
     <Table>
@@ -213,11 +185,7 @@ const EventListTable = ({ data }) => {
             <SortText>Event Id</SortText>
             <SortButton
               type={
-                !eventState.sortOption.sortEventId
-                  ? 0
-                  : eventState.sortOption.eventIdAsc
-                  ? 1
-                  : 2
+                !queryInput.sortid ? 0 : Number(queryInput.sortid) === 0 ? 1 : 2
               }
               func={(e) => SortClick(e, "eventId")}
             />
@@ -226,9 +194,9 @@ const EventListTable = ({ data }) => {
             <SortText>Event Title</SortText>
             <SortButton
               type={
-                !eventState.sortOption.sortEventTitle
+                !queryInput.sorttitle
                   ? 0
-                  : eventState.sortOption.eventTitleAsc
+                  : Number(queryInput.sorttitle) === 0
                   ? 1
                   : 2
               }
@@ -239,9 +207,9 @@ const EventListTable = ({ data }) => {
             <SortText>Event Start</SortText>
             <SortButton
               type={
-                !eventState.sortOption.sortStartDate
+                !queryInput.sortstart
                   ? 0
-                  : eventState.sortOption.startDateAsc
+                  : Number(queryInput.sortstart) === 0
                   ? 1
                   : 2
               }
@@ -252,9 +220,9 @@ const EventListTable = ({ data }) => {
             <SortText>Event End</SortText>
             <SortButton
               type={
-                !eventState.sortOption.sortEndDate
+                !queryInput.sortend
                   ? 0
-                  : eventState.sortOption.endDateAsc
+                  : Number(queryInput.sortend) === 0
                   ? 1
                   : 2
               }
