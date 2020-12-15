@@ -3,6 +3,7 @@ import ShopListPresenter from "./ShopListPresenter";
 import { useMutation, useQuery } from "react-apollo-hooks";
 import { GET_SHOPS, DELETE_SHOPS, UPDATE_SHOPS } from "./ShopListQueries";
 import { toast } from "react-toastify";
+import queryString from "query-string";
 
 export const ShopListContext = React.createContext(null);
 
@@ -111,8 +112,11 @@ function reducer(state, action) {
   }
 }
 
-export default () => {
+export default ({ location }) => {
   const [ShopListState, ShopListDispatch] = useReducer(reducer, initialState);
+
+  const queryInput = queryString.parse(location.search);
+
   const { loading, error, data } = useQuery(GET_SHOPS, {
     variables: {
       address: ShopListState.SearchOption.SearchAddress
