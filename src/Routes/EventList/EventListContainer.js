@@ -84,12 +84,6 @@ function reducer(state, action) {
           [name]: value,
         },
       };
-    case "UPDATE_SORTOPTION":
-      return {
-        ...state,
-        pageNum: 1,
-        sortOption: action.data.sortOption,
-      };
     case "UPDATE_SELECTEVENT":
       if (state.selectedEventIdList.includes(action.data.eventId)) {
         let selectedEventIdList = state.selectedEventIdList.filter(
@@ -125,7 +119,7 @@ export default ({ location }) => {
   const { loading, error, data } = useQuery(GET_EVENTLIST, {
     variables: {
       pageNum: Number(queryInput.page),
-      eventId: isNaN(Number(queryInput.id)) ? Number(queryInput.id) : null,
+      eventId: queryInput.id ? Number(queryInput.id) : null,
       eventTitle: queryInput.eventtitle ?? null,
       eventIdAsc:
         queryInput.sortid === undefined

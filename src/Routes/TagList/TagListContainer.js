@@ -70,7 +70,7 @@ export default ({ location }) => {
   const { loading, error, data } = useQuery(GET_TAGLIST, {
     variables: {
       pageNum: Number(queryInput.page),
-      tagId: isNaN(Number(queryInput.id)) ? Number(queryInput.id) : null,
+      tagId: queryInput.id ? Number(queryInput.id) : null,
       tagName: queryInput.tagname ? queryInput.tagname : null,
       category: queryInput.category ? queryInput.category : null,
       className: queryInput.classname ? queryInput.classname : null,
