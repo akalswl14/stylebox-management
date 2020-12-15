@@ -213,14 +213,12 @@ export default ({ onSubmit, loading, error, data }) => {
 
   const SearchShopList = (e) => {
     e.preventDefault();
+    let rtnSearchOption = {};
     if (ShopListState.SearchOption.SearchSelectBox === "ShopID") {
       if (isNaN(ShopListState.SearchOption.SearchKeyWord)) {
         toast.error("Id must be a number.");
         return;
       }
-    }
-    let rtnSearchOption = {};
-    if (ShopListState.SearchOption.SearchSelectBox === "ShopID") {
       rtnSearchOption = {
         ...ShopListState.SearchOption,
         SearchShopId: true,
