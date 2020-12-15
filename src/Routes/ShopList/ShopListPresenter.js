@@ -112,75 +112,55 @@ export default ({ onSubmit, loading, error, data }) => {
 
   const SortClick = (e, name) => {
     e.preventDefault();
-    let SortOption = {
-      SortShopId: false,
-      SortShopName: false,
-      SortWeight: false,
-      SortRank: false,
-      shopIdAsc: true,
-      ShopNameAsc: true,
-      WeightAsc: true,
-      RankAsc: true,
+
+    const changedQuery = {
+      page: 1,
+      key_address: queryInput.key_address ?? undefined,
+      key_phone: queryInput.key_phone ?? undefined,
+      key_shopid: queryInput.key_shopid ?? undefined,
+      key_shopname: queryInput.key_shopname ?? undefined,
+      key_tag: queryInput.key_tag ?? undefined,
     };
+
     if (name === "ShopId") {
-      if (ShopListState.SortOption.SortShopId) {
-        if (ShopListState.SortOption.shopIdAsc) {
-          SortOption.SortShopId = true;
-          SortOption.shopIdAsc = false;
-        } else {
-          SortOption.SortShopId = false;
-          SortOption.shopIdAsc = true;
+      const sort_shopid = queryInput.sort_shopid;
+      if (sort_shopid) {
+        if (Number(sort_shopid) === 0) {
+          changedQuery.sort_shopid = 1;
         }
       } else {
-        SortOption.SortShopId = true;
-        SortOption.shopIdAsc = true;
+        changedQuery.sort_shopid = 0;
       }
     } else if (name === "ShopName") {
-      if (ShopListState.SortOption.SortShopName) {
-        if (ShopListState.SortOption.ShopNameAsc) {
-          SortOption.SortShopName = true;
-          SortOption.ShopNameAsc = false;
-        } else {
-          SortOption.ShopNameAsc = true;
-          SortOption.SortShopName = false;
+      const sort_shopname = queryInput.sort_shopname;
+      if (sort_shopname) {
+        if (Number(sort_shopname) === 0) {
+          changedQuery.sort_shopname = 1;
         }
       } else {
-        SortOption.SortShopName = true;
-        SortOption.ShopNameAsc = true;
+        changedQuery.sort_shopname = 0;
       }
     } else if (name === "Weight") {
-      if (ShopListState.SortOption.SortWeight) {
-        if (ShopListState.SortOption.WeightAsc) {
-          SortOption.SortWeight = true;
-          SortOption.WeightAsc = false;
-        } else {
-          SortOption.SortWeight = false;
-          SortOption.WeightAsc = true;
+      const sort_weight = queryInput.sort_weight;
+      if (sort_weight) {
+        if (Number(sort_weight) === 0) {
+          changedQuery.sort_weight = 1;
         }
       } else {
-        SortOption.SortWeight = true;
-        SortOption.WeightAsc = true;
+        changedQuery.sort_weight = 0;
       }
     } else if (name === "Rank") {
-      if (ShopListState.SortOption.SortRank) {
-        if (ShopListState.SortOption.RankAsc) {
-          SortOption.SortRank = true;
-          SortOption.RankAsc = false;
-        } else {
-          SortOption.SortRank = false;
-          SortOption.RankAsc = true;
+      const sort_rank = queryInput.sort_rank;
+      if (sort_rank) {
+        if (Number(sort_rank) === 0) {
+          changedQuery.sort_rank = 1;
         }
       } else {
-        SortOption.SortRank = true;
-        SortOption.RankAsc = true;
+        changedQuery.sort_rank = 0;
       }
     }
-    ShopListDispatch({
-      type: "UPDATE_SORTOPTION",
-      data: {
-        SortOption,
-      },
-    });
+
+    window.location.href = `/shoplist?${queryString.stringify(changedQuery)}`;
   };
 
   const ChangeCurrentPage = (pageNum) => {
