@@ -17,6 +17,8 @@ const initialState = {
   searchOption: {
     searchSelectBox: "productId",
     searchKeyWord: "",
+    searchItemBoolean: false,
+    searchItem: "",
   },
   productInfo: [],
   confirmButton: "delete",
@@ -38,6 +40,27 @@ function reducer(state, action) {
       return {
         ...state,
         productInfo,
+      };
+    case "UPDATE_SEARCH":
+      const { name, value } = action.data;
+      if (name === "searchSelectBox") {
+        return {
+          ...state,
+          searchOption: {
+            ...state.searchOption,
+            [name]: value,
+            searchKeyWord: "",
+            searchItemBoolean: false,
+            searchItem: "",
+          },
+        };
+      }
+      return {
+        ...state,
+        searchOption: {
+          ...state.searchOption,
+          [name]: value,
+        },
       };
     case "UPDATE_SELECTPRODCT":
       if (state.selectedProductIdList.includes(action.data.productId)) {
@@ -91,7 +114,7 @@ export default ({ location }) => {
   const { loading, error, data } = useQuery(GET_PRODUCTLIST, {
     variables: {
       pageNum: Number(queryInput.page),
-      productId: isNaN(Number(queryInput.id)) ? Number(queryInput.id) : null,
+      productId: queryInput.id ? Number(queryInput.id) : null,
       productName: queryInput.productname ?? null,
       productIdAsc:
         queryInput.sortid === undefined
