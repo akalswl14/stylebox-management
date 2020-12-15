@@ -162,8 +162,10 @@ export default ({ data }) => {
             ) : (
               <></>
             )}
-            {categories.map((category) => (
-              <option value={category}>{category}</option>
+            {categories.map((category, index) => (
+              <option value={category} key={index}>
+                {category}
+              </option>
             ))}
           </SelectBox>
         </td>
@@ -179,8 +181,10 @@ export default ({ data }) => {
               <></>
             )}
             {data.category !== "-- CHOOSE DATA --" ? (
-              classData.getClassOptions.map((item) => (
-                <option value={item.id}>{item.name}</option>
+              classData.getClassOptions.map((item, index) => (
+                <option value={item.id} key={index}>
+                  {item.name}
+                </option>
               ))
             ) : (
               <></>
@@ -195,8 +199,10 @@ export default ({ data }) => {
               <></>
             )}
             {data.classId !== 0 ? (
-              tagData.getTagOptions.map((item) => (
-                <option value={item.id}>{item.name}</option>
+              tagData.getTagOptions.map((item, index) => (
+                <option value={item.id} key={index}>
+                  {item.name}
+                </option>
               ))
             ) : (
               <></>
