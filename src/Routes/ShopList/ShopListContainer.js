@@ -122,7 +122,7 @@ export default ({ location }) => {
       address: queryInput.key_address ?? null,
       pageNum: Number(queryInput.page) ?? 1,
       phoneNumber: queryInput.key_phone ?? null,
-      shopId: queryInput.key_shopid,
+      shopId: queryInput.key_shopid ?? null,
       shopIdAsc: queryInput.sort_shopid
         ? Number(queryInput.sort_shopid)
           ? false
