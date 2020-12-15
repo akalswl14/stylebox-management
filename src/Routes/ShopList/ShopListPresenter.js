@@ -184,12 +184,11 @@ export default ({ onSubmit, loading, error, data }) => {
   };
 
   const ChangeCurrentPage = (pageNum) => {
-    ShopListDispatch({
-      type: "UPDATE_PAGENUM",
-      data: {
-        pageNum,
-      },
+    const changedQuery = queryString.stringify({
+      ...queryInput,
+      page: pageNum,
     });
+    window.location.href = `/shoplist?${changedQuery}`;
   };
 
   const ChangeSearchSelectBox = (e) => {
@@ -495,11 +494,15 @@ export default ({ onSubmit, loading, error, data }) => {
         </Form>
         <PaginationWrapper>
           <Pagination
-            currentPage={ShopListState.pageNum}
+            currentPage={
+              isNaN(Number(queryInput.page)) || Number(queryInput.page) <= 0
+                ? 1
+                : Number(queryInput.page)
+            }
             totalSize={data.getShopList.totalShopNum}
             sizePerPage={13}
             theme="bootstrap"
-            changeCurrentPage={(e) => ChangeCurrentPage(e)}
+            changeCurrentPage={ChangeCurrentPage}
             numberOfPagesNextToActivePage={3}
           />
         </PaginationWrapper>
