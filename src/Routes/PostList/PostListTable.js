@@ -282,7 +282,7 @@ const PostListTable = ({ data }) => {
               <PageChangeButton
                 text="edit"
                 href={"/postinfo/" + post.postId}
-                width="50"
+                width={50}
               />
             </td>
           </tr>
