@@ -18,13 +18,14 @@ const AutoSelectBox = ({ data, defaultValue, onChangeFunc, onSelectFunc }) => {
   return (
     <Autocomplete
       style={{ width: "100%" }}
-      options={data}
+      options={[...[defaultValue], ...data]}
       classes={{
         option: classes.option,
       }}
       autoHighlight
       getOptionLabel={(option) => option.shopName}
-      defaultValue={defaultValue}
+      value={defaultValue}
+      filterSelectedOptions
       renderOption={(option) => (
         <React.Fragment>
           <span>{option.id}</span>
