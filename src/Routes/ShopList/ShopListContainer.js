@@ -119,18 +119,14 @@ export default ({ location }) => {
 
   const { loading, error, data } = useQuery(GET_SHOPS, {
     variables: {
-      address: ShopListState.SearchOption.SearchAddress
-        ? ShopListState.SearchOption.Address
-        : null,
-      pageNum: ShopListState.pageNum,
-      phoneNumber: ShopListState.SearchOption.PhoneNumber
-        ? ShopListState.SearchOption.PhoneNumber
-        : null,
-      shopId: ShopListState.SearchOption.SearchShopId
-        ? ShopListState.SearchOption.ShopId
-        : null,
-      shopIdAsc: ShopListState.SortOption.SortShopId
-        ? ShopListState.SortOption.shopIdAsc
+      address: queryInput.key_address ?? null,
+      pageNum: Number(queryInput.page) ?? 1,
+      phoneNumber: queryInput.key_phone ?? null,
+      shopId: queryInput.key_shopid,
+      shopIdAsc: queryInput.sort_shopid
+        ? Number(queryInput.sort_shopid)
+          ? false
+          : true
         : null,
       shopName: ShopListState.SearchOption.SearchShopName
         ? ShopListState.SearchOption.ShopName
