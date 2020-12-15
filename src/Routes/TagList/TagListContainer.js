@@ -3,20 +3,13 @@ import TagListPresenter from "./TagListPresenter";
 import { useMutation, useQuery } from "react-apollo-hooks";
 import { GET_TAGLIST, DELETE_TAGS } from "./TagListQueries";
 import { toast } from "react-toastify";
+import queryString from "query-string";
 
 export const TagListContext = React.createContext(null);
 
 const initialState = {
   selectedTagIdList: [],
   pageNum: 1,
-  sortOption: {
-    sortTagId: false,
-    sortTagName: false,
-    sortCategory: false,
-    tagIdAsc: true,
-    tagNameAsc: true,
-    categoryAsc: true,
-  },
   searchOption: {
     searchSelectBox: "tagId",
     searchKeyWord: "",
@@ -27,8 +20,6 @@ const initialState = {
 
 function reducer(state, action) {
   switch (action.type) {
-    case "UPDATE_PAGENUM":
-      return { ...state, pageNum: action.data.pageNum };
     case "UPDATE_SEARCH":
       const { name, value } = action.data;
       if (name === "searchSelectBox") {
@@ -50,12 +41,6 @@ function reducer(state, action) {
           [name]: value,
         },
       };
-    case "UPDATE_SORTOPTION":
-      return {
-        ...state,
-        pageNum: 1,
-        sortOption: action.data.sortOption,
-      };
     case "UPDATE_SELECTTAG":
       if (state.selectedTagIdList.includes(action.data.tagId)) {
         let selectedTagIdList = state.selectedTagIdList.filter(
@@ -72,60 +57,41 @@ function reducer(state, action) {
         ...state,
         selectedTagIdList: action.data.saveList,
       };
-    case "UPDATE_SEARCHOPTION":
-      return {
-        selectedTagIdList: [],
-        pageNum: 1,
-        searchOption: action.data.searchOption,
-        sortOption: {
-          sortTagId: false,
-          sortTagName: false,
-          sortCategory: false,
-          tagIdAsc: true,
-          tagNameAsc: true,
-          categoryAsc: true,
-        },
-      };
     default:
       return state;
   }
 }
 
-export default () => {
+export default ({ location }) => {
   const [tagState, tagDispatch] = useReducer(reducer, initialState);
   const [deleteTags, { error: mutationError }] = useMutation(DELETE_TAGS);
+  const queryInput = queryString.parse(location.search);
+
   const { loading, error, data } = useQuery(GET_TAGLIST, {
     variables: {
-      pageNum: tagState.pageNum,
-      tagId:
-        tagState.searchOption.searchSelectBox === "tagId" &&
-        tagState.searchOption.searchItemBoolean
-          ? Number(tagState.searchOption.searchItem)
-          : null,
-      tagName:
-        tagState.searchOption.searchSelectBox === "tagName" &&
-        tagState.searchOption.searchItemBoolean
-          ? tagState.searchOption.searchItem
-          : null,
-      category:
-        tagState.searchOption.searchSelectBox === "category" &&
-        tagState.searchOption.searchItemBoolean
-          ? tagState.searchOption.searchItem
-          : null,
-      className:
-        tagState.searchOption.searchSelectBox === "className" &&
-        tagState.searchOption.searchItemBoolean
-          ? tagState.searchOption.searchItem
-          : null,
-      tagIdAsc: tagState.sortOption.sortTagId
-        ? tagState.sortOption.tagIdAsc
-        : null,
-      tagNameAsc: tagState.sortOption.sortTagName
-        ? tagState.sortOption.tagNameAsc
-        : null,
-      categoryAsc: tagState.sortOption.sortCategory
-        ? tagState.sortOption.categoryAsc
-        : null,
+      pageNum: Number(queryInput.page),
+      tagId: isNaN(Number(queryInput.id)) ? Number(queryInput.id) : null,
+      tagName: queryInput.tagname ? queryInput.tagname : null,
+      category: queryInput.category ? queryInput.category : null,
+      className: queryInput.classname ? queryInput.classname : null,
+      tagIdAsc:
+        queryInput.sorttagidasc === undefined
+          ? null
+          : Number(queryInput.sorttagidasc) > 0
+          ? false
+          : true,
+      tagNameAsc:
+        queryInput.sorttagnameasc === undefined
+          ? null
+          : Number(queryInput.sorttagnameasc) > 0
+          ? false
+          : true,
+      categoryAsc:
+        queryInput.sortcategoryasc === undefined
+          ? null
+          : Number(queryInput.sortcategoryasc) > 0
+          ? false
+          : true,
     },
   });
 
