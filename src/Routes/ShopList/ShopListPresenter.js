@@ -226,7 +226,8 @@ export default ({ onSubmit, loading, error, data }) => {
     window.location.href = `/shoplist?${queryString.stringify(changedQuery)}`;
   };
 
-  const refreshQuery = () => {
+  const refreshQuery = (e) => {
+    e.preventDefault();
     window.location.href = "/shoplist";
   };
 

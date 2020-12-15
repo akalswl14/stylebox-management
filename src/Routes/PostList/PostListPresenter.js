@@ -127,7 +127,8 @@ export default ({ loading, data, error, onSubmit }) => {
     e.preventDefault();
   };
 
-  const refreshQuery = () => {
+  const refreshQuery = (e) => {
+    e.preventDefault();
     window.location.href = "/postlist";
   };
 
