@@ -10,30 +10,9 @@ export const ShopListContext = React.createContext(null);
 const initialState = {
   WeightData: [],
   SelectedShopList: [],
-  pageNum: 1,
-  SortOption: {
-    SortShopId: false,
-    SortShopName: false,
-    SortWeight: false,
-    SortRank: false,
-    shopIdAsc: true,
-    ShopNameAsc: true,
-    WeightAsc: true,
-    RankAsc: true,
-  },
   SearchOption: {
     SearchSelectBox: "ShopID",
     SearchKeyWord: "",
-    SearchShopId: false,
-    SearchShopName: false,
-    SeacrchPhoneNumber: false,
-    SearchAddress: false,
-    SearchTag: false,
-    ShopId: 0,
-    ShopName: "",
-    PhoneNumber: "",
-    Address: "",
-    Tag: "",
   },
 };
 
