@@ -21,7 +21,7 @@ export default ({ data }) => {
   );
 
   const onChange = (e) => {
-    const { value, name } = e.target;
+    const { name } = e.target;
     if (name === "BranchSelectInput") {
       let isExist = false;
       const rtnData = ProductInfoState.BranchManagement.value.filter(
