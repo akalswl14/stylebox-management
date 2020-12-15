@@ -11,6 +11,7 @@ import Pagination from "react-pagination-js";
 import SearchButton from "../../Components/SearchButton";
 import PageChangeButton from "../../Components/PageChangeButton";
 import { toast } from "react-toastify";
+import queryString from "query-string";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -106,6 +107,8 @@ const SearchContainer = styled.div`
 
 export default ({ onSubmit, loading, error, data }) => {
   const { ShopListState, ShopListDispatch } = useContext(ShopListContext);
+
+  const queryInput = queryString.parse(window.location.search);
 
   const SortClick = (e, name) => {
     e.preventDefault();
