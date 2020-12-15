@@ -61,11 +61,7 @@ const PostBasicInfo = () => {
     shopName,
   } = postState.basicInfo;
 
-  const {
-    loading: loading_Shop,
-    data: data_Shop,
-    error: error_Shop,
-  } = useQuery(GET_BASICINFO, {
+  const { data: data_Shop, error: error_Shop } = useQuery(GET_BASICINFO, {
     variables: { productName: "" },
   });
 
