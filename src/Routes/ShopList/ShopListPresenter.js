@@ -394,9 +394,9 @@ export default ({ onSubmit, loading, error, data }) => {
                   <SortText>Shop ID</SortText>
                   <SortButton
                     type={
-                      !ShopListState.SortOption.SortShopId
+                      !queryInput.sort_shopid
                         ? 0
-                        : ShopListState.SortOption.shopIdAsc
+                        : Number(queryInput.sort_shopid) === 0
                         ? 1
                         : 2
                     }
@@ -407,9 +407,9 @@ export default ({ onSubmit, loading, error, data }) => {
                   <SortText>Shop Name</SortText>
                   <SortButton
                     type={
-                      !ShopListState.SortOption.SortShopName
+                      !queryInput.sort_shopname
                         ? 0
-                        : ShopListState.SortOption.ShopNameAsc
+                        : Number(queryInput.sort_shopname) === 0
                         ? 1
                         : 2
                     }
@@ -423,9 +423,9 @@ export default ({ onSubmit, loading, error, data }) => {
                   <SortText>Rank</SortText>
                   <SortButton
                     type={
-                      !ShopListState.SortOption.SortRank
+                      !queryInput.sort_rank
                         ? 0
-                        : ShopListState.SortOption.RankAsc
+                        : Number(queryInput.sort_rank) === 0
                         ? 1
                         : 2
                     }
@@ -436,9 +436,9 @@ export default ({ onSubmit, loading, error, data }) => {
                   <SortText>Weight</SortText>
                   <SortButton
                     type={
-                      !ShopListState.SortOption.SortWeight
+                      !queryInput.sort_weight
                         ? 0
-                        : ShopListState.SortOption.WeightAsc
+                        : Number(queryInput.sort_weight) === 0
                         ? 1
                         : 2
                     }
