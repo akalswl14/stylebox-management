@@ -213,48 +213,36 @@ export default ({ onSubmit, loading, error, data }) => {
 
   const SearchShopList = (e) => {
     e.preventDefault();
-    let rtnSearchOption = {};
     if (ShopListState.SearchOption.SearchSelectBox === "ShopID") {
       if (isNaN(ShopListState.SearchOption.SearchKeyWord)) {
         toast.error("Id must be a number.");
         return;
       }
-      rtnSearchOption = {
-        ...ShopListState.SearchOption,
-        SearchShopId: true,
-        ShopId: Number(ShopListState.SearchOption.SearchKeyWord),
-      };
-    } else if (ShopListState.SearchOption.SearchSelectBox === "ShopName") {
-      rtnSearchOption = {
-        ...ShopListState.SearchOption,
-        SearchShopName: true,
-        ShopName: ShopListState.SearchOption.SearchKeyWord,
-      };
-    } else if (ShopListState.SearchOption.SearchSelectBox === "PhoneNumber") {
-      rtnSearchOption = {
-        ...ShopListState.SearchOption,
-        SeacrchPhoneNumber: true,
-        PhoneNumber: ShopListState.SearchOption.SearchKeyWord,
-      };
-    } else if (ShopListState.SearchOption.SearchSelectBox === "Address") {
-      rtnSearchOption = {
-        ...ShopListState.SearchOption,
-        SearchAddress: true,
-        Address: ShopListState.SearchOption.SearchKeyWord,
-      };
-    } else if (ShopListState.SearchOption.SearchSelectBox === "Tag") {
-      rtnSearchOption = {
-        ...ShopListState.SearchOption,
-        SearchTag: true,
-        Tag: ShopListState.SearchOption.SearchKeyWord,
-      };
     }
-    ShopListDispatch({
-      type: "UPDATE_SEARCHOPTION",
-      data: {
-        SearchOption: rtnSearchOption,
-      },
-    });
+    const changedQuery = {
+      page: 1,
+      key_shopid:
+        ShopListState.SearchOption.SearchSelectBox === "ShopID"
+          ? Number(ShopListState.SearchOption.SearchKeyWord)
+          : undefined,
+      key_shopname:
+        ShopListState.SearchOption.SearchSelectBox === "ShopName"
+          ? ShopListState.SearchOption.SearchKeyWord
+          : undefined,
+      key_phone:
+        ShopListState.SearchOption.SearchSelectBox === "PhoneNumber"
+          ? ShopListState.SearchOption.SearchKeyWord
+          : undefined,
+      key_address:
+        ShopListState.SearchOption.SearchSelectBox === "Address"
+          ? ShopListState.SearchOption.SearchKeyWord
+          : undefined,
+      key_tag:
+        ShopListState.SearchOption.SearchSelectBox === "Tag"
+          ? ShopListState.SearchOption.SearchKeyWord
+          : undefined,
+    };
+    window.location.href = `/shoplist?${queryString.stringify(changedQuery)}`;
   };
 
   if (error) return <WrapPage>`Error! ${error.message}`</WrapPage>;
