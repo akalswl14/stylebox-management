@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { TagListContext } from "./TagListContainer";
 import SortButton from "../../Components/SortButton";
 import PageChangeButton from "../../Components/PageChangeButton";
+import queryString from "query-string";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -38,6 +39,8 @@ const SortText = styled.span`
 
 const TagListTable = ({ data }) => {
   const { tagState, tagDispatch } = useContext(TagListContext);
+
+  const queryInput = queryString.parse(window.location.search);
 
   const CheckAllCheckBox = (e) => {
     let saveList = tagState.selectedTagIdList.slice();
@@ -85,61 +88,41 @@ const TagListTable = ({ data }) => {
 
   const SortClick = (e, name) => {
     e.preventDefault();
-    let sortOption = {
-      sortTagId: false,
-      sortTagName: false,
-      sortCategory: false,
-      tagIdAsc: true,
-      tagNameAsc: true,
-      categoryAsc: true,
+
+    const changedQuery = {
+      page: 1,
+      id: queryInput.id ?? undefined,
+      tagname: queryInput.tagname ?? undefined,
+      category: queryInput.category ?? undefined,
+      classname: queryInput.classname ?? undefined,
     };
+
     if (name === "tagId") {
-      if (tagState.sortOption.sortTagId) {
-        if (tagState.sortOption.tagIdAsc) {
-          sortOption.sortTagId = true;
-          sortOption.tagIdAsc = false;
-        } else {
-          sortOption.sortTagId = false;
-          sortOption.tagIdAsc = true;
-        }
+      const sorttagidasc = queryInput.sorttagidasc;
+      if (sorttagidasc) {
+        if (Number(sorttagidasc) === 0) changedQuery.sorttagidasc = 1;
       } else {
-        sortOption.sortTagId = true;
-        sortOption.tagIdAsc = true;
+        changedQuery.sorttagidasc = 0;
       }
     } else if (name === "tagName") {
-      if (tagState.sortOption.sortTagName) {
-        if (tagState.sortOption.tagNameAsc) {
-          sortOption.sortTagName = true;
-          sortOption.tagNameAsc = false;
-        } else {
-          sortOption.sortTagName = false;
-          sortOption.tagNameAsc = true;
-        }
+      const sorttagnameasc = queryInput.sorttagnameasc;
+      if (sorttagnameasc) {
+        if (Number(sorttagnameasc) === 0) changedQuery.sorttagnameasc = 1;
       } else {
-        sortOption.sortTagName = true;
-        sortOption.tagNameAsc = true;
+        changedQuery.sorttagnameasc = 0;
       }
     } else if (name === "category") {
-      if (tagState.sortOption.sortCategory) {
-        if (tagState.sortOption.categoryAsc) {
-          sortOption.sortCategory = true;
-          sortOption.categoryAsc = false;
-        } else {
-          sortOption.sortCategory = false;
-          sortOption.categoryAsc = true;
-        }
+      const sortcategoryasc = queryInput.sortcategoryasc;
+      if (sortcategoryasc) {
+        if (Number(sortcategoryasc) === 0) changedQuery.sortcategoryasc = 1;
       } else {
-        sortOption.sortCategory = true;
-        sortOption.categoryAsc = true;
+        changedQuery.sortcategoryasc = 0;
       }
     }
-    tagDispatch({
-      type: "UPDATE_SORTOPTION",
-      data: {
-        sortOption,
-      },
-    });
+
+    window.location.href = `/taglist?${queryString.stringify(changedQuery)}`;
   };
+
   return (
     <Table>
       <thead>
@@ -155,9 +138,9 @@ const TagListTable = ({ data }) => {
             <SortText>Tag Id</SortText>
             <SortButton
               type={
-                !tagState.sortOption.sortTagId
+                !queryInput.sorttagidasc
                   ? 0
-                  : tagState.sortOption.tagIdAsc
+                  : Number(queryInput.sorttagidasc) === 0
                   ? 1
                   : 2
               }
@@ -168,9 +151,9 @@ const TagListTable = ({ data }) => {
             <SortText>Tag Name</SortText>
             <SortButton
               type={
-                !tagState.sortOption.sortTagName
+                !queryInput.sorttagnameasc
                   ? 0
-                  : tagState.sortOption.tagNameAsc
+                  : Number(queryInput.sorttagnameasc) === 0
                   ? 1
                   : 2
               }
@@ -181,9 +164,9 @@ const TagListTable = ({ data }) => {
             <SortText>Tag Type</SortText>
             <SortButton
               type={
-                !tagState.sortOption.sortCategory
+                !queryInput.sortcategoryasc
                   ? 0
-                  : tagState.sortOption.categoryAsc
+                  : Number(queryInput.sortcategoryasc) === 0
                   ? 1
                   : 2
               }
