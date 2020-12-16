@@ -67,98 +67,6 @@ const PostBasicInfo = () => {
 
   if (error_Shop) toast.error("Error Occured while Searching products.");
 
-  const onProductNameChange = (e) => {
-    const value = e.target.value;
-    for (const eachOption of data_Shop.getShopByProductName) {
-      if (eachOption.productName === value) {
-        postDispatch({
-          type: "CHANGE_BASICINFO",
-          data: {
-            postId,
-            mainProductId: eachOption.productId,
-            mainProductName: value,
-            price: eachOption.price,
-            shopId: eachOption.shopId,
-            shopName: eachOption.shopName,
-          },
-        });
-      }
-    }
-    postDispatch({
-      type: "CHANGE_BASICINFO",
-      data: {
-        postId,
-        mainProductId: 0,
-        mainProductName: value,
-        price: 0,
-        shopId: 0,
-        shopName: "",
-      },
-    });
-  };
-
-  const onProductNameSelect = (e) => {
-    if (!e.target.querySelector("li>span")) {
-      const value = e.target.value;
-      for (const eachOption of data_Shop.getShopByProductName) {
-        if (eachOption.productName === value) {
-          postDispatch({
-            type: "CHANGE_BASICINFO",
-            data: {
-              postId,
-              mainProductId: eachOption.productId,
-              mainProductName: value,
-              price: eachOption.price,
-              shopId: eachOption.shopId,
-              shopName: eachOption.shopName,
-            },
-          });
-          return;
-        }
-      }
-      postDispatch({
-        type: "CHANGE_BASICINFO",
-        data: {
-          postId,
-          mainProductId: 0,
-          mainProductName: value,
-          price: 0,
-          shopId: 0,
-          shopName: "",
-        },
-      });
-    } else {
-      const ProductId = Number(e.target.querySelector("li>span").textContent);
-      for (const eachOption of data_Shop.getShopByProductName) {
-        if (eachOption.productId === ProductId) {
-          postDispatch({
-            type: "CHANGE_BASICINFO",
-            data: {
-              postId,
-              mainProductId: eachOption.productId,
-              mainProductName: eachOption.productName,
-              price: eachOption.price,
-              shopId: eachOption.shopId,
-              shopName: eachOption.shopName,
-            },
-          });
-          return;
-        }
-      }
-      postDispatch({
-        type: "CHANGE_BASICINFO",
-        data: {
-          postId,
-          mainProductId: 0,
-          mainProductName,
-          price: 0,
-          shopId: 0,
-          shopName: "",
-        },
-      });
-    }
-  };
-
   return (
     <>
       <TitleBox>
@@ -181,16 +89,31 @@ const PostBasicInfo = () => {
             <td>Main ProductName</td>
             <td>
               <AutoSelectBox
-                defaultValue={{
-                  productId: mainProductId,
-                  productName: mainProductName,
-                  shopId,
-                  shopName,
-                  price,
+                value={{
+                  productId: mainProductId ?? 0,
+                  productName: mainProductName ?? "",
+                  shopId: shopId ?? 0,
+                  shopName: shopName ?? "",
+                  price: price ?? 0,
+                }}
+                onChangeFunc={(e, newInputValue) => {
+                  postDispatch({
+                    type: "CHANGE_BASICINFO",
+                    data: {
+                      postId,
+                      mainProductId: newInputValue
+                        ? newInputValue.productId
+                        : 0,
+                      mainProductName: newInputValue
+                        ? newInputValue.productName
+                        : "",
+                      price: newInputValue ? newInputValue.price : 0,
+                      shopId: newInputValue ? newInputValue.shopId : 0,
+                      shopName: newInputValue ? newInputValue.shopName : "",
+                    },
+                  });
                 }}
                 data={data_Shop ? data_Shop.getShopByProductName : []}
-                onTitleChangeFunc={onProductNameChange}
-                onTitleSelectFunc={onProductNameSelect}
               />
             </td>
           </tr>
