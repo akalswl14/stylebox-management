@@ -6,6 +6,7 @@ const YoutubeThumbnail = ({ url }) => {
   let youtubeSrc = "https://www.youtube.com/embed/" + youtubeUrl[3];
   return (
     <iframe
+      title="youtube thumbnail"
       width="300px"
       height="200px"
       src={youtubeSrc}
