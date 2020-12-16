@@ -31,19 +31,6 @@ const Table = styled.table`
   }
 `;
 
-const Input = styled.input`
-  width: ${(props) => {
-    if (props.InputWidth) {
-      return props.InputWidth.toString() + "px";
-    } else {
-      return null;
-    }
-  }};
-  height: 35px;
-  font-size: 15px;
-  text-align: center;
-`;
-
 export default () => {
   const { ProductInfoState } = useContext(ProductInfoContext);
 

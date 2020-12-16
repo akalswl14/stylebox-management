@@ -43,13 +43,6 @@ const PreviewImage = styled.img`
   height: 170px;
 `;
 
-const TitleSpan = styled.span`
-  width: 90px;
-  line-height: 35px;
-  border: black solid 1px;
-  height: 35px;
-`;
-
 const Input = styled.input`
   width: ${(props) => {
     if (props.InputWidth) {
@@ -66,13 +59,6 @@ const AddressCellWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-`;
-
-const MapUrlWrapper = styled.span`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 600px;
 `;
 
 export default () => {
