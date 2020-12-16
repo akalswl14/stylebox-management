@@ -32,9 +32,7 @@ const AutoSelectBox = ({
       getOptionLabel={(option) =>
         option.productName ? option.productName : ""
       }
-      getOptionSelected={(option, value) =>
-        option.productName === value.productName
-      }
+      filterSelectedOptions
       value={defaultValue}
       renderOption={(option) => (
         <React.Fragment>
