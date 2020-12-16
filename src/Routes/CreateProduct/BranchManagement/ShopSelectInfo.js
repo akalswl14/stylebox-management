@@ -7,17 +7,12 @@ import AutoSelectBox from "./AutoSelectBox";
 
 const Table = styled.table`
   border-collapse: collapse;
-  border: 1px solid black;
+  border: 1px solid lightgrey;
   width: 100%;
   text-align: center;
   font-size: 15px;
   tr {
     height: 40px;
-  }
-  tr,
-  td,
-  th {
-    border: ${(props) => props.theme.tableBorder};
   }
   td,
   th {
@@ -27,6 +22,16 @@ const Table = styled.table`
   th {
     background-color: #f2f2f2;
     font-weight: 500;
+    border-bottom: 0.5px solid black;
+  }
+  td:first-child,
+  th:first-child {
+    background-color: #f2f2f2;
+    border-right: 0.5px solid black;
+  }
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
   .shopIdCell {
     width: 70px;
