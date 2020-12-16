@@ -21,11 +21,11 @@ const Table = styled.table`
   th {
     padding: 5px;
     vertical-align: middle;
-    border-bottom: 0.5px solid black;
   }
   th {
     background-color: #f2f2f2;
     font-weight: 500;
+    border-bottom: 0.5px solid black;
   }
   td:first-child,
   th:first-child {
