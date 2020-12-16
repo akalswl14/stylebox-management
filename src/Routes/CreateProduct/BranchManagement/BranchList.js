@@ -91,9 +91,11 @@ export default () => {
           </tr>
         </thead>
         <tbody>
-          {branchData.getProductSellingShopBranch.branches.map((eachRow) => (
-            <BranchRowData data={eachRow} />
-          ))}
+          {branchData.getProductSellingShopBranch.branches.map(
+            (eachRow, index) => (
+              <BranchRowData data={eachRow} key={index} />
+            )
+          )}
         </tbody>
       </Table>
     );
