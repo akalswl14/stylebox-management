@@ -119,7 +119,9 @@ const LinkTable = ({ linkTypes, data }) => {
             <></>
           )}
           {linkTypes.map((linkType) => (
-            <option value={linkType}>{linkType}</option>
+            <option value={linkType} key={linkType}>
+              {linkType}
+            </option>
           ))}
         </SelectBox>
       </td>
