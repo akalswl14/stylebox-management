@@ -21,11 +21,11 @@ const Table = styled.table`
   th {
     padding: 5px;
     vertical-align: middle;
-    border-bottom: 0.5px solid black;
   }
   th {
     background-color: #f2f2f2;
     font-weight: 500;
+    border-bottom: 0.5px solid black;
   }
   td:first-child,
   th:first-child {
@@ -136,20 +136,24 @@ export default ({ tagMutation, tagMutationError, tagMutationLoading }) => {
         <Button text="Get ShopTag" ClickEvent={handleTagUpdate} />
       </SectionContainer>
       <Table>
-        <tr>
-          <th className="orderInputCell">No</th>
-          <th>Tag Type</th>
-          <th>Class</th>
-          <th>Tag</th>
-          <th className="buttonCell">
-            <RowButton onClick={(e) => addRow(e)}>
-              <PlusIcon size={19} />
-            </RowButton>
-          </th>
-        </tr>
-        {ProductInfoState.TagInformation.value.map((eachRow) => (
-          <TagDataRow data={eachRow} />
-        ))}
+        <thead>
+          <tr>
+            <th className="orderInputCell">No</th>
+            <th>Tag Type</th>
+            <th>Class</th>
+            <th>Tag</th>
+            <th className="buttonCell">
+              <RowButton onClick={(e) => addRow(e)}>
+                <PlusIcon size={19} />
+              </RowButton>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {ProductInfoState.TagInformation.value.map((eachRow, index) => (
+            <TagDataRow data={eachRow} key={index} />
+          ))}
+        </tbody>
       </Table>
     </>
   );
