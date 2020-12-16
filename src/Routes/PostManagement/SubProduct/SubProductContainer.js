@@ -25,6 +25,9 @@ const Table = styled.table`
     font-weight: 500;
     border-bottom: 0.5px solid black;
   }
+  th:nth-child(2n-1) {
+    width: 25%;
+  }
   td:first-child,
   th:first-child {
     background-color: #f2f2f2;
