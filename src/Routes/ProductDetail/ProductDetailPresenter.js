@@ -53,10 +53,6 @@ export default ({
   tagMutationError,
   tagMutationLoading,
 }) => {
-  const { ProductInfoState, ProductInfoDispatch } = useContext(
-    ProductInfoContext
-  );
-
   if (error) {
     return <WrapPage>`Error! ${error.message}`</WrapPage>;
   }
@@ -69,6 +65,9 @@ export default ({
   }
 
   if (!loading && data) {
+    const { ProductInfoState, ProductInfoDispatch } = useContext(
+      ProductInfoContext
+    );
     useEffect(() => {
       try {
         let rtnBranches = [],

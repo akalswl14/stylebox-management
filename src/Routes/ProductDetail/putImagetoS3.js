@@ -1,4 +1,4 @@
-import { IAM_ID, IAM_SECRETKEY, BUCKET_NAME, S3_REGION } from "../../AWS_IAM";
+import { IAM_ID, IAM_SECRETKEY, BUCKET_NAME } from "../../AWS_IAM";
 import AWS, { Credentials } from "aws-sdk";
 
 const access = new Credentials({
@@ -33,7 +33,7 @@ const uploadToBucket = async (preSignedUrl, file, fileType) => {
       "x-amz-acl": "public-read",
     },
   };
-  let rtn = await fetch(preSignedUrl, option);
+  await fetch(preSignedUrl, option);
   return;
 };
 
