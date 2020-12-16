@@ -68,8 +68,6 @@ const PostBasicStatus = () => {
 
   const registrationDate = getFormatDate(new Date(createdAt));
   const updatedDate = getFormatDate(new Date(updatedAt));
-  console.log(updatedAt);
-  console.log(updatedDate);
 
   const onChange = (e) => {
     const { value } = e.target;
