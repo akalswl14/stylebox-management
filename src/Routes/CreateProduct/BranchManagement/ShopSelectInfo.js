@@ -175,14 +175,26 @@ export default () => {
             </td>
             <td>
               <AutoSelectBox
-                defaultValue={{
+                data={ProductInfoState.ShopData}
+                value={{
                   id: ProductInfoState.SelectedShop.shopId,
                   shopName: ProductInfoState.SelectedShop.shopName,
                   shopLink: ProductInfoState.SelectedShop.shopLink,
                 }}
-                data={ProductInfoState.ShopData}
-                onChangeFunc={onShopNameChange}
-                onSelectFunc={onShopNameSelect}
+                onChangeFunc={(event, newValue) => {
+                  ProductInfoDispatch({
+                    type: "UPDATE_BATCH",
+                    data: {
+                      ...ProductInfoState,
+                      SelectedShop: {
+                        shopId: newValue ? newValue.id : 0,
+                        shopName: newValue ? newValue.shopName : "",
+                        shopLink: newValue ? newValue.shopLink : "",
+                      },
+                      BranchManagement: { value: [] },
+                    },
+                  });
+                }}
               />
             </td>
             <td className="shopLinkCell">
