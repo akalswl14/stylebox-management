@@ -24,15 +24,14 @@ export default ({ data }) => {
     const { name } = e.target;
     if (name === "BranchSelectInput") {
       let isExist = false;
-      const rtnData = ProductInfoState.BranchManagement.value.filter(
-        (eachData) => {
-          if (eachData === Number(data.id)) {
-            isExist = true;
-          } else {
-            return eachData;
-          }
+      const rtnData = [];
+      for (const eachBranch of ProductInfoState.BranchManagement.value) {
+        if (eachBranch === Number(data.id)) {
+          isExist = true;
+        } else {
+          rtnData.push(eachBranch);
         }
-      );
+      }
       if (!isExist) rtnData.push(Number(data.id));
       ProductInfoDispatch({
         type: "UPDATE_BRANCH",
