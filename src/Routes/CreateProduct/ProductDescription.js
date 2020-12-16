@@ -54,16 +54,18 @@ export default () => {
     <>
       <SectionTitle text="Product Description" />
       <Table>
-        <tr>
-          <th>Product Description</th>
-          <td>
-            <TextInput
-              name="ProductDescriptionInput"
-              value={ProductInfoState.ProductDescription.value}
-              onChange={(e) => onChange(e)}
-            />
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <th>Product Description</th>
+            <td>
+              <TextInput
+                name="ProductDescriptionInput"
+                value={ProductInfoState.ProductDescription.value}
+                onChange={(e) => onChange(e)}
+              />
+            </td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );
