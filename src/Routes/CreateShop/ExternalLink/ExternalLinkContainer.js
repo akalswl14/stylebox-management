@@ -29,10 +29,13 @@ const Table = styled.table`
   }
   .orderInputCell,
   .buttonCell {
-    width: 120px;
+    width: 6.8%;
   }
   .checkButtonCell {
-    width: 180px;
+    width: 13.6%;
+  }
+  .categoryCell {
+    width: 19.3%;
   }
   td:first-child,
   th:first-child {
@@ -88,7 +91,7 @@ export default ({ linkTypes }) => {
         <thead>
           <tr>
             <th className="orderInputCell">Order</th>
-            <th>Category</th>
+            <th className="categoryCell">Category</th>
             <th>Link URL</th>
             <th className="buttonCell">Show</th>
             <th className="checkButtonCell">Check</th>

@@ -23,6 +23,7 @@ const Table = styled.table`
     background-color: #f2f2f2;
     font-weight: 500;
     border-bottom: 0.5px solid black;
+    width: 28.8%;
   }
   td:first-child,
   th:first-child {
@@ -33,12 +34,9 @@ const Table = styled.table`
     border-top: 0.5px solid lightgrey;
     border-bottom: 0.5px solid lightgrey;
   }
-  .smallerCell {
-    width: 400px;
-  }
   .orderInputCell,
   .buttonCell {
-    width: 90px;
+    width: 6.8%;
   }
 `;
 
