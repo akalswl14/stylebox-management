@@ -35,10 +35,10 @@ const Table = styled.table`
   }
   .orderInputCell,
   .buttonCell {
-    width: 10%;
+    width: 6.8%;
   }
   .checkButtonCell {
-    width: 180px;
+    width: 13.6%;
   }
 `;
 
