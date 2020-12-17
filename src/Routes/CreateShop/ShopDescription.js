@@ -1,7 +1,5 @@
 import React, { useContext } from "react";
-import { toast } from "react-toastify";
 import styled from "styled-components";
-import Button from "../../Components/Button";
 import SectionTitle from "../../Components/SectionTitle";
 import { ShopInfoContext } from "./CreateShopContainer";
 

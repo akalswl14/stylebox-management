@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import Button from "../../../Components/Button";
@@ -10,10 +10,6 @@ const OrderInputBox = styled.input`
   text-align: center;
 `;
 
-const SelectBox = styled.select`
-  width: 200px;
-  text-align: center;
-`;
 const RowButton = styled.button`
   border: none;
   background: none;
