@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import Button from "../../Components/Button";
 import SectionTitle from "../../Components/SectionTitle";
 import { ShopInfoContext } from "./ShopDetailContainer";
 
