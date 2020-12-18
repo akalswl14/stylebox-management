@@ -65,71 +65,6 @@ const PaginationBox = styled.div`
 `;
 
 export default ({ loading, data, error, onSubmit }) => {
-  const { eventDispatch, eventState } = useContext(EventListContext);
-
-  const queryInput = queryString.parse(window.location.search);
-
-  const onChangeCurrentPage = (pageNum) => {
-    const changedQuery = queryString.stringify({
-      ...queryInput,
-      page: pageNum,
-    });
-    window.location.href = `/eventlist?${changedQuery}`;
-  };
-
-  const ChangeSearch = (e) => {
-    const { value, name } = e.target;
-    eventDispatch({
-      type: "UPDATE_SEARCH",
-      data: {
-        name,
-        value,
-      },
-    });
-  };
-
-  const ChangeButton = (buttonKind) => {
-    eventDispatch({
-      type: "CHANGE_BUTTON",
-      data: {
-        buttonKind,
-      },
-    });
-  };
-
-  const SearchEventList = (e) => {
-    e.preventDefault();
-    if (eventState.searchOption.searchSelectBox === "eventId") {
-      if (isNaN(eventState.searchOption.searchKeyWord)) {
-        toast.error("Id must be a number.");
-        return;
-      }
-    }
-
-    const changedQuery = {
-      page: 1,
-      id:
-        eventState.searchOption.searchSelectBox === "eventId"
-          ? eventState.searchOption.searchKeyWord
-          : undefined,
-      eventtitle:
-        eventState.searchOption.searchSelectBox === "eventTitle"
-          ? eventState.searchOption.searchKeyWord
-          : undefined,
-    };
-
-    window.location.href = `/eventlist?${queryString.stringify(changedQuery)}`;
-  };
-
-  const ExportToExcel = (e) => {
-    e.preventDefault();
-  };
-
-  const refreshQuery = (e) => {
-    e.preventDefault();
-    window.location.href = "/eventlist";
-  };
-
   if (error) return `Error! ${error.message}`;
   if (loading)
     return (
@@ -158,7 +93,75 @@ export default ({ loading, data, error, onSubmit }) => {
           eventInfo,
         },
       });
-    }, [data]);
+    }, []);
+
+    const { eventDispatch, eventState } = useContext(EventListContext);
+
+    const queryInput = queryString.parse(window.location.search);
+
+    const onChangeCurrentPage = (pageNum) => {
+      const changedQuery = queryString.stringify({
+        ...queryInput,
+        page: pageNum,
+      });
+      window.location.href = `/eventlist?${changedQuery}`;
+    };
+
+    const ChangeSearch = (e) => {
+      const { value, name } = e.target;
+      eventDispatch({
+        type: "UPDATE_SEARCH",
+        data: {
+          name,
+          value,
+        },
+      });
+    };
+
+    const ChangeButton = (buttonKind) => {
+      eventDispatch({
+        type: "CHANGE_BUTTON",
+        data: {
+          buttonKind,
+        },
+      });
+    };
+
+    const SearchEventList = (e) => {
+      e.preventDefault();
+      if (eventState.searchOption.searchSelectBox === "eventId") {
+        if (isNaN(eventState.searchOption.searchKeyWord)) {
+          toast.error("Id must be a number.");
+          return;
+        }
+      }
+
+      const changedQuery = {
+        page: 1,
+        id:
+          eventState.searchOption.searchSelectBox === "eventId"
+            ? eventState.searchOption.searchKeyWord
+            : undefined,
+        eventtitle:
+          eventState.searchOption.searchSelectBox === "eventTitle"
+            ? eventState.searchOption.searchKeyWord
+            : undefined,
+      };
+
+      window.location.href = `/eventlist?${queryString.stringify(
+        changedQuery
+      )}`;
+    };
+
+    const ExportToExcel = (e) => {
+      e.preventDefault();
+    };
+
+    const refreshQuery = (e) => {
+      e.preventDefault();
+      window.location.href = "/eventlist";
+    };
+
     return (
       <>
         <WrapPage>
