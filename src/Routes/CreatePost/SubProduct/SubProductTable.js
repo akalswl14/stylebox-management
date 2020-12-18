@@ -24,16 +24,15 @@ const RowButton = styled.button`
 const SubProductTable = ({ data }) => {
   const { postDispatch, postState } = useContext(PostInfoContext);
 
-  const {
-    loading: loading_subProduct,
-    data: data_subProduct,
-    error: error_subProduct,
-  } = useQuery(GET_SUBPRODUCT, {
-    variables: {
-      productName: "",
-      shopId: postState.basicInfo.shopId ? postState.basicInfo.shopId : null,
-    },
-  });
+  const { data: data_subProduct, error: error_subProduct } = useQuery(
+    GET_SUBPRODUCT,
+    {
+      variables: {
+        productName: "",
+        shopId: postState.basicInfo.shopId ? postState.basicInfo.shopId : null,
+      },
+    }
+  );
 
   if (error_subProduct) toast.error("Error Occured while Searching products.");
 
@@ -89,98 +88,6 @@ const SubProductTable = ({ data }) => {
     }
   };
 
-  const onProductNameChange = (e) => {
-    const value = e.target.value;
-    for (const eachOption of data_subProduct.getProductByName) {
-      if (eachOption.productName === value) {
-        postDispatch({
-          type: "UPDATE_PRODUCT",
-          data: {
-            id: Number(data.id),
-            order: Number(data.order),
-            productId: eachOption.productId,
-            productName: value,
-            price: eachOption.price,
-            link: eachOption.link,
-          },
-        });
-      }
-    }
-    postDispatch({
-      type: "UPDATE_PRODUCT",
-      data: {
-        id: Number(data.id),
-        order: Number(data.order),
-        productId: 0,
-        productName: value,
-        price: 0,
-        link: null,
-      },
-    });
-  };
-
-  const onProductNameSelect = (e) => {
-    if (!e.target.querySelector("li>span")) {
-      const value = e.target.value;
-      for (const eachOption of data_subProduct.getProductByName) {
-        if (eachOption.productName === value) {
-          postDispatch({
-            type: "UPDATE_PRODUCT",
-            data: {
-              id: Number(data.id),
-              order: Number(data.order),
-              productId: eachOption.productId,
-              productName: value,
-              price: eachOption.price,
-              link: eachOption.link,
-            },
-          });
-          return;
-        }
-      }
-      postDispatch({
-        type: "UPDATE_PRODUCT",
-        data: {
-          id: Number(data.id),
-          order: Number(data.order),
-          productId: 0,
-          productName: value,
-          price: 0,
-          link: null,
-        },
-      });
-    } else {
-      const ProductId = Number(e.target.querySelector("li>span").textContent);
-      for (const eachOption of data_subProduct.getProductByName) {
-        if (eachOption.productId === ProductId) {
-          postDispatch({
-            type: "UPDATE_PRODUCT",
-            data: {
-              id: Number(data.id),
-              order: data.order,
-              productId: eachOption.productId,
-              productName: eachOption.productName,
-              price: eachOption.price,
-              link: eachOption.link,
-            },
-          });
-          return;
-        }
-      }
-      postDispatch({
-        type: "UPDATE_PRODUCT",
-        data: {
-          id: Number(data.id),
-          order: data.order,
-          productId: 0,
-          productName: data.productName,
-          price: 0,
-          link: null,
-        },
-      });
-    }
-  };
-
   return (
     <tr id={data.id}>
       <td>
@@ -195,15 +102,26 @@ const SubProductTable = ({ data }) => {
       <td>{data.productId}</td>
       <td>
         <AutoSelectBox
-          defaultValue={{
+          value={{
             productId: data.productId,
             productName: data.productName,
             price: data.price,
             link: data.link,
           }}
           data={data_subProduct ? data_subProduct.getProductByName : []}
-          onTitleChangeFunc={onProductNameChange}
-          onTitleSelectFunc={onProductNameSelect}
+          onChangeFunc={(e, newInputValue) => {
+            postDispatch({
+              type: "UPDATE_PRODUCT",
+              data: {
+                id: Number(data.id),
+                order: Number(data.order),
+                productId: newInputValue ? newInputValue.productId : 0,
+                productName: newInputValue ? newInputValue.productName : "",
+                price: newInputValue ? newInputValue.price : 0,
+                link: newInputValue ? newInputValue.link : "",
+              },
+            });
+          }}
         />
       </td>
       <td>{ParsePrice(data.price)}</td>
