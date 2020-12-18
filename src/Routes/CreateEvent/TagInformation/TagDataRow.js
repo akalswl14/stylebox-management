@@ -144,7 +144,7 @@ export default ({ data }) => {
     return (
       <tr>
         <td className="orderInputCell">
-          <OrderInputBox name="order" value={data.order} />
+          <OrderInputBox name="order" value={data.order} onChange={() => 0} />
         </td>
         <td>
           <select name="category">
@@ -157,7 +157,7 @@ export default ({ data }) => {
           </select>
         </td>
         <td>
-          <select name="tagInfo" value={data.tagId}>
+          <select name="tagInfo">
             <option value={0}>{"-- LOADING --"}</option>
           </select>
         </td>
