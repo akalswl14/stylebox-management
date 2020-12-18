@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 import EventDetailPresenter from "./EventDetailPresenter";
 import { useMutation, useQuery } from "react-apollo-hooks";
-import { CATEGORY_OPTION, UPDATE_EVENT, GET_EVENT } from "./EventDetailQueries";
+import { UPDATE_EVENT, GET_EVENT } from "./EventDetailQueries";
 import { toast } from "react-toastify";
 import putImagetoS3 from "./putImagetoS3";
 import deleteImagefromS3 from "./deleteImagefromS3";
@@ -218,9 +218,9 @@ export default ({ match }) => {
           toast.error("Main Image Order Value should be bigger than 0");
         }
         TimeNumber = new Date();
-        var ImageFileName = null;
+        ImageFileName = null;
         if (eachImage.isNewImage) {
-          var ImageType = eachImage.ImageFile.type.substring(6);
+          ImageType = eachImage.ImageFile.type.substring(6);
           ImageFileName =
             "Event/" +
             eventId +
@@ -307,9 +307,9 @@ export default ({ match }) => {
         if (Number(eachImage.order) <= 0) {
           toast.error("Detail Image Order Value should be bigger than 0");
         }
-        var ImageFileName = null;
+        ImageFileName = null;
         if (eachImage.isNewImage) {
-          var ImageType = eachImage.ImageFile.type.substring(6);
+          ImageType = eachImage.ImageFile.type.substring(6);
           ImageFileName =
             "Event/" +
             eventId +
