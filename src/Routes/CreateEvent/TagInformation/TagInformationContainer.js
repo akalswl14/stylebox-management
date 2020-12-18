@@ -75,20 +75,24 @@ export default () => {
     <>
       <SectionTitle text="Tag Information" />
       <Table>
-        <tr>
-          <th className="orderInputCell">Order</th>
-          <th>Tag Type</th>
-          <th>Class</th>
-          <th>Tag</th>
-          <th className="buttonCell">
-            <RowButton onClick={(e) => addRow(e)}>
-              <PlusIcon size={19} />
-            </RowButton>
-          </th>
-        </tr>
-        {EventInfoState.TagInformation.value.map((eachRow) => (
-          <TagDataRow data={eachRow} />
-        ))}
+        <thead>
+          <tr>
+            <th className="orderInputCell">Order</th>
+            <th>Tag Type</th>
+            <th>Class</th>
+            <th>Tag</th>
+            <th className="buttonCell">
+              <RowButton onClick={(e) => addRow(e)}>
+                <PlusIcon size={19} />
+              </RowButton>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {EventInfoState.TagInformation.value.map((eachRow) => (
+            <TagDataRow data={eachRow} />
+          ))}
+        </tbody>
       </Table>
     </>
   );

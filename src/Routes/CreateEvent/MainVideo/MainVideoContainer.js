@@ -75,19 +75,23 @@ export default () => {
     <>
       <SectionTitle text="Event Video Management" />
       <Table>
-        <tr>
-          <th className="orderInputCell">Order</th>
-          <th>Youtube URL</th>
-          <th className="checkButtonCell">Check</th>
-          <th className="buttonCell">
-            <RowButton onClick={(e) => addRow(e)}>
-              <PlusIcon size={19} />
-            </RowButton>
-          </th>
-        </tr>
-        {EventInfoState.MainVideos.value.map((eachRow) => (
-          <MainVideoRowData data={eachRow} />
-        ))}
+        <thead>
+          <tr>
+            <th className="orderInputCell">Order</th>
+            <th>Youtube URL</th>
+            <th className="checkButtonCell">Check</th>
+            <th className="buttonCell">
+              <RowButton onClick={(e) => addRow(e)}>
+                <PlusIcon size={19} />
+              </RowButton>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {EventInfoState.MainVideos.value.map((eachRow) => (
+            <MainVideoRowData data={eachRow} />
+          ))}
+        </tbody>
       </Table>
     </>
   );

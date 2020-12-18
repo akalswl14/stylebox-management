@@ -117,21 +117,27 @@ export default () => {
     <>
       <SectionTitle text="Event Thumbnail Images" />
       <Table>
-        <tr>
-          <th>Post Thumbnail Image</th>
-          <td>
-            <Input
-              type="file"
-              accept="image/jpg,image/png,image/jpeg"
-              name="ThumbnailImageInput"
-              onChange={(e) => ChangeImage(e)}
-            />
-          </td>
-          <td>{EventPreviewImage}</td>
-          <td className="checkButtonCell">
-            <Button text={"Check"} isButtonType={true} ClickEvent={OpenImage} />
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <th>Post Thumbnail Image</th>
+            <td>
+              <Input
+                type="file"
+                accept="image/jpg,image/png,image/jpeg"
+                name="ThumbnailImageInput"
+                onChange={(e) => ChangeImage(e)}
+              />
+            </td>
+            <td>{EventPreviewImage}</td>
+            <td className="checkButtonCell">
+              <Button
+                text={"Check"}
+                isButtonType={true}
+                ClickEvent={OpenImage}
+              />
+            </td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );
