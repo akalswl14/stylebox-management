@@ -92,8 +92,8 @@ export default () => {
           </tr>
         </thead>
         <tbody>
-          {EventInfoState.MainImages.value.map((eachRow) => (
-            <MainImageRowData data={eachRow} />
+          {EventInfoState.MainImages.value.map((eachRow, index) => (
+            <MainImageRowData data={eachRow} key={index} />
           ))}
         </tbody>
       </Table>

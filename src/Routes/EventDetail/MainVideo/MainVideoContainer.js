@@ -89,8 +89,8 @@ export default () => {
           </tr>
         </thead>
         <tbody>
-          {EventInfoState.MainVideos.value.map((eachRow) => (
-            <MainVideoRowData data={eachRow} />
+          {EventInfoState.MainVideos.value.map((eachRow, index) => (
+            <MainVideoRowData data={eachRow} key={index} />
           ))}
         </tbody>
       </Table>
