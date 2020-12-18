@@ -45,8 +45,6 @@ const SectionWrapper = styled.div`
 const Form = styled.form``;
 
 export default ({ onSubmit, loading, data, error }) => {
-  const { EventInfoState, EventInfoDispatch } = useContext(EventInfoContext);
-
   if (error) {
     return <WrapPage>`Error! ${error.message}`</WrapPage>;
   }
@@ -59,6 +57,7 @@ export default ({ onSubmit, loading, data, error }) => {
   }
 
   if (!loading && data) {
+    const { EventInfoState, EventInfoDispatch } = useContext(EventInfoContext);
     useEffect(() => {
       let updateData = {
         ...EventInfoState,
