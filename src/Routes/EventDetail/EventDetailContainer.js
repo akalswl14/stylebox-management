@@ -79,7 +79,6 @@ export default ({ match }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(EventInfoState);
 
     let TimeNumber = new Date();
     if (
