@@ -90,8 +90,8 @@ export default () => {
           </tr>
         </thead>
         <tbody>
-          {EventInfoState.DetailImages.value.map((eachRow) => (
-            <DetailImageRowData data={eachRow} />
+          {EventInfoState.DetailImages.value.map((eachRow, index) => (
+            <DetailImageRowData data={eachRow} key={index} />
           ))}
         </tbody>
       </Table>

@@ -89,8 +89,8 @@ export default () => {
           </tr>
         </thead>
         <tbody>
-          {EventInfoState.TagInformation.value.map((eachRow) => (
-            <TagDataRow data={eachRow} />
+          {EventInfoState.TagInformation.value.map((eachRow, index) => (
+            <TagDataRow data={eachRow} key={index} />
           ))}
         </tbody>
       </Table>
