@@ -78,20 +78,24 @@ export default () => {
     <>
       <SectionTitle text="Event Detail Images" />
       <Table>
-        <tr>
-          <th className="orderInputCell">Order</th>
-          <th>Upload a File</th>
-          <th>Image</th>
-          <th className="checkButtonCell">Enlarge Image</th>
-          <th className="buttonCell">
-            <RowButton onClick={(e) => addRow(e)}>
-              <PlusIcon size={19} />
-            </RowButton>
-          </th>
-        </tr>
-        {EventInfoState.DetailImages.value.map((eachRow) => (
-          <DetailImageRowData data={eachRow} />
-        ))}
+        <thead>
+          <tr>
+            <th className="orderInputCell">Order</th>
+            <th>Upload a File</th>
+            <th>Image</th>
+            <th className="checkButtonCell">Enlarge Image</th>
+            <th className="buttonCell">
+              <RowButton onClick={(e) => addRow(e)}>
+                <PlusIcon size={19} />
+              </RowButton>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {EventInfoState.DetailImages.value.map((eachRow) => (
+            <DetailImageRowData data={eachRow} />
+          ))}
+        </tbody>
       </Table>
     </>
   );

@@ -62,18 +62,20 @@ export default () => {
     <>
       <SectionTitle text="Basic Status" />
       <Table>
-        <tr>
-          <th>Total Likes</th>
-          <td>{EventInfoState.BasicStatus.likesNum} Likes</td>
-          <th>Total Views</th>
-          <td>{EventInfoState.BasicStatus.viewsNum} Views</td>
-        </tr>
-        <tr>
-          <th>Registration Date</th>
-          <td>{registrationDate}</td>
-          <th>Last Updated</th>
-          <td>{updatedDate}</td>
-        </tr>
+        <tbody>
+          <tr>
+            <th>Total Likes</th>
+            <td>{EventInfoState.BasicStatus.likesNum} Likes</td>
+            <th>Total Views</th>
+            <td>{EventInfoState.BasicStatus.viewsNum} Views</td>
+          </tr>
+          <tr>
+            <th>Registration Date</th>
+            <td>{registrationDate}</td>
+            <th>Last Updated</th>
+            <td>{updatedDate}</td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );
