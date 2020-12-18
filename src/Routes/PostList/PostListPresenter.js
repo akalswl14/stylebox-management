@@ -65,73 +65,6 @@ const PaginationBox = styled.div`
 `;
 
 export default ({ loading, data, error, onSubmit }) => {
-  const { postDispatch, postState } = useContext(PostListContext);
-
-  const queryInput = queryString.parse(window.location.search);
-
-  const onChangeCurrentPage = (pageNum) => {
-    const changedQuery = queryString.stringify({
-      ...queryInput,
-      page: pageNum,
-    });
-    window.location.href = `/postlist?${changedQuery}`;
-  };
-
-  const ChangeSearch = (e) => {
-    const { value, name } = e.target;
-    postDispatch({
-      type: "UPDATE_SEARCH",
-      data: {
-        name,
-        value,
-      },
-    });
-  };
-
-  const ChangeButton = (buttonKind) => {
-    postDispatch({
-      type: "CHANGE_BUTTON",
-      data: {
-        buttonKind,
-      },
-    });
-  };
-
-  const SearchPostList = (e) => {
-    e.preventDefault();
-    if (postState.searchOption.searchSelectBox === "postId") {
-      if (isNaN(postState.searchOption.searchKeyWord)) {
-        toast.error("Id must be a number.");
-        return;
-      }
-    }
-    const changedQuery = {
-      page: 1,
-      key_postid:
-        postState.searchOption.searchSelectBox === "postId"
-          ? postState.searchOption.searchKeyWord
-          : undefined,
-      key_productname:
-        postState.searchOption.searchSelectBox === "mainProductName"
-          ? postState.searchOption.searchKeyWord
-          : undefined,
-      key_shopname:
-        postState.searchOption.searchSelectBox === "shopName"
-          ? postState.searchOption.searchKeyWord
-          : undefined,
-    };
-    window.location.href = `/postlist?${queryString.stringify(changedQuery)}`;
-  };
-
-  const ExportToExcel = (e) => {
-    e.preventDefault();
-  };
-
-  const refreshQuery = (e) => {
-    e.preventDefault();
-    window.location.href = "/postlist";
-  };
-
   if (error) return `Error! ${error.message}`;
   if (loading)
     return (
@@ -163,7 +96,74 @@ export default ({ loading, data, error, onSubmit }) => {
           postInfo,
         },
       });
-    }, [data]);
+    }, []);
+
+    const { postDispatch, postState } = useContext(PostListContext);
+
+    const queryInput = queryString.parse(window.location.search);
+
+    const onChangeCurrentPage = (pageNum) => {
+      const changedQuery = queryString.stringify({
+        ...queryInput,
+        page: pageNum,
+      });
+      window.location.href = `/postlist?${changedQuery}`;
+    };
+
+    const ChangeSearch = (e) => {
+      const { value, name } = e.target;
+      postDispatch({
+        type: "UPDATE_SEARCH",
+        data: {
+          name,
+          value,
+        },
+      });
+    };
+
+    const ChangeButton = (buttonKind) => {
+      postDispatch({
+        type: "CHANGE_BUTTON",
+        data: {
+          buttonKind,
+        },
+      });
+    };
+
+    const SearchPostList = (e) => {
+      e.preventDefault();
+      if (postState.searchOption.searchSelectBox === "postId") {
+        if (isNaN(postState.searchOption.searchKeyWord)) {
+          toast.error("Id must be a number.");
+          return;
+        }
+      }
+      const changedQuery = {
+        page: 1,
+        key_postid:
+          postState.searchOption.searchSelectBox === "postId"
+            ? postState.searchOption.searchKeyWord
+            : undefined,
+        key_productname:
+          postState.searchOption.searchSelectBox === "mainProductName"
+            ? postState.searchOption.searchKeyWord
+            : undefined,
+        key_shopname:
+          postState.searchOption.searchSelectBox === "shopName"
+            ? postState.searchOption.searchKeyWord
+            : undefined,
+      };
+      window.location.href = `/postlist?${queryString.stringify(changedQuery)}`;
+    };
+
+    const ExportToExcel = (e) => {
+      e.preventDefault();
+    };
+
+    const refreshQuery = (e) => {
+      e.preventDefault();
+      window.location.href = "/postlist";
+    };
     return (
       <>
         <WrapPage>
