@@ -1,8 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import Button from "../../../Components/Button";
 import { DeleteIcon } from "../../../Components/Icons";
+import YoutubeThumbnail from "../../../Components/YoutubeThumbnail";
 import { EventInfoContext } from "../CreateEventContainer";
 
 const OrderInputBox = styled.input`
@@ -126,6 +127,9 @@ export default ({ data }) => {
           value={data.url}
           onChange={(e) => onChange(e)}
         />
+      </td>
+      <td>
+        <YoutubeThumbnail url={data.url} />
       </td>
       <td className="checkButtonCell">
         <Button
