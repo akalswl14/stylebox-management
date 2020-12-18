@@ -65,72 +65,6 @@ const PaginationBox = styled.div`
 `;
 
 export default ({ loading, data, error, onSubmit }) => {
-  const { productDispatch, productState } = useContext(ProductListContext);
-  const queryInput = queryString.parse(window.location.search);
-
-  const onChangeCurrentPage = (pageNum) => {
-    const changedQuery = queryString.stringify({
-      ...queryInput,
-      page: pageNum,
-    });
-    window.location.href = `/productlist?${changedQuery}`;
-  };
-
-  const ChangeSearch = (e) => {
-    const { value, name } = e.target;
-    productDispatch({
-      type: "UPDATE_SEARCH",
-      data: {
-        name,
-        value,
-      },
-    });
-  };
-
-  const ChangeButton = (buttonKind) => {
-    productDispatch({
-      type: "CHANGE_BUTTON",
-      data: {
-        buttonKind,
-      },
-    });
-  };
-
-  const ExportToExcel = (e) => {
-    e.preventDefault();
-  };
-
-  const SearchProductList = (e) => {
-    e.preventDefault();
-    if (productState.searchOption.searchSelectBox === "productId") {
-      if (isNaN(productState.searchOption.searchKeyWord)) {
-        toast.error("Id must be a number.");
-        return;
-      }
-    }
-
-    const changedQuery = {
-      page: 1,
-      id:
-        productState.searchOption.searchSelectBox === "productId"
-          ? productState.searchOption.searchKeyWord
-          : undefined,
-      productname:
-        productState.searchOption.searchSelectBox === "productName"
-          ? productState.searchOption.searchKeyWord
-          : undefined,
-    };
-
-    window.location.href = `/productlist?${queryString.stringify(
-      changedQuery
-    )}`;
-  };
-
-  const refreshQuery = (e) => {
-    e.preventDefault();
-    window.location.href = "/productlist";
-  };
-
   if (error) return `Error! ${error.message}`;
   if (loading)
     return (
@@ -156,7 +90,73 @@ export default ({ loading, data, error, onSubmit }) => {
           productInfo,
         },
       });
-    }, [data]);
+    }, []);
+
+    const { productDispatch, productState } = useContext(ProductListContext);
+    const queryInput = queryString.parse(window.location.search);
+
+    const onChangeCurrentPage = (pageNum) => {
+      const changedQuery = queryString.stringify({
+        ...queryInput,
+        page: pageNum,
+      });
+      window.location.href = `/productlist?${changedQuery}`;
+    };
+
+    const ChangeSearch = (e) => {
+      const { value, name } = e.target;
+      productDispatch({
+        type: "UPDATE_SEARCH",
+        data: {
+          name,
+          value,
+        },
+      });
+    };
+
+    const ChangeButton = (buttonKind) => {
+      productDispatch({
+        type: "CHANGE_BUTTON",
+        data: {
+          buttonKind,
+        },
+      });
+    };
+
+    const ExportToExcel = (e) => {
+      e.preventDefault();
+    };
+
+    const SearchProductList = (e) => {
+      e.preventDefault();
+      if (productState.searchOption.searchSelectBox === "productId") {
+        if (isNaN(productState.searchOption.searchKeyWord)) {
+          toast.error("Id must be a number.");
+          return;
+        }
+      }
+
+      const changedQuery = {
+        page: 1,
+        id:
+          productState.searchOption.searchSelectBox === "productId"
+            ? productState.searchOption.searchKeyWord
+            : undefined,
+        productname:
+          productState.searchOption.searchSelectBox === "productName"
+            ? productState.searchOption.searchKeyWord
+            : undefined,
+      };
+
+      window.location.href = `/productlist?${queryString.stringify(
+        changedQuery
+      )}`;
+    };
+
+    const refreshQuery = (e) => {
+      e.preventDefault();
+      window.location.href = "/productlist";
+    };
     return (
       <>
         <WrapPage>
