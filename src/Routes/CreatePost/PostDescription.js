@@ -62,7 +62,10 @@ const PostDescription = () => {
 
   const handleDesciptionClick = async (e) => {
     e.preventDefault();
-    if (!postState.basicInfo.mainProductId) {
+    if (
+      !postState.basicInfo.mainProductId ||
+      postState.basicInfo.mainProductId === 0
+    ) {
       toast.error("Please select the main product.");
       return;
     }
