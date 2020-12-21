@@ -7,25 +7,16 @@ import {
   UPDATE_PRODUCTS,
 } from "./ProductListQueries";
 import { toast } from "react-toastify";
+import queryString from "query-string";
 
 export const ProductListContext = React.createContext(null);
 
 const initialState = {
   selectedProductIdList: [],
   pageNum: 1,
-  sortOption: {
-    sortProductId: false,
-    sortProductName: false,
-    sortPrice: false,
-    productIdAsc: true,
-    productNameAsc: true,
-    priceAsc: true,
-  },
   searchOption: {
     searchSelectBox: "productId",
     searchKeyWord: "",
-    searchItemBoolean: false,
-    searchItem: "",
   },
   productInfo: [],
   confirmButton: "delete",
@@ -48,19 +39,14 @@ function reducer(state, action) {
         ...state,
         productInfo,
       };
-    case "UPDATE_PAGENUM":
-      return { ...state, pageNum: action.data.pageNum };
     case "UPDATE_SEARCH":
       const { name, value } = action.data;
       if (name === "searchSelectBox") {
         return {
           ...state,
           searchOption: {
-            ...state.searchOption,
             [name]: value,
             searchKeyWord: "",
-            searchItemBoolean: false,
-            searchItem: "",
           },
         };
       }
@@ -70,12 +56,6 @@ function reducer(state, action) {
           ...state.searchOption,
           [name]: value,
         },
-      };
-    case "UPDATE_SORTOPTION":
-      return {
-        ...state,
-        pageNum: 1,
-        sortOption: action.data.sortOption,
       };
     case "UPDATE_SELECTPRODCT":
       if (state.selectedProductIdList.includes(action.data.productId)) {
@@ -118,35 +98,37 @@ function reducer(state, action) {
   }
 }
 
-export default () => {
+export default ({ location }) => {
   const [productState, productDispatch] = useReducer(reducer, initialState);
   const [deleteProducts, { error: mutationError }] = useMutation(
     DELETE_PRODUCTS
   );
   const [updateProducts, { error: updateError }] = useMutation(UPDATE_PRODUCTS);
+  const queryInput = queryString.parse(location.search);
 
   const { loading, error, data } = useQuery(GET_PRODUCTLIST, {
     variables: {
-      pageNum: productState.pageNum,
-      productId:
-        productState.searchOption.searchSelectBox === "productId" &&
-        productState.searchOption.searchItemBoolean
-          ? Number(productState.searchOption.searchItem)
-          : null,
-      productName:
-        productState.searchOption.searchSelectBox === "productName" &&
-        productState.searchOption.searchItemBoolean
-          ? productState.searchOption.searchItem
-          : null,
-      productIdAsc: productState.sortOption.sortProductId
-        ? productState.sortOption.productIdAsc
-        : null,
-      productNameAsc: productState.sortOption.sortProductName
-        ? productState.sortOption.productNameAsc
-        : null,
-      priceAsc: productState.sortOption.sortPrice
-        ? productState.sortOption.priceAsc
-        : null,
+      pageNum: Number(queryInput.page),
+      productId: queryInput.id ? Number(queryInput.id) : null,
+      productName: queryInput.productname ?? null,
+      productIdAsc:
+        queryInput.sortid === undefined
+          ? null
+          : Number(queryInput.sortid) > 0
+          ? false
+          : true,
+      productNameAsc:
+        queryInput.sortname === undefined
+          ? null
+          : Number(queryInput.sortname) > 0
+          ? false
+          : true,
+      priceAsc:
+        queryInput.sortprice === undefined
+          ? null
+          : Number(queryInput.sortprice) > 0
+          ? false
+          : true,
     },
   });
 

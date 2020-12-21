@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ProductListContext } from "./ProductListContainer";
 import SortButton from "../../Components/SortButton";
 import PageChangeButton from "../../Components/PageChangeButton";
+import queryString from "query-string";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -38,6 +39,8 @@ const SortText = styled.span`
 
 const ProductListTable = ({ data }) => {
   const { productState, productDispatch } = useContext(ProductListContext);
+
+  const queryInput = queryString.parse(window.location.search);
 
   const CheckAllCheckBox = (e) => {
     let saveList = productState.selectedProductIdList.slice();
@@ -93,60 +96,37 @@ const ProductListTable = ({ data }) => {
 
   const SortClick = (e, name) => {
     e.preventDefault();
-    let sortOption = {
-      sortProductId: false,
-      sortProductName: false,
-      sortPrice: false,
-      productIdAsc: true,
-      productNameAsc: true,
-      priceAsc: true,
+    const changedQuery = {
+      page: 1,
+      id: queryInput.id ?? undefined,
+      productname: queryInput.productname ?? undefined,
     };
+
     if (name === "productId") {
-      if (productState.sortOption.sortProductId) {
-        if (productState.sortOption.productIdAsc) {
-          sortOption.sortProductId = true;
-          sortOption.productIdAsc = false;
-        } else {
-          sortOption.sortProductId = false;
-          sortOption.productIdAsc = true;
-        }
+      const sortid = queryInput.sortid;
+      if (sortid) {
+        if (Number(sortid) === 0) changedQuery.sortid = 1;
       } else {
-        sortOption.sortProductId = true;
-        sortOption.productIdAsc = true;
+        changedQuery.sortid = 0;
       }
     } else if (name === "productName") {
-      if (productState.sortOption.sortProductName) {
-        if (productState.sortOption.productNameAsc) {
-          sortOption.sortProductName = true;
-          sortOption.productNameAsc = false;
-        } else {
-          sortOption.sortProductName = false;
-          sortOption.productNameAsc = true;
-        }
+      const sortname = queryInput.sortname;
+      if (sortname) {
+        if (Number(sortname) === 0) changedQuery.sortname = 1;
       } else {
-        sortOption.sortProductName = true;
-        sortOption.productNameAsc = true;
+        changedQuery.sortname = 0;
       }
     } else if (name === "price") {
-      if (productState.sortOption.sortPrice) {
-        if (productState.sortOption.priceAsc) {
-          sortOption.sortPrice = true;
-          sortOption.priceAsc = false;
-        } else {
-          sortOption.sortPrice = false;
-          sortOption.priceAsc = true;
-        }
+      const sortprice = queryInput.sortprice;
+      if (sortprice) {
+        if (Number(sortprice) === 0) changedQuery.sortprice = 1;
       } else {
-        sortOption.sortPrice = true;
-        sortOption.priceAsc = true;
+        changedQuery.sortprice = 0;
       }
     }
-    productDispatch({
-      type: "UPDATE_SORTOPTION",
-      data: {
-        sortOption,
-      },
-    });
+    window.location.href = `/productlist?${queryString.stringify(
+      changedQuery
+    )}`;
   };
   return (
     <Table>
@@ -163,11 +143,7 @@ const ProductListTable = ({ data }) => {
             <SortText>Product Id</SortText>
             <SortButton
               type={
-                !productState.sortOption.sortProductId
-                  ? 0
-                  : productState.sortOption.productIdAsc
-                  ? 1
-                  : 2
+                !queryInput.sortid ? 0 : Number(queryInput.sortid) === 0 ? 1 : 2
               }
               func={(e) => SortClick(e, "productId")}
             />
@@ -176,9 +152,9 @@ const ProductListTable = ({ data }) => {
             <SortText>Product Name</SortText>
             <SortButton
               type={
-                !productState.sortOption.sortProductName
+                !queryInput.sortname
                   ? 0
-                  : productState.sortOption.productNameAsc
+                  : Number(queryInput.sortname) === 0
                   ? 1
                   : 2
               }
@@ -189,9 +165,9 @@ const ProductListTable = ({ data }) => {
             <SortText>Price</SortText>
             <SortButton
               type={
-                !productState.sortOption.sortPrice
+                !queryInput.sortprice
                   ? 0
-                  : productState.sortOption.priceAsc
+                  : Number(queryInput.sortprice) === 0
                   ? 1
                   : 2
               }
@@ -232,7 +208,7 @@ const ProductListTable = ({ data }) => {
             <td>{product.link}</td>
             <td>
               <PageChangeButton
-                width="50"
+                width={50}
                 text="edit"
                 href={"/productdetail/" + product.productId}
               />

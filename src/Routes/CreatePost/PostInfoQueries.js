@@ -1,5 +1,11 @@
 import { gql } from "apollo-boost";
 
+export const GET_PRODUCT_DESCRIPTION = gql`
+  mutation GET_PRODUCT_DESCRIPTION($lang: String, $mainProductId: Int!) {
+    getProdDescription(lang: $lang, mainProductId: $mainProductId)
+  }
+`;
+
 export const GET_PRODUCT_TAG = gql`
   mutation GET_PRODUCT_TAG($lang: String, $productIds: [Int]!) {
     getSubProductTag(lang: $lang, productIds: $productIds) {

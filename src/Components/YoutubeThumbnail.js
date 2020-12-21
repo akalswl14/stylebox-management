@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import PropTypes from "prop-types";
 
 const YoutubeThumbnail = ({ url }) => {
@@ -7,6 +6,7 @@ const YoutubeThumbnail = ({ url }) => {
   let youtubeSrc = "https://www.youtube.com/embed/" + youtubeUrl[3];
   return (
     <iframe
+      title="youtube thumbnail"
       width="300px"
       height="200px"
       src={youtubeSrc}

@@ -7,17 +7,12 @@ import { useQuery } from "react-apollo-hooks";
 
 const Table = styled.table`
   border-collapse: collapse;
-  border: 1px solid black;
+  border: 1px solid lightgrey;
   width: 100%;
   text-align: center;
   font-size: 15px;
   tr {
     height: 40px;
-  }
-  tr,
-  td,
-  th {
-    border: ${(props) => props.theme.tableBorder};
   }
   td,
   th {
@@ -27,6 +22,7 @@ const Table = styled.table`
   th {
     background-color: #f2f2f2;
     font-weight: 500;
+    border-bottom: 0.5px solid black;
     width: ${(props) => {
       if (props.CellWidth) {
         return props.CellWidth.toString() + "px";
@@ -34,6 +30,15 @@ const Table = styled.table`
         return null;
       }
     }};
+  }
+  td:first-child,
+  th:first-child {
+    background-color: #f2f2f2;
+    border-right: 0.5px solid black;
+  }
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
   .orderInputCell,
   .buttonCell {
@@ -61,29 +66,37 @@ export default () => {
   if (branchError || branchLoading) {
     return (
       <Table>
-        <tr>
-          <th className="orderInputCell">Branch ID</th>
-          <th>Branch Name</th>
-          <th>Phone Number</th>
-          <th className="AddressCell">Address</th>
-          <th className="buttonCell">Select</th>
-        </tr>
+        <thead>
+          <tr>
+            <th className="orderInputCell">Branch ID</th>
+            <th>Branch Name</th>
+            <th>Phone Number</th>
+            <th className="AddressCell">Address</th>
+            <th className="buttonCell">Select</th>
+          </tr>
+        </thead>
       </Table>
     );
   }
   if (!branchLoading && branchData) {
     return (
       <Table>
-        <tr>
-          <th className="orderInputCell">Branch ID</th>
-          <th>Branch Name</th>
-          <th>Phone Number</th>
-          <th className="AddressCell">Address</th>
-          <th className="buttonCell"> Select</th>
-        </tr>
-        {branchData.getProductSellingShopBranch.branches.map((eachRow) => (
-          <BranchRowData data={eachRow} />
-        ))}
+        <thead>
+          <tr>
+            <th className="orderInputCell">Branch ID</th>
+            <th>Branch Name</th>
+            <th>Phone Number</th>
+            <th className="AddressCell">Address</th>
+            <th className="buttonCell"> Select</th>
+          </tr>
+        </thead>
+        <tbody>
+          {branchData.getProductSellingShopBranch.branches.map(
+            (eachRow, index) => (
+              <BranchRowData data={eachRow} key={index} />
+            )
+          )}
+        </tbody>
       </Table>
     );
   }

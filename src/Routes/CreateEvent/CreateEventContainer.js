@@ -183,9 +183,9 @@ export default () => {
       if (Number(eachImage.order) <= 0) {
         toast.error("Main Image Order Value should be bigger than 0");
       }
-      var ImageType = eachImage.ImageFile.type.substring(6);
+      ImageType = eachImage.ImageFile.type.substring(6);
       TimeNumber = new Date();
-      var ImageFileName =
+      ImageFileName =
         "Main_" +
         eachImage.order +
         "_" +
@@ -258,9 +258,9 @@ export default () => {
       if (Number(eachImage.order) <= 0) {
         toast.error("Detail Image Order Value should be bigger than 0");
       }
-      var ImageType = eachImage.ImageFile.type.substring(6);
+      ImageType = eachImage.ImageFile.type.substring(6);
       TimeNumber = new Date();
-      var ImageFileName =
+      ImageFileName =
         "Detail_" +
         eachImage.order +
         "_" +

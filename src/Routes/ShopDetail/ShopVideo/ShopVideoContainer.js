@@ -35,13 +35,13 @@ const Table = styled.table`
   }
   .orderInputCell,
   .buttonCell {
-    width: 10%;
+    width: 6.8%;
   }
   .ThumbnailCell {
-    width: 18%;
+    width: 23.4%;
   }
   .checkButtonCell {
-    width: 180px;
+    width: 13.6%;
   }
 `;
 

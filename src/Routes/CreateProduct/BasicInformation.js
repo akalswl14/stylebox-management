@@ -7,17 +7,12 @@ import { ProductInfoContext } from "./CreateProductContainer";
 
 const Table = styled.table`
   border-collapse: collapse;
-  border: 1px solid black;
+  border: 1px solid lightgrey;
   width: 100%;
   text-align: center;
   font-size: 15px;
   tr {
     height: 40px;
-  }
-  tr,
-  td,
-  th {
-    border: ${(props) => props.theme.tableBorder};
   }
   td,
   th {
@@ -27,9 +22,14 @@ const Table = styled.table`
   th {
     background-color: #f2f2f2;
     font-weight: 500;
+    border-right: 0.5px solid black;
   }
   .smallerCell {
     width: 400px;
+  }
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
 `;
 
@@ -41,13 +41,6 @@ const ImageInputBox = styled.div`
 
 const PreviewImage = styled.img`
   height: 170px;
-`;
-
-const TitleSpan = styled.span`
-  width: 90px;
-  line-height: 35px;
-  border: black solid 1px;
-  height: 35px;
 `;
 
 const Input = styled.input`
@@ -66,13 +59,6 @@ const AddressCellWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-`;
-
-const MapUrlWrapper = styled.span`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 600px;
 `;
 
 export default () => {
@@ -195,72 +181,74 @@ export default () => {
     <>
       <SectionTitle text="Basic Information" />
       <Table>
-        <tr>
-          <th>Product ID</th>
-          <td className="smallerCell">
-            {ProductInfoState.BasicInformation.productId}
-          </td>
-          <th rowSpan="3">Product Image</th>
-          <td rowSpan="3">
-            <ImageInputBox>
-              <Input
-                type="file"
-                accept="image/jpg,image/png,image/jpeg"
-                name="ProductImageInput"
-                onChange={(e) => ChangeImage(e)}
+        <tbody>
+          <tr>
+            <th>Product ID</th>
+            <td className="smallerCell">
+              {ProductInfoState.BasicInformation.productId}
+            </td>
+            <th rowSpan="3">Product Image</th>
+            <td rowSpan="3">
+              <ImageInputBox>
+                <Input
+                  type="file"
+                  accept="image/jpg,image/png,image/jpeg"
+                  name="ProductImageInput"
+                  onChange={(e) => ChangeImage(e)}
+                />
+                {productImage_Preview}
+              </ImageInputBox>
+              <Button
+                text={"Delete Photo"}
+                isButtonType={true}
+                ClickEvent={(e) => DeleteImage(e)}
               />
-              {productImage_Preview}
-            </ImageInputBox>
-            <Button
-              text={"Delete Photo"}
-              isButtonType={true}
-              ClickEvent={(e) => DeleteImage(e)}
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>Product Name</th>
-          <td className="smallerCell">
-            <Input
-              InputWidth={300}
-              type="text"
-              name="ProductNameInput"
-              value={ProductInfoState.BasicInformation.productName.value}
-              onChange={(e) => onChange(e)}
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>Price</th>
-          <td className="smallerCell">
-            <Input
-              InputWidth={300}
-              type="text"
-              name="PriceInput"
-              value={ProductInfoState.BasicInformation.price.value}
-              onChange={(e) => onChange(e)}
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>Link URL</th>
-          <td colSpan="3" id="AddressCell">
-            <AddressCellWrapper>
+            </td>
+          </tr>
+          <tr>
+            <th>Product Name</th>
+            <td className="smallerCell">
               <Input
-                InputWidth={900}
+                InputWidth={300}
                 type="text"
-                name="ShopLinkInput"
-                value={ProductInfoState.BasicInformation.externalLink.value}
+                name="ProductNameInput"
+                value={ProductInfoState.BasicInformation.productName.value}
                 onChange={(e) => onChange(e)}
               />
-              <Button
-                text={"Check"}
-                isButtonType={true}
-                ClickEvent={CheckLink}
+            </td>
+          </tr>
+          <tr>
+            <th>Price</th>
+            <td className="smallerCell">
+              <Input
+                InputWidth={300}
+                type="text"
+                name="PriceInput"
+                value={ProductInfoState.BasicInformation.price.value}
+                onChange={(e) => onChange(e)}
               />
-            </AddressCellWrapper>
-          </td>
-        </tr>
+            </td>
+          </tr>
+          <tr>
+            <th>Link URL</th>
+            <td colSpan="3" id="AddressCell">
+              <AddressCellWrapper>
+                <Input
+                  InputWidth={900}
+                  type="text"
+                  name="ShopLinkInput"
+                  value={ProductInfoState.BasicInformation.externalLink.value}
+                  onChange={(e) => onChange(e)}
+                />
+                <Button
+                  text={"Check"}
+                  isButtonType={true}
+                  ClickEvent={CheckLink}
+                />
+              </AddressCellWrapper>
+            </td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );

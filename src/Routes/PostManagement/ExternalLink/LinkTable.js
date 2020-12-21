@@ -93,9 +93,13 @@ const LinkTable = ({ linkTypes, data }) => {
   const ClickEvent = (e) => {
     e.preventDefault();
     let url = data.url;
-    if (url.includes("https://") || url.includes("http://")) {
-      window.open(`${data.url}`, "_blank");
-    } else {
+    url =
+      url.includes("https://") || url.includes("http://")
+        ? url
+        : "http://" + url;
+    try {
+      window.open(url, "_blank");
+    } catch (e) {
       toast.error("This is not a valid address.");
     }
   };
@@ -119,7 +123,9 @@ const LinkTable = ({ linkTypes, data }) => {
             <></>
           )}
           {linkTypes.map((linkType) => (
-            <option value={linkType}>{linkType}</option>
+            <option value={linkType} key={linkType}>
+              {linkType}
+            </option>
           ))}
         </SelectBox>
       </td>

@@ -11,6 +11,8 @@ import Pagination from "react-pagination-js";
 import SearchButton from "../../Components/SearchButton";
 import PageChangeButton from "../../Components/PageChangeButton";
 import { toast } from "react-toastify";
+import queryString from "query-string";
+import RefreshButton from "../../Components/RefreshButton";
 
 const Wrapper = styled.div`
   min-height: 25vh;
@@ -107,86 +109,67 @@ const SearchContainer = styled.div`
 export default ({ onSubmit, loading, error, data }) => {
   const { ShopListState, ShopListDispatch } = useContext(ShopListContext);
 
+  const queryInput = queryString.parse(window.location.search);
+
   const SortClick = (e, name) => {
     e.preventDefault();
-    let SortOption = {
-      SortShopId: false,
-      SortShopName: false,
-      SortWeight: false,
-      SortRank: false,
-      shopIdAsc: true,
-      ShopNameAsc: true,
-      WeightAsc: true,
-      RankAsc: true,
+
+    const changedQuery = {
+      page: 1,
+      key_address: queryInput.key_address ?? undefined,
+      key_phone: queryInput.key_phone ?? undefined,
+      key_shopid: queryInput.key_shopid ?? undefined,
+      key_shopname: queryInput.key_shopname ?? undefined,
+      key_tag: queryInput.key_tag ?? undefined,
     };
+
     if (name === "ShopId") {
-      if (ShopListState.SortOption.SortShopId) {
-        if (ShopListState.SortOption.shopIdAsc) {
-          SortOption.SortShopId = true;
-          SortOption.shopIdAsc = false;
-        } else {
-          SortOption.SortShopId = false;
-          SortOption.shopIdAsc = true;
+      const sort_shopid = queryInput.sort_shopid;
+      if (sort_shopid) {
+        if (Number(sort_shopid) === 0) {
+          changedQuery.sort_shopid = 1;
         }
       } else {
-        SortOption.SortShopId = true;
-        SortOption.shopIdAsc = true;
+        changedQuery.sort_shopid = 0;
       }
     } else if (name === "ShopName") {
-      if (ShopListState.SortOption.SortShopName) {
-        if (ShopListState.SortOption.ShopNameAsc) {
-          SortOption.SortShopName = true;
-          SortOption.ShopNameAsc = false;
-        } else {
-          SortOption.ShopNameAsc = true;
-          SortOption.SortShopName = false;
+      const sort_shopname = queryInput.sort_shopname;
+      if (sort_shopname) {
+        if (Number(sort_shopname) === 0) {
+          changedQuery.sort_shopname = 1;
         }
       } else {
-        SortOption.SortShopName = true;
-        SortOption.ShopNameAsc = true;
+        changedQuery.sort_shopname = 0;
       }
     } else if (name === "Weight") {
-      if (ShopListState.SortOption.SortWeight) {
-        if (ShopListState.SortOption.WeightAsc) {
-          SortOption.SortWeight = true;
-          SortOption.WeightAsc = false;
-        } else {
-          SortOption.SortWeight = false;
-          SortOption.WeightAsc = true;
+      const sort_weight = queryInput.sort_weight;
+      if (sort_weight) {
+        if (Number(sort_weight) === 0) {
+          changedQuery.sort_weight = 1;
         }
       } else {
-        SortOption.SortWeight = true;
-        SortOption.WeightAsc = true;
+        changedQuery.sort_weight = 0;
       }
     } else if (name === "Rank") {
-      if (ShopListState.SortOption.SortRank) {
-        if (ShopListState.SortOption.RankAsc) {
-          SortOption.SortRank = true;
-          SortOption.RankAsc = false;
-        } else {
-          SortOption.SortRank = false;
-          SortOption.RankAsc = true;
+      const sort_rank = queryInput.sort_rank;
+      if (sort_rank) {
+        if (Number(sort_rank) === 0) {
+          changedQuery.sort_rank = 1;
         }
       } else {
-        SortOption.SortRank = true;
-        SortOption.RankAsc = true;
+        changedQuery.sort_rank = 0;
       }
     }
-    ShopListDispatch({
-      type: "UPDATE_SORTOPTION",
-      data: {
-        SortOption,
-      },
-    });
+
+    window.location.href = `/shoplist?${queryString.stringify(changedQuery)}`;
   };
 
   const ChangeCurrentPage = (pageNum) => {
-    ShopListDispatch({
-      type: "UPDATE_PAGENUM",
-      data: {
-        pageNum,
-      },
+    const changedQuery = queryString.stringify({
+      ...queryInput,
+      page: pageNum,
     });
+    window.location.href = `/shoplist?${changedQuery}`;
   };
 
   const ChangeSearchSelectBox = (e) => {
@@ -217,44 +200,35 @@ export default ({ onSubmit, loading, error, data }) => {
         return;
       }
     }
-    let rtnSearchOption = {};
-    if (ShopListState.SearchOption.SearchSelectBox === "ShopID") {
-      rtnSearchOption = {
-        ...ShopListState.SearchOption,
-        SearchShopId: true,
-        ShopId: Number(ShopListState.SearchOption.SearchKeyWord),
-      };
-    } else if (ShopListState.SearchOption.SearchSelectBox === "ShopName") {
-      rtnSearchOption = {
-        ...ShopListState.SearchOption,
-        SearchShopName: true,
-        ShopName: ShopListState.SearchOption.SearchKeyWord,
-      };
-    } else if (ShopListState.SearchOption.SearchSelectBox === "PhoneNumber") {
-      rtnSearchOption = {
-        ...ShopListState.SearchOption,
-        SeacrchPhoneNumber: true,
-        PhoneNumber: ShopListState.SearchOption.SearchKeyWord,
-      };
-    } else if (ShopListState.SearchOption.SearchSelectBox === "Address") {
-      rtnSearchOption = {
-        ...ShopListState.SearchOption,
-        SearchAddress: true,
-        Address: ShopListState.SearchOption.SearchKeyWord,
-      };
-    } else if (ShopListState.SearchOption.SearchSelectBox === "Tag") {
-      rtnSearchOption = {
-        ...ShopListState.SearchOption,
-        SearchTag: true,
-        Tag: ShopListState.SearchOption.SearchKeyWord,
-      };
-    }
-    ShopListDispatch({
-      type: "UPDATE_SEARCHOPTION",
-      data: {
-        SearchOption: rtnSearchOption,
-      },
-    });
+    const changedQuery = {
+      page: 1,
+      key_shopid:
+        ShopListState.SearchOption.SearchSelectBox === "ShopID"
+          ? Number(ShopListState.SearchOption.SearchKeyWord)
+          : undefined,
+      key_shopname:
+        ShopListState.SearchOption.SearchSelectBox === "ShopName"
+          ? ShopListState.SearchOption.SearchKeyWord
+          : undefined,
+      key_phone:
+        ShopListState.SearchOption.SearchSelectBox === "PhoneNumber"
+          ? ShopListState.SearchOption.SearchKeyWord
+          : undefined,
+      key_address:
+        ShopListState.SearchOption.SearchSelectBox === "Address"
+          ? ShopListState.SearchOption.SearchKeyWord
+          : undefined,
+      key_tag:
+        ShopListState.SearchOption.SearchSelectBox === "Tag"
+          ? ShopListState.SearchOption.SearchKeyWord
+          : undefined,
+    };
+    window.location.href = `/shoplist?${queryString.stringify(changedQuery)}`;
+  };
+
+  const refreshQuery = (e) => {
+    e.preventDefault();
+    window.location.href = "/shoplist";
   };
 
   if (error) return <WrapPage>`Error! ${error.message}`</WrapPage>;
@@ -348,6 +322,7 @@ export default ({ onSubmit, loading, error, data }) => {
           <TitleBox>
             <PageTitle text={"Shop List"} />
             <ButtonBox>
+              <RefreshButton func={refreshQuery} />
               <PageChangeButton text="Add New Shop" href="/createshop" />
               <Button
                 text="Export to Excel"
@@ -382,7 +357,7 @@ export default ({ onSubmit, loading, error, data }) => {
               type="text"
               name="SearchKeywordInput"
               value={ShopListState.SearchOption.SearchKeyWord}
-              onChange={(e) => ChangeSearchKeyword(e)}
+              onChange={ChangeSearchKeyword}
               onKeyPress={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
@@ -398,7 +373,7 @@ export default ({ onSubmit, loading, error, data }) => {
                 <th className="CheckBoxCell">
                   <input
                     type="checkbox"
-                    onClick={(e) => CheckAllCheckBox(e)}
+                    onChange={CheckAllCheckBox}
                     checked={AllCheckBoxStatus()}
                   />
                 </th>
@@ -406,9 +381,9 @@ export default ({ onSubmit, loading, error, data }) => {
                   <SortText>Shop ID</SortText>
                   <SortButton
                     type={
-                      !ShopListState.SortOption.SortShopId
+                      !queryInput.sort_shopid
                         ? 0
-                        : ShopListState.SortOption.shopIdAsc
+                        : Number(queryInput.sort_shopid) === 0
                         ? 1
                         : 2
                     }
@@ -419,9 +394,9 @@ export default ({ onSubmit, loading, error, data }) => {
                   <SortText>Shop Name</SortText>
                   <SortButton
                     type={
-                      !ShopListState.SortOption.SortShopName
+                      !queryInput.sort_shopname
                         ? 0
-                        : ShopListState.SortOption.ShopNameAsc
+                        : Number(queryInput.sort_shopname) === 0
                         ? 1
                         : 2
                     }
@@ -435,9 +410,9 @@ export default ({ onSubmit, loading, error, data }) => {
                   <SortText>Rank</SortText>
                   <SortButton
                     type={
-                      !ShopListState.SortOption.SortRank
+                      !queryInput.sort_rank
                         ? 0
-                        : ShopListState.SortOption.RankAsc
+                        : Number(queryInput.sort_rank) === 0
                         ? 1
                         : 2
                     }
@@ -448,9 +423,9 @@ export default ({ onSubmit, loading, error, data }) => {
                   <SortText>Weight</SortText>
                   <SortButton
                     type={
-                      !ShopListState.SortOption.SortWeight
+                      !queryInput.sort_weight
                         ? 0
-                        : ShopListState.SortOption.WeightAsc
+                        : Number(queryInput.sort_weight) === 0
                         ? 1
                         : 2
                     }
@@ -492,11 +467,15 @@ export default ({ onSubmit, loading, error, data }) => {
         </Form>
         <PaginationWrapper>
           <Pagination
-            currentPage={ShopListState.pageNum}
+            currentPage={
+              isNaN(Number(queryInput.page)) || Number(queryInput.page) <= 0
+                ? 1
+                : Number(queryInput.page)
+            }
             totalSize={data.getShopList.totalShopNum}
             sizePerPage={13}
             theme="bootstrap"
-            changeCurrentPage={(e) => ChangeCurrentPage(e)}
+            changeCurrentPage={ChangeCurrentPage}
             numberOfPagesNextToActivePage={3}
           />
         </PaginationWrapper>

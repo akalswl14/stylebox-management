@@ -145,6 +145,7 @@ export default ({
                     <input
                       name="email"
                       type="email"
+                      autoComplete="username"
                       onChange={onChange}
                       value={email}
                       required
@@ -157,6 +158,7 @@ export default ({
                     <input
                       name="pw"
                       type="password"
+                      autoComplete="current-password"
                       onChange={onChange}
                       value={pw}
                       required

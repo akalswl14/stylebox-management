@@ -4,6 +4,7 @@ import { PostListContext } from "./PostListContainer";
 import SortButton from "../../Components/SortButton";
 import PageChangeButton from "../../Components/PageChangeButton";
 import ParsePrice from "../../Styles/ParsePrice";
+import queryString from "query-string";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -39,6 +40,8 @@ const SortText = styled.span`
 
 const PostListTable = ({ data }) => {
   const { postState, postDispatch } = useContext(PostListContext);
+
+  const queryInput = queryString.parse(window.location.search);
 
   const CheckAllCheckBox = (e) => {
     let saveList = postState.selectedPostIdList.slice();
@@ -94,90 +97,62 @@ const PostListTable = ({ data }) => {
 
   const SortClick = (e, name) => {
     e.preventDefault();
-    let sortOption = {
-      sortPostId: false,
-      sortMainProductName: false,
-      sortShopName: false,
-      sortPrice: false,
-      sortPriority: false,
-      postIdAsc: true,
-      mainProductNameAsc: true,
-      shopNameAsc: true,
-      priceAsc: true,
-      priorityAsc: true,
+
+    const changedQuery = {
+      page: 1,
+      key_postid: queryInput.key_postid ?? undefined,
+      key_productname: queryInput.key_productname ?? undefined,
+      key_shopname: queryInput.key_shopname ?? undefined,
     };
+
     if (name === "postId") {
-      if (postState.sortOption.sortPostId) {
-        if (postState.sortOption.postIdAsc) {
-          sortOption.sortPostId = true;
-          sortOption.postIdAsc = false;
-        } else {
-          sortOption.sortPostId = false;
-          sortOption.postIdAsc = true;
+      const sort_postid = queryInput.sort_postid;
+      if (sort_postid) {
+        if (Number(sort_postid) === 0) {
+          changedQuery.sort_postid = 1;
         }
       } else {
-        sortOption.sortPostId = true;
-        sortOption.postIdAsc = true;
+        changedQuery.sort_postid = 0;
       }
     } else if (name === "mainProductName") {
-      if (postState.sortOption.sortMainProductName) {
-        if (postState.sortOption.mainProductNameAsc) {
-          sortOption.sortMainProductName = true;
-          sortOption.mainProductNameAsc = false;
-        } else {
-          sortOption.sortMainProductName = false;
-          sortOption.mainProductNameAsc = true;
+      const sort_productname = queryInput.sort_productname;
+      if (sort_productname) {
+        if (Number(sort_productname) === 0) {
+          changedQuery.sort_productname = 1;
         }
       } else {
-        sortOption.sortMainProductName = true;
-        sortOption.mainProductNameAsc = true;
+        changedQuery.sort_productname = 0;
       }
     } else if (name === "price") {
-      if (postState.sortOption.sortPrice) {
-        if (postState.sortOption.priceAsc) {
-          sortOption.sortPrice = true;
-          sortOption.priceAsc = false;
-        } else {
-          sortOption.sortPrice = false;
-          sortOption.priceAsc = true;
+      const sort_price = queryInput.sort_price;
+      if (sort_price) {
+        if (Number(sort_price) === 0) {
+          changedQuery.sort_price = 1;
         }
       } else {
-        sortOption.sortPrice = true;
-        sortOption.priceAsc = true;
+        changedQuery.sort_price = 0;
       }
     } else if (name === "shopName") {
-      if (postState.sortOption.sortShopName) {
-        if (postState.sortOption.shopNameAsc) {
-          sortOption.sortShopName = true;
-          sortOption.shopNameAsc = false;
-        } else {
-          sortOption.sortShopName = false;
-          sortOption.shopNameAsc = true;
+      const sort_shopname = queryInput.sort_shopname;
+      if (sort_shopname) {
+        if (Number(sort_shopname) === 0) {
+          changedQuery.sort_shopname = 1;
         }
       } else {
-        sortOption.sortShopName = true;
-        sortOption.shopNameAsc = true;
+        changedQuery.sort_shopname = 0;
       }
     } else if (name === "priority") {
-      if (postState.sortOption.sortPriority) {
-        if (postState.sortOption.priorityAsc) {
-          sortOption.sortPriority = true;
-          sortOption.priorityAsc = false;
-        } else {
-          sortOption.sortPriority = false;
-          sortOption.priorityAsc = true;
+      const sort_priority = queryInput.sort_priority;
+      if (sort_priority) {
+        if (Number(sort_priority) === 0) {
+          changedQuery.sort_priority = 1;
         }
       } else {
-        sortOption.sortPriority = true;
-        sortOption.priorityAsc = true;
+        changedQuery.sort_priority = 0;
       }
     }
-    postDispatch({
-      type: "UPDATE_SORTOPTION",
-      data: {
-        sortOption,
-      },
-    });
+
+    window.location.href = `/postlist?${queryString.stringify(changedQuery)}`;
   };
   return (
     <Table>
@@ -194,9 +169,9 @@ const PostListTable = ({ data }) => {
             <SortText>Post Id</SortText>
             <SortButton
               type={
-                !postState.sortOption.sortPostId
+                !queryInput.sort_postid
                   ? 0
-                  : postState.sortOption.postIdAsc
+                  : Number(queryInput.sort_postid) === 0
                   ? 1
                   : 2
               }
@@ -207,9 +182,9 @@ const PostListTable = ({ data }) => {
             <SortText>Main Product</SortText>
             <SortButton
               type={
-                !postState.sortOption.sortMainProductName
+                !queryInput.sort_productname
                   ? 0
-                  : postState.sortOption.mainProductNameAsc
+                  : Number(queryInput.sort_productname) === 0
                   ? 1
                   : 2
               }
@@ -220,9 +195,9 @@ const PostListTable = ({ data }) => {
             <SortText>Price</SortText>
             <SortButton
               type={
-                !postState.sortOption.sortPrice
+                !queryInput.sort_price
                   ? 0
-                  : postState.sortOption.priceAsc
+                  : Number(queryInput.sort_price) === 0
                   ? 1
                   : 2
               }
@@ -233,9 +208,9 @@ const PostListTable = ({ data }) => {
             <SortText>Shop</SortText>
             <SortButton
               type={
-                !postState.sortOption.sortShopName
+                !queryInput.sort_shopname
                   ? 0
-                  : postState.sortOption.shopNameAsc
+                  : Number(queryInput.sort_shopname) === 0
                   ? 1
                   : 2
               }
@@ -246,9 +221,9 @@ const PostListTable = ({ data }) => {
             <SortText>Priority</SortText>
             <SortButton
               type={
-                !postState.sortOption.sortPriority
+                !queryInput.sort_priority
                   ? 0
-                  : postState.sortOption.priorityAsc
+                  : Number(queryInput.sort_priority) === 0
                   ? 1
                   : 2
               }
@@ -307,7 +282,7 @@ const PostListTable = ({ data }) => {
               <PageChangeButton
                 text="edit"
                 href={"/postinfo/" + post.postId}
-                width="50"
+                width={50}
               />
             </td>
           </tr>

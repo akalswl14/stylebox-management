@@ -7,27 +7,16 @@ import {
   UPDATE_EVENTS,
 } from "./EventListQueries";
 import { toast } from "react-toastify";
+import queryString from "query-string";
 
 export const EventListContext = React.createContext(null);
 
 const initialState = {
   selectedEventIdList: [],
   pageNum: 1,
-  sortOption: {
-    sortEventId: false,
-    sortEventTitle: false,
-    sortStartDate: false,
-    sortEndDate: false,
-    eventIdAsc: true,
-    eventTitleAsc: true,
-    startDateAsc: true,
-    endDateAsc: true,
-  },
   searchOption: {
     searchSelectBox: "eventId",
     searchKeyWord: "",
-    searchItemBoolean: false,
-    searchItem: "",
   },
   eventInfo: [],
   confirmButton: "delete",
@@ -72,19 +61,14 @@ function reducer(state, action) {
         ...state,
         eventInfo: eventEndInfos,
       };
-    case "UPDATE_PAGENUM":
-      return { ...state, pageNum: action.data.pageNum };
     case "UPDATE_SEARCH":
       const { name, value } = action.data;
       if (name === "searchSelectBox") {
         return {
           ...state,
           searchOption: {
-            ...state.searchOption,
             [name]: value,
             searchKeyWord: "",
-            searchItemBoolean: false,
-            searchItem: "",
           },
         };
       }
@@ -94,12 +78,6 @@ function reducer(state, action) {
           ...state.searchOption,
           [name]: value,
         },
-      };
-    case "UPDATE_SORTOPTION":
-      return {
-        ...state,
-        pageNum: 1,
-        sortOption: action.data.sortOption,
       };
     case "UPDATE_SELECTEVENT":
       if (state.selectedEventIdList.includes(action.data.eventId)) {
@@ -117,23 +95,6 @@ function reducer(state, action) {
         ...state,
         selectedEventIdList: action.data.saveList,
       };
-    case "UPDATE_SEARCHOPTION":
-      return {
-        ...state,
-        selectedEventIdList: [],
-        pageNum: 1,
-        searchOption: action.data.searchOption,
-        sortOption: {
-          sortEventId: false,
-          sortEventTitle: false,
-          sortStartDate: false,
-          sortEndDate: false,
-          eventIdAsc: true,
-          eventTitleAsc: true,
-          startDateAsc: true,
-          endDateAsc: true,
-        },
-      };
     case "CHANGE_BUTTON":
       return {
         ...state,
@@ -144,36 +105,41 @@ function reducer(state, action) {
   }
 }
 
-export default () => {
+export default ({ location }) => {
   const [eventState, eventDispatch] = useReducer(reducer, initialState);
   const [deleteEvents, { error: mutationError }] = useMutation(DELETE_EVENTS);
   const [updateEvents, { error: updateError }] = useMutation(UPDATE_EVENTS);
+  const queryInput = queryString.parse(location.search);
 
   const { loading, error, data } = useQuery(GET_EVENTLIST, {
     variables: {
-      pageNum: eventState.pageNum,
-      eventId:
-        eventState.searchOption.searchSelectBox === "eventId" &&
-        eventState.searchOption.searchItemBoolean
-          ? Number(eventState.searchOption.searchItem)
-          : null,
-      eventTitle:
-        eventState.searchOption.searchSelectBox === "eventTitle" &&
-        eventState.searchOption.searchItemBoolean
-          ? eventState.searchOption.searchItem
-          : null,
-      eventIdAsc: eventState.sortOption.sortEventId
-        ? eventState.sortOption.eventIdAsc
-        : null,
-      eventTitleAsc: eventState.sortOption.sortEventTitle
-        ? eventState.sortOption.eventTitleAsc
-        : null,
-      eventStartAsc: eventState.sortOption.sortStartDate
-        ? eventState.sortOption.startDateAsc
-        : null,
-      eventEndAsc: eventState.sortOption.sortEndDate
-        ? eventState.sortOption.endDateAsc
-        : null,
+      pageNum: Number(queryInput.page),
+      eventId: queryInput.id ? Number(queryInput.id) : null,
+      eventTitle: queryInput.eventtitle ?? null,
+      eventIdAsc:
+        queryInput.sortid === undefined
+          ? null
+          : Number(queryInput.sortid) > 0
+          ? false
+          : true,
+      eventTitleAsc:
+        queryInput.sorttitle === undefined
+          ? null
+          : Number(queryInput.sorttitle) > 0
+          ? false
+          : true,
+      eventStartAsc:
+        queryInput.sortstart === undefined
+          ? null
+          : Number(queryInput.sortstart) > 0
+          ? false
+          : true,
+      eventEndAsc:
+        queryInput.sortend === undefined
+          ? null
+          : Number(queryInput.sortend) > 0
+          ? false
+          : true,
     },
   });
 

@@ -3,45 +3,21 @@ import ShopListPresenter from "./ShopListPresenter";
 import { useMutation, useQuery } from "react-apollo-hooks";
 import { GET_SHOPS, DELETE_SHOPS, UPDATE_SHOPS } from "./ShopListQueries";
 import { toast } from "react-toastify";
+import queryString from "query-string";
 
 export const ShopListContext = React.createContext(null);
 
 const initialState = {
   WeightData: [],
   SelectedShopList: [],
-  pageNum: 1,
-  SortOption: {
-    SortShopId: false,
-    SortShopName: false,
-    SortWeight: false,
-    SortRank: false,
-    shopIdAsc: true,
-    ShopNameAsc: true,
-    WeightAsc: true,
-    RankAsc: true,
-  },
   SearchOption: {
     SearchSelectBox: "ShopID",
     SearchKeyWord: "",
-    SearchShopId: false,
-    SearchShopName: false,
-    SeacrchPhoneNumber: false,
-    SearchAddress: false,
-    SearchTag: false,
-    ShopId: 0,
-    ShopName: "",
-    PhoneNumber: "",
-    Address: "",
-    Tag: "",
   },
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case "UPDATE_PAGENUM":
-      return { ...state, pageNum: action.data.pageNum };
-    case "UPDATE_SORTOPTION":
-      return { ...state, pageNum: 1, SortOption: action.data.SortOption };
     case "UPDATE_SELECTSHOP":
       if (state.SelectedShopList.includes(action.data.shopId)) {
         let SelectedShopList = state.SelectedShopList.filter(
@@ -68,24 +44,6 @@ function reducer(state, action) {
         SearchKeyWord: action.data.SearchKeyWord,
       };
       return { ...state, SearchOption: UpdateSearchOption };
-
-    case "UPDATE_SEARCHOPTION":
-      return {
-        WeightData: [],
-        SelectedShopList: [],
-        pageNum: 1,
-        SearchOption: action.data.SearchOption,
-        SortOption: {
-          SortShopId: false,
-          SortShopName: false,
-          SortWeight: false,
-          SortRank: false,
-          shopIdAsc: true,
-          ShopNameAsc: true,
-          WeightAsc: true,
-          RankAsc: true,
-        },
-      };
     case "UPDATE_WEIGHT":
       let IsNewData = true;
       let ReturnWeightData = state.WeightData.map((eachShop) => {
@@ -102,8 +60,6 @@ function reducer(state, action) {
         });
       }
       return { ...state, WeightData: ReturnWeightData };
-    case "UPDATE_BATCH_WEIGHT":
-      return { ...state, WeightData: action.data.WeightData };
     case "UPDATE_BATCH":
       return action.data;
     default:
@@ -111,49 +67,47 @@ function reducer(state, action) {
   }
 }
 
-export default () => {
+export default ({ location }) => {
   const [ShopListState, ShopListDispatch] = useReducer(reducer, initialState);
+
+  const queryInput = queryString.parse(location.search);
+
   const { loading, error, data } = useQuery(GET_SHOPS, {
     variables: {
-      address: ShopListState.SearchOption.SearchAddress
-        ? ShopListState.SearchOption.Address
+      address: queryInput.key_address ?? null,
+      pageNum: Number(queryInput.page) ?? 1,
+      phoneNumber: queryInput.key_phone ?? null,
+      shopId: queryInput.key_shopid ? Number(queryInput.key_shopid) : null,
+      shopIdAsc: queryInput.sort_shopid
+        ? Number(queryInput.sort_shopid)
+          ? false
+          : true
         : null,
-      pageNum: ShopListState.pageNum,
-      phoneNumber: ShopListState.SearchOption.PhoneNumber
-        ? ShopListState.SearchOption.PhoneNumber
+      shopName: queryInput.key_shopname ?? null,
+      shopNameAsc: queryInput.sort_shopname
+        ? Number(queryInput.sort_shopname)
+          ? false
+          : true
         : null,
-      shopId: ShopListState.SearchOption.SearchShopId
-        ? ShopListState.SearchOption.ShopId
+      tagName: queryInput.key_tag ?? null,
+      weightAsc: queryInput.sort_weight
+        ? Number(queryInput.sort_weight)
+          ? false
+          : true
         : null,
-      shopIdAsc: ShopListState.SortOption.SortShopId
-        ? ShopListState.SortOption.shopIdAsc
-        : null,
-      shopName: ShopListState.SearchOption.SearchShopName
-        ? ShopListState.SearchOption.ShopName
-        : null,
-      shopNameAsc: ShopListState.SortOption.SortShopName
-        ? ShopListState.SortOption.ShopNameAsc
-        : null,
-      tagName: ShopListState.SearchOption.SearchTag
-        ? ShopListState.SearchOption.Tag
-        : null,
-      weightAsc: ShopListState.SortOption.SortWeight
-        ? ShopListState.SortOption.WeightAsc
-        : null,
-      rankAsc: ShopListState.SortOption.SortRank
-        ? ShopListState.SortOption.RankAsc
+      rankAsc: queryInput.sort_rank
+        ? Number(queryInput.sort_rank)
+          ? false
+          : true
         : null,
     },
   });
-  const [
-    DeleteShopsMutation,
-    { loading: DeleteLoading, error: DeleteError },
-  ] = useMutation(DELETE_SHOPS);
 
-  const [
-    EditShopMutation,
-    { loading: EditLoading, error: EditError },
-  ] = useMutation(UPDATE_SHOPS);
+  const [DeleteShopsMutation, { error: DeleteError }] = useMutation(
+    DELETE_SHOPS
+  );
+
+  const [EditShopMutation, { error: EditError }] = useMutation(UPDATE_SHOPS);
 
   const onSubmit = async (e) => {
     e.preventDefault();

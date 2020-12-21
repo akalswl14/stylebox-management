@@ -13,18 +13,20 @@ const useStyles = makeStyles({
   },
 });
 
-const AutoSelectBox = ({ data, defaultValue, onChangeFunc, onSelectFunc }) => {
+const AutoSelectBox = ({ data, value, onChangeFunc }) => {
   const classes = useStyles();
   return (
     <Autocomplete
+      value={value}
+      onChange={onChangeFunc}
       style={{ width: "100%" }}
-      options={data}
+      options={[...[value], ...data]}
       classes={{
         option: classes.option,
       }}
       autoHighlight
       getOptionLabel={(option) => option.shopName}
-      defaultValue={defaultValue}
+      filterSelectedOptions
       renderOption={(option) => (
         <React.Fragment>
           <span>{option.id}</span>
@@ -40,10 +42,8 @@ const AutoSelectBox = ({ data, defaultValue, onChangeFunc, onSelectFunc }) => {
             ...params.inputProps,
             autoComplete: "new-password", // disable autocomplete and autofill
           }}
-          onChange={onChangeFunc}
         />
       )}
-      onChange={onSelectFunc}
     />
   );
 };

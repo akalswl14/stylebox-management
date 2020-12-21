@@ -2,6 +2,11 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import SectionTitle from "../../Components/SectionTitle";
 import { PostInfoContext } from "./PostInfoContainer";
+import MiniLoader from "../../Components/MiniLoader";
+import { useMutation } from "react-apollo-hooks";
+import Button from "../../Components/Button";
+import { GET_PRODUCT_DESCRIPTION } from "./PostInfoQueries";
+import { toast } from "react-toastify";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -50,6 +55,43 @@ const TextArea = styled.textarea`
 
 const PostDescription = () => {
   const { postDispatch, postState } = useContext(PostInfoContext);
+  const [
+    getDescription,
+    { error: getError, loading: getLoading },
+  ] = useMutation(GET_PRODUCT_DESCRIPTION);
+
+  const handleDesciptionClick = async (e) => {
+    e.preventDefault();
+    if (
+      !postState.basicInfo.mainProductId ||
+      postState.basicInfo.mainProductId === 0
+    ) {
+      toast.error("Please select the main product.");
+      return;
+    }
+
+    const {
+      data: { getProdDescription },
+    } = await getDescription({
+      variables: {
+        mainProductId: postState.basicInfo.mainProductId,
+      },
+    });
+
+    if (getError) {
+      toast.error("Error occured while get data.");
+      return;
+    }
+
+    if (getProdDescription === "" || !getProdDescription) {
+      toast.info("The main product has no description.");
+    }
+
+    postDispatch({
+      type: "SET_MAINPRODUCT_DESCRIPTION",
+      data: { getProdDescription },
+    });
+  };
 
   const onChange = (e) => {
     postDispatch({
@@ -64,6 +106,12 @@ const PostDescription = () => {
     <>
       <TitleBox>
         <SectionTitle text={"Post Description"} />
+        {getLoading ? <MiniLoader /> : <></>}
+        <Button
+          text={"Get Description"}
+          isButtonType={true}
+          ClickEvent={handleDesciptionClick}
+        ></Button>
       </TitleBox>
       <Table>
         <tbody>

@@ -10,6 +10,9 @@ const Table = styled.table`
   tr {
     height: 40px;
   }
+  tr {
+    height: 40px;
+  }
   border-collapse: collapse;
   border: 1px solid lightgrey;
   width: 100%;
@@ -24,6 +27,16 @@ const Table = styled.table`
     font-weight: 500;
     border-bottom: 0.5px solid black;
   }
+  .orderInputCell,
+  .buttonCell {
+    width: 6.8%;
+  }
+  .checkButtonCell {
+    width: 13.6%;
+  }
+  .categoryCell {
+    width: 19.3%;
+  }
   td:first-child,
   th:first-child {
     background-color: #f2f2f2;
@@ -32,13 +45,6 @@ const Table = styled.table`
   tbody > tr:nth-child(2n) {
     border-top: 0.5px solid lightgrey;
     border-bottom: 0.5px solid lightgrey;
-  }
-  .orderInputCell,
-  .buttonCell {
-    width: 120px;
-  }
-  .checkButtonCell {
-    width: 180px;
   }
 `;
 
@@ -85,7 +91,7 @@ export default () => {
         <thead>
           <tr>
             <th className="orderInputCell">Order</th>
-            <th>Category</th>
+            <th className="categoryCell">Category</th>
             <th>Link URL</th>
             <th className="buttonCell">Show</th>
             <th className="checkButtonCell">Check</th>

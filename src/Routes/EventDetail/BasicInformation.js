@@ -12,17 +12,12 @@ import DateFnsUtils from "@date-io/date-fns";
 
 const Table = styled.table`
   border-collapse: collapse;
-  border: 1px solid black;
+  border: 1px solid lightgrey;
   width: 100%;
   text-align: center;
   font-size: 15px;
   tr {
     height: 40px;
-  }
-  tr,
-  td,
-  th {
-    border: ${(props) => props.theme.tableBorder};
   }
   td,
   th {
@@ -32,7 +27,12 @@ const Table = styled.table`
   th {
     background-color: #f2f2f2;
     font-weight: 500;
+    border-right: 0.5px solid black;
     width: 200px;
+  }
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
   td {
     text-align: start;
@@ -173,88 +173,90 @@ export default () => {
     <>
       <SectionTitle text="Basic Information" />
       <Table>
-        <tr>
-          <th>Event ID</th>
-          <td className="itemsCell">
-            {EventInfoState.BasicInformation.eventId}
-          </td>
-          <th>Event Show in List</th>
-          <td className="itemsCell">
-            <input
-              width="20px"
-              type="checkbox"
-              name="EventShowCheckBox"
-              checked={EventInfoState.BasicInformation.isOnList.value}
-              onChange={(e) => onChange(e)}
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>Event Title</th>
-          <td colSpan="3">
-            <Input
-              InputWidthPercent={60}
-              type="text"
-              name="TitleInput"
-              value={EventInfoState.BasicInformation.title.value}
-              onChange={(e) => onChange(e)}
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>Event Period</th>
-          <td colSpan="3">
-            <DateWrapper>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="MM/dd/yyyy"
-                  margin="normal"
-                  id="startDate"
-                  label="Start Date"
-                  value={EventInfoState.BasicInformation.startDate.value}
-                  onChange={(date) => ChangeStartDate(date)}
-                  KeyboardButtonProps={{
-                    "aria-label": "change date",
-                  }}
-                />
-                <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="MM/dd/yyyy"
-                  margin="normal"
-                  id="startDate"
-                  label="End Date"
-                  value={EventInfoState.BasicInformation.endDate.value}
-                  onChange={(date) => ChangeEndDate(date)}
-                  KeyboardButtonProps={{
-                    "aria-label": "change date",
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-            </DateWrapper>
-          </td>
-        </tr>
-        <tr>
-          <th>Event Link</th>
-          <td colSpan="3">
-            <AddressCellWrapper>
-              <Input
-                InputWidth={800}
-                type="text"
-                name="EventLinkInput"
-                value={EventInfoState.BasicInformation.url.value}
+        <tbody>
+          <tr>
+            <th>Event ID</th>
+            <td className="itemsCell">
+              {EventInfoState.BasicInformation.eventId}
+            </td>
+            <th>Event Show in List</th>
+            <td className="itemsCell">
+              <input
+                width="20px"
+                type="checkbox"
+                name="EventShowCheckBox"
+                checked={EventInfoState.BasicInformation.isOnList.value}
                 onChange={(e) => onChange(e)}
               />
-              <Button
-                text={"Check"}
-                isButtonType={true}
-                ClickEvent={CheckLink}
+            </td>
+          </tr>
+          <tr>
+            <th>Event Title</th>
+            <td colSpan="3">
+              <Input
+                InputWidthPercent={60}
+                type="text"
+                name="TitleInput"
+                value={EventInfoState.BasicInformation.title.value}
+                onChange={(e) => onChange(e)}
               />
-            </AddressCellWrapper>
-          </td>
-        </tr>
+            </td>
+          </tr>
+          <tr>
+            <th>Event Period</th>
+            <td colSpan="3">
+              <DateWrapper>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="startDate"
+                    label="Start Date"
+                    value={EventInfoState.BasicInformation.startDate.value}
+                    onChange={(date) => ChangeStartDate(date)}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                  />
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="startDate"
+                    label="End Date"
+                    value={EventInfoState.BasicInformation.endDate.value}
+                    onChange={(date) => ChangeEndDate(date)}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+              </DateWrapper>
+            </td>
+          </tr>
+          <tr>
+            <th>Event Link</th>
+            <td colSpan="3">
+              <AddressCellWrapper>
+                <Input
+                  InputWidth={800}
+                  type="text"
+                  name="EventLinkInput"
+                  value={EventInfoState.BasicInformation.url.value}
+                  onChange={(e) => onChange(e)}
+                />
+                <Button
+                  text={"Check"}
+                  isButtonType={true}
+                  ClickEvent={CheckLink}
+                />
+              </AddressCellWrapper>
+            </td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );
