@@ -33,7 +33,7 @@ const uploadToBucket = async (preSignedUrl, file, fileType) => {
       "x-amz-acl": "public-read",
     },
   };
-  let rtn = await fetch(preSignedUrl, option);
+  await fetch(preSignedUrl, option);
   return;
 };
 

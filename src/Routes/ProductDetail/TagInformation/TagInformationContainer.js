@@ -9,18 +9,13 @@ import { ProductInfoContext } from "../ProductDetailContainer";
 import TagDataRow from "./TagDataRow";
 
 const Table = styled.table`
+  font-size: 15px;
   border-collapse: collapse;
-  border: 1px solid black;
+  border: 1px solid lightgrey;
   width: 100%;
   text-align: center;
-  font-size: 15px;
   tr {
     height: 40px;
-  }
-  tr,
-  td,
-  th {
-    border: ${(props) => props.theme.tableBorder};
   }
   td,
   th {
@@ -30,13 +25,23 @@ const Table = styled.table`
   th {
     background-color: #f2f2f2;
     font-weight: 500;
+    border-bottom: 0.5px solid black;
   }
-  .smallerCell {
-    width: 400px;
+  td:first-child,
+  th:first-child {
+    background-color: #f2f2f2;
+    border-right: 0.5px solid black;
+  }
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
   .orderInputCell,
   .buttonCell {
-    width: 90px;
+    width: 120px;
+  }
+  .checkButtonCell {
+    width: 180px;
   }
 `;
 
@@ -136,20 +141,24 @@ export default ({ tagMutation, tagMutationError, tagMutationLoading }) => {
         <Button text="Get ShopTag" ClickEvent={handleTagUpdate} />
       </SectionContainer>
       <Table>
-        <tr>
-          <th className="orderInputCell">No</th>
-          <th>Tag Type</th>
-          <th>Class</th>
-          <th>Tag</th>
-          <th className="buttonCell">
-            <RowButton onClick={(e) => addRow(e)}>
-              <PlusIcon size={19} />
-            </RowButton>
-          </th>
-        </tr>
-        {ProductInfoState.TagInformation.value.map((eachRow) => (
-          <TagDataRow data={eachRow} />
-        ))}
+        <thead>
+          <tr>
+            <th className="orderInputCell">No</th>
+            <th>Tag Type</th>
+            <th>Class</th>
+            <th>Tag</th>
+            <th className="buttonCell">
+              <RowButton onClick={(e) => addRow(e)}>
+                <PlusIcon size={19} />
+              </RowButton>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {ProductInfoState.TagInformation.value.map((eachRow) => (
+            <TagDataRow data={eachRow} key={eachRow.id} />
+          ))}
+        </tbody>
       </Table>
     </>
   );

@@ -4,15 +4,27 @@ import SectionTitle from "../../Components/SectionTitle";
 
 const Table = styled.table`
   border-collapse: collapse;
+  border: 1px solid lightgrey;
   width: 100%;
   text-align: center;
+  font-size: 15px;
+  tr {
+    height: 40px;
+  }
   td,
   th {
-    padding: 9px;
+    padding: 5px;
+    vertical-align: middle;
   }
   th {
     background-color: #f2f2f2;
     font-weight: 500;
+    border-bottom: 0.5px solid black;
+  }
+  td:first-child,
+  th:first-child {
+    background-color: #f2f2f2;
+    border-right: 0.5px solid black;
   }
   .tagNameCell {
     justify-content: space-evenly;
@@ -41,7 +53,6 @@ export const DashboardTopShop = ({ data }) => (
           <th>No</th>
           <th>Shop ID</th>
           <th>shopName</th>
-          <th>phoneNumber</th>
           <th>address</th>
           <th>tagNames</th>
           <th>rankNum</th>
@@ -58,7 +69,6 @@ export const DashboardTopShop = ({ data }) => (
             <td>{eachShop.No}</td>
             <td>{eachShop.shopId}</td>
             <td>{eachShop.shopName}</td>
-            <td>{eachShop.phoneNumber}</td>
             <td>{eachShop.address}</td>
             <td className="tagNameCell">
               {eachShop.tagNames.map((eachTagName, index) => {

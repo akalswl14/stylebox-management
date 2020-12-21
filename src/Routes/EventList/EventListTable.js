@@ -304,7 +304,7 @@ const EventListTable = ({ data }) => {
               <PageChangeButton
                 text="edit"
                 href={"/eventdetail/" + event.eventId}
-                width="50"
+                width={50}
               />
             </td>
           </tr>

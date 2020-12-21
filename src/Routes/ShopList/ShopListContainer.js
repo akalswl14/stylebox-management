@@ -103,15 +103,11 @@ export default ({ location }) => {
     },
   });
 
-  const [
-    DeleteShopsMutation,
-    { loading: DeleteLoading, error: DeleteError },
-  ] = useMutation(DELETE_SHOPS);
+  const [DeleteShopsMutation, { error: DeleteError }] = useMutation(
+    DELETE_SHOPS
+  );
 
-  const [
-    EditShopMutation,
-    { loading: EditLoading, error: EditError },
-  ] = useMutation(UPDATE_SHOPS);
+  const [EditShopMutation, { error: EditError }] = useMutation(UPDATE_SHOPS);
 
   const onSubmit = async (e) => {
     e.preventDefault();

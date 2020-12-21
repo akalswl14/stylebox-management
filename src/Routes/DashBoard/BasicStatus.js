@@ -5,20 +5,37 @@ import LinkButton from "../../Components/LinkButton";
 
 const Table = styled.table`
   border-collapse: collapse;
-  border: 1px solid black;
+  border: 1px solid lightgrey;
   width: 100%;
   text-align: center;
+  font-size: 15px;
   tr {
-    border: ${(props) => props.theme.tableBorder};
+    height: 40px;
+  }
+  td,
+  th {
+    padding: 5px;
+    vertical-align: middle;
   }
   th {
-    border: ${(props) => props.theme.tableBorder};
     background-color: #f2f2f2;
-    padding: 8px;
+    font-weight: 500;
+    border-right: 0.5px solid black;
   }
-  td {
-    padding: 8px;
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
+  /*   
+  tr {
+    border: ${(props) => props.theme.tableBorder};
+  } */
+  /* th {
+    padding: 8px;
+  } */
+  /* td {
+    padding: 8px;
+  } */
   .tableTitle {
     width: 15%;
   }
@@ -42,7 +59,7 @@ export const DashboardBasicStatus = ({ data }) => (
             <div className="linkCell">
               <div className="NumCell">{data.ShopNum} Shops</div>
               <LinkButton
-                href={"/example"}
+                href={"/shoplist"}
                 text={"Go to Shop List"}
               ></LinkButton>
             </div>
@@ -58,8 +75,6 @@ export const DashboardBasicStatus = ({ data }) => (
             </div>
           </td>
         </tr>
-      </tbody>
-      <tbody>
         <tr>
           <th className="tableTitle">Total Number of Posts</th>
           <td colSpan="3">
@@ -82,8 +97,6 @@ export const DashboardBasicStatus = ({ data }) => (
             </div>
           </td>
         </tr>
-      </tbody>
-      <tbody>
         <tr>
           <th className="tableTitle"></th>
           <th>Shop</th>
@@ -94,8 +107,6 @@ export const DashboardBasicStatus = ({ data }) => (
           <th>Post</th>
           <th>Event</th>
         </tr>
-      </tbody>
-      <tbody>
         <tr>
           <th className="tableTitle">Avg.Likes</th>
           <td>{Number(data.AvgShopLikeNum).toFixed(2)}</td>
@@ -106,8 +117,6 @@ export const DashboardBasicStatus = ({ data }) => (
           <td>{Number(data.TotalPostLikeNum).toFixed(2)}</td>
           <td>{Number(data.TotalEventLikeNum).toFixed(2)}</td>
         </tr>
-      </tbody>
-      <tbody>
         <tr>
           <th className="tableTitle">Avg.Views</th>
           <td>{Number(data.AvgShopViewNum).toFixed(2)}</td>

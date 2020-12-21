@@ -5,17 +5,12 @@ import { EventInfoContext } from "./CreateEventContainer";
 
 const Table = styled.table`
   border-collapse: collapse;
-  border: 1px solid black;
+  border: 1px solid lightgrey;
   width: 100%;
   text-align: center;
   font-size: 15px;
   tr {
     height: 40px;
-  }
-  tr,
-  td,
-  th {
-    border: ${(props) => props.theme.tableBorder};
   }
   td,
   th {
@@ -25,9 +20,11 @@ const Table = styled.table`
   th {
     background-color: #f2f2f2;
     font-weight: 500;
+    border-right: 0.5px solid black;
   }
-  .smallerCell {
-    width: 400px;
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
 `;
 
@@ -38,18 +35,20 @@ export default () => {
     <>
       <SectionTitle text="Basic Status" />
       <Table>
-        <tr>
-          <th>Total Likes</th>
-          <td>{EventInfoState.BasicStatus.likesNum} Likes</td>
-          <th>Total Views</th>
-          <td>{EventInfoState.BasicStatus.viewsNum} Views</td>
-        </tr>
-        <tr>
-          <th>Registration Date</th>
-          <td>{EventInfoState.BasicStatus.RegistrationDate}</td>
-          <th>Last Updated</th>
-          <td>{EventInfoState.BasicStatus.LastUpdated}</td>
-        </tr>
+        <tbody>
+          <tr>
+            <th>Total Likes</th>
+            <td>{EventInfoState.BasicStatus.likesNum} Likes</td>
+            <th>Total Views</th>
+            <td>{EventInfoState.BasicStatus.viewsNum} Views</td>
+          </tr>
+          <tr>
+            <th>Registration Date</th>
+            <td>{EventInfoState.BasicStatus.RegistrationDate}</td>
+            <th>Last Updated</th>
+            <td>{EventInfoState.BasicStatus.LastUpdated}</td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );

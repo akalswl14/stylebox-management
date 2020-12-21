@@ -6,15 +6,27 @@ import ParsePrice from "../../Styles/ParsePrice";
 
 const Table = styled.table`
   border-collapse: collapse;
+  border: 1px solid lightgrey;
   width: 100%;
   text-align: center;
+  font-size: 15px;
+  tr {
+    height: 40px;
+  }
   td,
   th {
-    padding: 9px;
+    padding: 5px;
+    vertical-align: middle;
   }
   th {
     background-color: #f2f2f2;
     font-weight: 500;
+    border-bottom: 0.5px solid black;
+  }
+  td:first-child,
+  th:first-child {
+    background-color: #f2f2f2;
+    border-right: 0.5px solid black;
   }
   .tagNameCell {
     justify-content: space-evenly;

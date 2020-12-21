@@ -6,18 +6,13 @@ import { EventInfoContext } from "../CreateEventContainer";
 import MainImageRowData from "./MainImageRowData";
 
 const Table = styled.table`
+  font-size: 15px;
   border-collapse: collapse;
-  border: 1px solid black;
+  border: 1px solid lightgrey;
   width: 100%;
   text-align: center;
-  font-size: 15px;
   tr {
     height: 40px;
-  }
-  tr,
-  td,
-  th {
-    border: ${(props) => props.theme.tableBorder};
   }
   td,
   th {
@@ -27,13 +22,23 @@ const Table = styled.table`
   th {
     background-color: #f2f2f2;
     font-weight: 500;
+    border-bottom: 0.5px solid black;
+  }
+  td:first-child,
+  th:first-child {
+    background-color: #f2f2f2;
+    border-right: 0.5px solid black;
+  }
+  tbody > tr:nth-child(2n) {
+    border-top: 0.5px solid lightgrey;
+    border-bottom: 0.5px solid lightgrey;
   }
   .orderInputCell,
   .buttonCell {
-    width: 120px;
+    width: 6.8%;
   }
   .checkButtonCell {
-    width: 180px;
+    width: 13.6%;
   }
 `;
 
@@ -76,20 +81,24 @@ export default () => {
     <>
       <SectionTitle text="Event Main Images" />
       <Table>
-        <tr>
-          <th className="orderInputCell">Order</th>
-          <th>Upload a File</th>
-          <th>Image</th>
-          <th className="checkButtonCell">Enlarge Image</th>
-          <th className="buttonCell">
-            <RowButton onClick={(e) => addRow(e)}>
-              <PlusIcon size={19} />
-            </RowButton>
-          </th>
-        </tr>
-        {EventInfoState.MainImages.value.map((eachRow) => (
-          <MainImageRowData data={eachRow} />
-        ))}
+        <thead>
+          <tr>
+            <th className="orderInputCell">Order</th>
+            <th>Upload a File</th>
+            <th>Image</th>
+            <th className="checkButtonCell">Enlarge Image</th>
+            <th className="buttonCell">
+              <RowButton onClick={(e) => addRow(e)}>
+                <PlusIcon size={19} />
+              </RowButton>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {EventInfoState.MainImages.value.map((eachRow, index) => (
+            <MainImageRowData data={eachRow} key={index} />
+          ))}
+        </tbody>
       </Table>
     </>
   );

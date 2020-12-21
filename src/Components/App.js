@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import GlobalStyles from "../Styles/GlobalStyles";
 import Routes from "./Routes";
 import SideBar from "./SideBar";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";

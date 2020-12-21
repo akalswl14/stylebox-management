@@ -17,8 +17,6 @@ const initialState = {
   searchOption: {
     searchSelectBox: "eventId",
     searchKeyWord: "",
-    searchItemBoolean: false,
-    searchItem: "",
   },
   eventInfo: [],
   confirmButton: "delete",
@@ -69,11 +67,8 @@ function reducer(state, action) {
         return {
           ...state,
           searchOption: {
-            ...state.searchOption,
             [name]: value,
             searchKeyWord: "",
-            searchItemBoolean: false,
-            searchItem: "",
           },
         };
       }

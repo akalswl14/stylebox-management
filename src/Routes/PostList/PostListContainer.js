@@ -13,8 +13,6 @@ const initialState = {
   searchOption: {
     searchSelectBox: "postId",
     searchKeyWord: "",
-    searchItemBoolean: false,
-    searchItem: "",
   },
   postInfo: [],
   confirmButton: "delete",
@@ -43,11 +41,8 @@ function reducer(state, action) {
         return {
           ...state,
           searchOption: {
-            ...state.searchOption,
             [name]: value,
             searchKeyWord: "",
-            searchItemBoolean: false,
-            searchItem: "",
           },
         };
       }

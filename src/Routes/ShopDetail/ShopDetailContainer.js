@@ -388,7 +388,6 @@ export default ({ match }) => {
     }
 
     if (updateShop) {
-      const ShopId = ShopInfoState.BasicInformation.shopId;
       try {
         for (const eachImage of s3ImageList) {
           await putImagetoS3({
