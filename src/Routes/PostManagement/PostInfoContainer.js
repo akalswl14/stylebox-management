@@ -42,6 +42,11 @@ function reducer(state, action) {
   switch (action.type) {
     case "SET_DATA":
       return action.data;
+    case "SET_MAINPRODUCT_DESCRIPTION":
+      return {
+        ...state,
+        postDescription: action.data.getProdDescription,
+      };
     case "SET_PRODUCT_TAG":
       let tagInfo = [],
         order = 1,
