@@ -58,20 +58,22 @@ export default ({ id, onSubmit, secret }) => (
     <Form>
       <>
         <TitleBox>
-          <img img src={logo} alt={"logo"} width="85%" height="100%" />
+          <img img="true" src={logo} alt={"logo"} width="85%" height="100%" />
         </TitleBox>
         <ContentBox>
           <form onSubmit={onSubmit}>
             <input
               placeholder={"Id"}
-              {...id}
-              type="id"
+              type="text"
+              autoComplete="username"
               required
+              {...id}
               style={inputStyle}
             />
             <input
               type="password"
               placeholder="Password"
+              autoComplete="current-password"
               required
               {...secret}
               style={inputStyle}
