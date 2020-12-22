@@ -140,7 +140,7 @@ export default ({ data, categories }) => {
     return (
       <tr key={data.tagId}>
         <td className="orderInputCell">
-          <OrderInputBox name="order" value={data.order} />
+          <OrderInputBox name="order" value={data.order} onChange={() => 0} />
         </td>
         <td>
           <select name="category">
@@ -153,7 +153,7 @@ export default ({ data, categories }) => {
           </select>
         </td>
         <td>
-          <select name="tagInfo" value={data.tagId}>
+          <select name="tagInfo">
             <option value={0}>{"-- LOADING --"}</option>
           </select>
         </td>
