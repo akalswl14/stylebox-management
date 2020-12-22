@@ -64,6 +64,13 @@ export default ({ categories }) => {
     GET_PRODUCT_TAG
   );
 
+  const handleResetClick = (e) => {
+    e.preventDefault();
+    postDispatch({
+      type: "RESET_TAG",
+    });
+  };
+
   const handleTagClick = async (e) => {
     e.preventDefault();
     if (!postState.basicInfo.mainProductId) {
@@ -159,6 +166,11 @@ export default ({ categories }) => {
           text={"Get Tag"}
           isButtonType={true}
           ClickEvent={handleTagClick}
+        ></Button>
+        <Button
+          text={"Reset Tag"}
+          isButtonType={true}
+          ClickEvent={handleResetClick}
         ></Button>
       </TitleBox>
       <Table>
