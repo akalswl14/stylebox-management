@@ -134,7 +134,7 @@ export default ({ data }) => {
           </select>
         </td>
         <td>
-          <select name="tagInfo" value={data.tagId} onChange={() => 0}>
+          <select name="tagInfo">
             <option value={0}>{"-- LOADING --"}</option>
           </select>
         </td>
