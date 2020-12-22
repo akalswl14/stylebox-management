@@ -10,7 +10,7 @@ export const UPDATE_PRODUCT = gql`
     $isDescriptionChange: Boolean!
     $description: String
     $externalLink: String
-    $tags: [Int!]
+    $tags: [IdOrderInputType!]
     $branchIds: [Int!]
   ) {
     updateProduct(

@@ -141,7 +141,7 @@ export default ({ tagMutation, tagMutationError, tagMutationLoading }) => {
       <Table>
         <thead>
           <tr>
-            <th className="orderInputCell">No</th>
+            <th className="orderInputCell">Order</th>
             <th>Tag Type</th>
             <th>Class</th>
             <th>Tag</th>

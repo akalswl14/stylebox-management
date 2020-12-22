@@ -5,6 +5,11 @@ import { GET_CLASS, GET_TAG } from "../ProductDetailQueries";
 import { DeleteIcon } from "../../../Components/Icons";
 import { ProductInfoContext } from "../ProductDetailContainer";
 
+const OrderInputBox = styled.input`
+  width: 30px;
+  text-align: center;
+`;
+
 const SelectBox = styled.select`
   width: 200px;
   text-align: center;
@@ -42,12 +47,35 @@ export default ({ data }) => {
 
   const onChange = (e) => {
     const { value, name } = e.target;
+    if (name === "order") {
+      if (Number(value) > 0) {
+        const rtnData = ProductInfoState.TagInformation.value.map((tag) => {
+          if (tag.id === Number(data.id)) {
+            return {
+              id: Number(data.id),
+              order: Number(value),
+              category: data.category,
+              classId: Number(data.classId),
+              className: data.className,
+              tagId: Number(data.tagId),
+              tagName: data.tagName,
+            };
+          }
+          return tag;
+        });
+        ProductInfoDispatch({
+          type: "UPDATE_TAGINFO",
+          data: { TagInformation: { value: rtnData, isChange: true } },
+        });
+      }
+    }
     if (name === "CategorySelectBox") {
       setCategoryInputState(value);
       const rtnData = ProductInfoState.TagInformation.value.map((eachData) => {
         if (eachData.id === Number(data.id)) {
           return {
             id: Number(data.id),
+            order: Number(data.order),
             category: value,
             classId: 0,
             className: "-- CHOOSE DATA --",
@@ -68,6 +96,7 @@ export default ({ data }) => {
         if (eachData.id === Number(data.id)) {
           return {
             id: Number(data.id),
+            order: Number(data.order),
             category: data.category,
             classId: Number(value),
             className: e.target[e.target.selectedIndex].text,
@@ -87,6 +116,7 @@ export default ({ data }) => {
         if (eachData.id === Number(data.id)) {
           return {
             id: Number(data.id),
+            order: Number(data.order),
             category: data.category,
             classId: Number(data.classId),
             className: data.className,
@@ -122,7 +152,9 @@ export default ({ data }) => {
   ) {
     return (
       <tr>
-        <td className="orderInputCell">0</td>
+        <td className="orderInputCell">
+          <OrderInputBox name="order" value={data.order} onChange={() => 0} />
+        </td>
         <td>
           <select name="category" onChange={() => 0}>
             <option value={"-- LOADING --"}>{"-- LOADING --"}</option>
@@ -150,7 +182,9 @@ export default ({ data }) => {
   if (!classLoading && classData && tagData) {
     return (
       <tr id={data.id}>
-        <td>{data.id}</td>
+        <td>
+          <OrderInputBox name="order" value={data.order} onChange={onChange} />
+        </td>
         <td>
           <SelectBox
             name="CategorySelectBox"
