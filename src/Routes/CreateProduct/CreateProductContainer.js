@@ -138,8 +138,12 @@ export default () => {
       }
       TagOrderList.push(Number(eachTag.order));
       TagIdList.push(Number(eachTag.tagId));
-      rtnTagList.push(Number(eachTag.tagId));
+      rtnTagList.push({
+        id: Number(eachTag.tagId),
+        order: Number(eachTag.order),
+      });
     }
+    rtnTagList.sort((a, b) => a.order - b.order);
     if (ProductInfoState.BranchManagement.value.length === 0) {
       toast.error("Please select branch.");
       return;

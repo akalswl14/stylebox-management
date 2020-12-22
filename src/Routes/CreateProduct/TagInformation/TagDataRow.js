@@ -5,6 +5,11 @@ import { GET_CLASS, GET_TAG } from "../CreateProductQueries";
 import { DeleteIcon } from "../../../Components/Icons";
 import { ProductInfoContext } from "../CreateProductContainer";
 
+const OrderInputBox = styled.input`
+  width: 30px;
+  text-align: center;
+`;
+
 const SelectBox = styled.select`
   width: 200px;
   text-align: center;
@@ -42,6 +47,28 @@ export default ({ data }) => {
 
   const onChange = (e) => {
     const { value, name } = e.target;
+    if (name === "order") {
+      if (Number(value) > 0) {
+        const rtnData = ProductInfoState.TagInformation.value.map((tag) => {
+          if (tag.id === Number(data.id)) {
+            return {
+              id: Number(data.id),
+              order: Number(value),
+              category: data.category,
+              classId: Number(data.classId),
+              className: data.className,
+              tagId: Number(data.tagId),
+              tagName: data.tagName,
+            };
+          }
+          return tag;
+        });
+        ProductInfoDispatch({
+          type: "UPDATE_TAGINFO",
+          data: { TagInformation: { value: rtnData } },
+        });
+      }
+    }
     if (name === "CategorySelectBox") {
       setCategoryInputState(value);
       const rtnData = ProductInfoState.TagInformation.value.map((eachData) => {
@@ -125,7 +152,9 @@ export default ({ data }) => {
   ) {
     return (
       <tr>
-        <td className="orderInputCell">{data.order}</td>
+        <td className="orderInputCell">
+          <OrderInputBox name="order" value={data.order} />
+        </td>
         <td>
           <select name="category">
             <option value={"-- LOADING --"}>{"-- LOADING --"}</option>
@@ -153,7 +182,9 @@ export default ({ data }) => {
   if (!classLoading && classData && tagData) {
     return (
       <tr id={data.id}>
-        <td>{data.order}</td>
+        <td>
+          <OrderInputBox name="order" value={data.order} onChange={onChange} />
+        </td>
         <td>
           <SelectBox
             name="CategorySelectBox"
