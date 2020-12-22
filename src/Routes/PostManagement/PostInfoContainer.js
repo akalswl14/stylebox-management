@@ -40,6 +40,11 @@ const initialState = {
 
 function reducer(state, action) {
   switch (action.type) {
+    case "RESET_TAG":
+      return {
+        ...state,
+        tagInfoData: [],
+      };
     case "SET_DATA":
       return action.data;
     case "SET_MAINPRODUCT_DESCRIPTION":
