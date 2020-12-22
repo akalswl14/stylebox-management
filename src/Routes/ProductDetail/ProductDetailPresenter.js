@@ -78,6 +78,12 @@ export default ({
         rtnTags = data.getProductTagInfo.map((eachTag, index) => ({
           ...eachTag,
           id: index + 1,
+          category: eachTag.category ?? "-- CHOOSE DATA --",
+          classId: eachTag.classId ?? 0,
+          className: eachTag.className ?? "-- CHOOSE DATA --",
+          order: index + 1,
+          tagId: eachTag.tagId,
+          tagName: eachTag.tagName ?? "-- CHOOSE DATA --",
         }));
         let updateData = {
           BasicInformation: {
