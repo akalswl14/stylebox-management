@@ -260,9 +260,9 @@ export default ({ match }) => {
       subProducts: [],
     };
 
-    let web_order = 1;
     let TagOrderList = [];
     let TagIdList = [];
+
     for (const eachData of postState.tagInfoData) {
       if (TagOrderList.includes(Number(eachData.order))) {
         toast.error("Tag Order values should not be the same.");
@@ -298,11 +298,10 @@ export default ({ match }) => {
       TagIdList.push(Number(eachData.tagId));
       mutationData.tags.push({
         id: eachData.tagId,
-        order: web_order++,
+        order: eachData.order,
       });
     }
 
-    web_order = 1;
     let LinkOrderList = [];
     for (const eachData of postState.externalLink) {
       if (LinkOrderList.includes(Number(eachData.order))) {
@@ -337,13 +336,12 @@ export default ({ match }) => {
       LinkOrderList.push(Number(eachData.order));
       mutationData.externalLinks.push({
         url: eachData.url,
-        order: web_order++,
+        order: eachData.order,
         linkType: eachData.linkType,
         isShown: eachData.isShown,
       });
     }
 
-    web_order = 1;
     let TimeNumber = new Date();
     let ImageOrderList = [];
     if (postState.postImageManagement.length <= 0) {
@@ -398,25 +396,24 @@ export default ({ match }) => {
 
           imageUpdateInfo = {
             url: "Post/" + fileName,
-            order: web_order++,
+            order: eachData.order,
           };
         } else {
           imageUpdateInfo = {
             url: null,
-            order: web_order++,
+            order: eachData.order,
           };
         }
       } else {
         imageUpdateInfo = {
           url: eachData.url,
-          order: web_order++,
+          order: eachData.order,
         };
       }
       ImageOrderList.push(Number(eachData.order));
       mutationData.images.push(imageUpdateInfo);
     }
 
-    web_order = 1;
     let VideoOrderList = [];
     for (const eachData of postState.postVideoManagement) {
       if (VideoOrderList.includes(Number(eachData.order))) {
@@ -446,7 +443,7 @@ export default ({ match }) => {
       VideoOrderList.push(Number(eachData.order));
       mutationData.videos.push({
         url: eachData.url,
-        order: web_order++,
+        order: 1,
         isYoutube: true,
       });
     }
