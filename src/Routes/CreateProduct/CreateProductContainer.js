@@ -67,7 +67,7 @@ export default () => {
   );
 
   const [
-    getTagbyShop,
+    getTagsbyShop,
     { error: getTagError, loading: getTagLoading },
   ] = useMutation(GET_TAGS_BYSHOP);
 
@@ -212,7 +212,7 @@ export default () => {
         loading={loading}
         data={data}
         error={error}
-        tagMutation={getTagbyShop}
+        tagMutation={getTagsbyShop}
         tagMutationError={getTagError}
         tagMutationLoading={getTagLoading}
       />
