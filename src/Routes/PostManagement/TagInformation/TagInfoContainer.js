@@ -64,6 +64,13 @@ export default ({ categories }) => {
     GET_PRODUCT_TAG
   );
 
+  const handleResetClick = (e) => {
+    e.preventDefault();
+    postDispatch({
+      type: "RESET_TAG",
+    });
+  };
+
   const handleTagClick = async (e) => {
     e.preventDefault();
     if (!postState.basicInfo.mainProductId) {
@@ -73,16 +80,30 @@ export default ({ categories }) => {
 
     let productIds = [];
     productIds.push(postState.basicInfo.mainProductId);
-    for (const product of postState.subProductManagement) {
+
+    let subProduct = postState.subProductManagement.slice();
+
+    subProduct.sort(function (a, b) {
+      return a.order < b.order ? -1 : a.order > b.order ? 1 : 0;
+    });
+
+    for (const product of subProduct) {
+      if (product.productId === 0) {
+        toast.error("There is an invalid product.");
+        return;
+      }
       productIds.push(product.productId);
     }
+
+    const set = new Set(productIds);
+    const setProductIds = [...set];
 
     const {
       data: { getSubProductTag },
     } = await getProductTag({
       variables: {
         lang: "VI",
-        productIds,
+        productIds: setProductIds,
       },
     });
 
@@ -145,6 +166,11 @@ export default ({ categories }) => {
           text={"Get Tag"}
           isButtonType={true}
           ClickEvent={handleTagClick}
+        ></Button>
+        <Button
+          text={"Reset Tag"}
+          isButtonType={true}
+          ClickEvent={handleResetClick}
         ></Button>
       </TitleBox>
       <Table>

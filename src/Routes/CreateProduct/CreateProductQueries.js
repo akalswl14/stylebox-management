@@ -7,7 +7,7 @@ export const CREATE_PRODUCT = gql`
     $productImage: String
     $description: String
     $externalLink: String!
-    $tags: [Int!]
+    $tags: [IdOrderInputType!]
     $branchIds: [Int!]
   ) {
     createProduct(

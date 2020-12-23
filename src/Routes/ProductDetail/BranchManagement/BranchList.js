@@ -23,13 +23,7 @@ const Table = styled.table`
     background-color: #f2f2f2;
     font-weight: 500;
     border-bottom: 0.5px solid black;
-    width: ${(props) => {
-      if (props.CellWidth) {
-        return props.CellWidth.toString() + "px";
-      } else {
-        return null;
-      }
-    }};
+    width: 23.2%;
   }
   td:first-child,
   th:first-child {
@@ -42,13 +36,10 @@ const Table = styled.table`
   }
   .orderInputCell,
   .buttonCell {
-    width: 85px;
+    width: 6.8%;
   }
   .AddressCell {
-    width: 410px;
-  }
-  .MapUrlCell {
-    width: 730px;
+    width: 40%;
   }
 `;
 
