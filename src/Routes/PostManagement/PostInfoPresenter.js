@@ -107,7 +107,7 @@ export default ({
       let externalLink = data.getPostExternalLink.map((eachData) => {
         let linkData = {
           id: idIdx,
-          order: eachData.order,
+          order: idIdx,
           linkType: eachData.linkType,
           url: eachData.url,
           isShown: eachData.isShown,
@@ -120,7 +120,7 @@ export default ({
       let postImageManagement = data.getPostImages.map((eachData) => {
         let imageData = {
           id: idIdx,
-          order: eachData.order,
+          order: idIdx,
           url: eachData.url,
           isImageChange: false,
           imageFile: "",

@@ -67,7 +67,7 @@ export default () => {
   );
 
   const [
-    getTagbyShop,
+    getTagsbyShop,
     { error: getTagError, loading: getTagLoading },
   ] = useMutation(GET_TAGS_BYSHOP);
 
@@ -138,8 +138,12 @@ export default () => {
       }
       TagOrderList.push(Number(eachTag.order));
       TagIdList.push(Number(eachTag.tagId));
-      rtnTagList.push(Number(eachTag.tagId));
+      rtnTagList.push({
+        id: Number(eachTag.tagId),
+        order: Number(eachTag.order),
+      });
     }
+    rtnTagList.sort((a, b) => a.order - b.order);
     if (ProductInfoState.BranchManagement.value.length === 0) {
       toast.error("Please select branch.");
       return;
@@ -208,7 +212,7 @@ export default () => {
         loading={loading}
         data={data}
         error={error}
-        tagMutation={getTagbyShop}
+        tagMutation={getTagsbyShop}
         tagMutationError={getTagError}
         tagMutationLoading={getTagLoading}
       />

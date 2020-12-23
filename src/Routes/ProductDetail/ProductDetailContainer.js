@@ -69,7 +69,7 @@ export default ({ match }) => {
   );
 
   const [
-    getTagbyShop,
+    getTagsbyShop,
     { error: getTagError, loading: getTagLoading },
   ] = useMutation(GET_TAGS_BYSHOP);
 
@@ -106,26 +106,47 @@ export default ({ match }) => {
     }
     let rtnTagList = [];
     let inputTagList = ProductInfoState.TagInformation.value;
+    let TagOrderList = [];
+    let TagIdList = [];
     if (inputTagList.length > 20) {
       toast.error("Up to 10 Tags can be registered.");
       return;
     }
-    for (const eachTag of inputTagList) {
-      if (
-        Number(eachTag.tagId) === 0 ||
-        Number(eachTag.classId) === 0 ||
-        eachTag.category === "-- CHOOSE DATA --" ||
-        eachTag.category === "-- LOADING --"
-      ) {
-        toast.error("Please choose Tag.");
-        return;
+    if (ProductInfoState.TagInformation.isChange) {
+      for (const eachTag of inputTagList) {
+        if (TagOrderList.includes(Number(eachTag.order))) {
+          toast.error("Tag Order values should not be the same.");
+          return;
+        }
+        if (isNaN(Number(eachTag.order))) {
+          toast.error("Invalid Tag Order Value.");
+          return;
+        }
+        if (Number(eachTag.order) <= 0) {
+          toast.error("Tag Order Value should be bigger than 0");
+        }
+        if (
+          Number(eachTag.tagId) === 0 ||
+          Number(eachTag.classId) === 0 ||
+          eachTag.category === "-- CHOOSE DATA --" ||
+          eachTag.category === "-- LOADING --"
+        ) {
+          toast.error("Please choose Tag.");
+          return;
+        }
+        if (TagIdList.includes(Number(eachTag.tagId))) {
+          toast.error("Tag should not be the same.");
+          return;
+        }
+        TagOrderList.push(Number(eachTag.order));
+        TagIdList.push(Number(eachTag.tagId));
+        rtnTagList.push({
+          id: Number(eachTag.tagId),
+          order: Number(eachTag.order),
+        });
       }
-      if (rtnTagList.includes(Number(eachTag.tagId))) {
-        toast.error("Tag should not be the same.");
-        return;
-      }
-      rtnTagList.push(Number(eachTag.tagId));
     }
+    rtnTagList.sort((a, b) => a.order - b.order);
     if (ProductInfoState.BranchManagement.value.length === 0) {
       toast.error("Please select branch.");
       return;
@@ -222,7 +243,7 @@ export default ({ match }) => {
         loading={loading}
         data={data}
         error={error}
-        tagMutation={getTagbyShop}
+        tagMutation={getTagsbyShop}
         tagMutationError={getTagError}
         tagMutationLoading={getTagLoading}
       />

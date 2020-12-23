@@ -26,6 +26,7 @@ const Table = styled.table`
     background-color: #f2f2f2;
     font-weight: 500;
     border-bottom: 0.5px solid black;
+    width: 28.8%;
   }
   td:first-child,
   th:first-child {
@@ -38,7 +39,7 @@ const Table = styled.table`
   }
   .orderInputCell,
   .buttonCell {
-    width: 120px;
+    width: 6.8%;
   }
 `;
 
@@ -92,15 +93,19 @@ export default ({ tagMutation, tagMutationError, tagMutationLoading }) => {
       toast.error("Please select Shop first.");
       return;
     }
-    const tagIds = ProductInfoState.TagInformation.value.map(
-      (eachData) => eachData.tagId
-    );
+    let tags = ProductInfoState.TagInformation.value.map((eachData) => ({
+      id: Number(eachData.tagId),
+      order: Number(eachData.order),
+    }));
+    tags.filter((eachTag) => eachTag.id > 0);
+    tags.sort((a, b) => a.order - b.order);
+    const tagIdList = tags.map((eachTag) => eachTag.id);
     const {
       data: { getTagsbyShop },
     } = await tagMutation({
       variables: {
         shopId: ProductInfoState.SelectedShop.shopId,
-        tags: tagIds,
+        tags: tagIdList,
       },
     });
     if (!getTagsbyShop || tagMutationError) {
@@ -138,7 +143,7 @@ export default ({ tagMutation, tagMutationError, tagMutationLoading }) => {
       <Table>
         <thead>
           <tr>
-            <th className="orderInputCell">No</th>
+            <th className="orderInputCell">Order</th>
             <th>Tag Type</th>
             <th>Class</th>
             <th>Tag</th>
