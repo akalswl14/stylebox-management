@@ -93,15 +93,19 @@ export default ({ tagMutation, tagMutationError, tagMutationLoading }) => {
       toast.error("Please select Shop first.");
       return;
     }
-    const tagIds = ProductInfoState.TagInformation.value.map(
-      (eachData) => eachData.tagId
-    );
+    let tags = ProductInfoState.TagInformation.value.map((eachData) => ({
+      id: Number(eachData.tagId),
+      order: Number(eachData.order),
+    }));
+    tags.filter((eachTag) => eachTag.id > 0);
+    tags.sort((a, b) => a.order - b.order);
+    const tagIdList = tags.map((eachTag) => eachTag.id);
     const {
       data: { getTagsbyShop },
     } = await tagMutation({
       variables: {
         shopId: ProductInfoState.SelectedShop.shopId,
-        tags: tagIds,
+        tags: tagIdList,
       },
     });
     if (!getTagsbyShop || tagMutationError) {
