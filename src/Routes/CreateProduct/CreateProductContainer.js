@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import CreateProductPresenter from "./CreateProductPresenter";
 import { useMutation, useQuery } from "react-apollo-hooks";
 import {
@@ -59,6 +59,7 @@ export default () => {
     reducer,
     initialState
   );
+  const [confirmState, setConfirm] = useState(false);
 
   const { loading, error, data } = useQuery(GET_PRODUCTINFO);
 
@@ -73,21 +74,30 @@ export default () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (confirmState) {
+      toast.error("You have already pressed the confirm button.");
+      return;
+    }
+    setConfirm(true);
 
     if (ProductInfoState.BasicInformation.productName.value === "") {
       toast.error("Please enter Product Name.");
+      setConfirm(false);
       return;
     }
     if (ProductInfoState.BasicInformation.price.value === "") {
       toast.error("Please enter Product Price.");
+      setConfirm(false);
       return;
     }
     if (isNaN(Number(ProductInfoState.BasicInformation.price.value))) {
       toast.error("Invalid Price Value.");
+      setConfirm(false);
       return;
     }
     if (Number(ProductInfoState.BasicInformation.price.value) < 0) {
       toast.error("Price Value should be 0 and/or more.");
+      setConfirm(false);
       return;
     }
     // if (ProductInfoState.BasicInformation.productImage.File === "") {
@@ -100,6 +110,7 @@ export default () => {
       ProductInfoState.BasicInformation.externalLink.value === "https://"
     ) {
       toast.error("Invalid Product Link URL.");
+      setConfirm(false);
       return;
     }
     let TagOrderList = [];
@@ -108,16 +119,19 @@ export default () => {
     let inputTagList = ProductInfoState.TagInformation.value;
     if (inputTagList.length > 20) {
       toast.error("Up to 10 Tags can be registered.");
+      setConfirm(false);
       return;
     }
     inputTagList.sort((a, b) => a.order - b.order);
     for (const eachTag of inputTagList) {
       if (TagOrderList.includes(Number(eachTag.order))) {
         toast.error("Tag Order values should not be the same.");
+        setConfirm(false);
         return;
       }
       if (isNaN(Number(eachTag.order))) {
         toast.error("Invalid Tag Order Value.");
+        setConfirm(false);
         return;
       }
       if (Number(eachTag.order) <= 0) {
@@ -130,10 +144,12 @@ export default () => {
         eachTag.category === "-- LOADING --"
       ) {
         toast.error("Please choose Tag.");
+        setConfirm(false);
         return;
       }
       if (TagIdList.includes(Number(eachTag.tagId))) {
         toast.error("Tag should not be the same.");
+        setConfirm(false);
         return;
       }
       TagOrderList.push(Number(eachTag.order));
@@ -146,6 +162,7 @@ export default () => {
     rtnTagList.sort((a, b) => a.order - b.order);
     if (ProductInfoState.BranchManagement.value.length === 0) {
       toast.error("Please select branch.");
+      setConfirm(false);
       return;
     }
     let rtnShopImage = {
@@ -179,6 +196,7 @@ export default () => {
     });
     if (!createProduct || CreateError) {
       toast.error("Error occured while create data.");
+      setConfirm(false);
       return;
     }
 
@@ -193,6 +211,7 @@ export default () => {
         }
       } catch (e) {
         toast.error("Error occured while create data.");
+        setConfirm(false);
         return;
       }
       toast.success("Sucessfullly create Data!");
