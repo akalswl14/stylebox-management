@@ -22,6 +22,7 @@ export const GET_PRODUCTLIST = gql`
       products {
         productId
         productName
+        shopName
         price
         postNum
         link

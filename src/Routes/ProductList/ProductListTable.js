@@ -162,6 +162,7 @@ const ProductListTable = ({ data }) => {
               func={(e) => SortClick(e, "productName")}
             />
           </th>
+          <th>Shop Name</th>
           <th>
             <SortText>Price</SortText>
             <SortButton
@@ -197,6 +198,7 @@ const ProductListTable = ({ data }) => {
             </td>
             <td>{product.productId}</td>
             <td>{product.productName}</td>
+            <td>{product.shopName}</td>
             <td>
               <input
                 type="text"

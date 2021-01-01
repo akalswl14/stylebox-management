@@ -78,6 +78,7 @@ export default ({ loading, data, error, onSubmit }) => {
         let productData = {
           productId: eachData.productId,
           productName: eachData.productName,
+          shopName: eachData.shopName,
           price: eachData.price,
           postNum: eachData.postNum,
           link: eachData.link,
