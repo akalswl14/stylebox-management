@@ -5,6 +5,7 @@ export const GET_PRODUCTLIST = gql`
     $pageNum: Int
     $productId: Int
     $productName: String
+    $shopName: String
     $productIdAsc: Boolean
     $productNameAsc: Boolean
     $priceAsc: Boolean
@@ -13,6 +14,7 @@ export const GET_PRODUCTLIST = gql`
       pageNum: $pageNum
       productId: $productId
       productName: $productName
+      shopName: $shopName
       productIdAsc: $productIdAsc
       productNameAsc: $productNameAsc
       priceAsc: $priceAsc
@@ -20,6 +22,7 @@ export const GET_PRODUCTLIST = gql`
       products {
         productId
         productName
+        shopName
         price
         postNum
         link

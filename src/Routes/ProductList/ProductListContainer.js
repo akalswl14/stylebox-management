@@ -111,6 +111,7 @@ export default ({ location }) => {
       pageNum: Number(queryInput.page),
       productId: queryInput.id ? Number(queryInput.id) : null,
       productName: queryInput.productname ?? null,
+      shopName: queryInput.shopname ?? null,
       productIdAsc:
         queryInput.sortid === undefined
           ? null
