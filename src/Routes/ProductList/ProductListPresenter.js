@@ -146,6 +146,10 @@ export default ({ loading, data, error, onSubmit }) => {
           productState.searchOption.searchSelectBox === "productName"
             ? productState.searchOption.searchKeyWord
             : undefined,
+        shopname:
+          productState.searchOption.searchSelectBox === "shopName"
+            ? productState.searchOption.searchKeyWord
+            : undefined,
       };
 
       window.location.href = `/productlist?${queryString.stringify(
@@ -171,6 +175,7 @@ export default ({ loading, data, error, onSubmit }) => {
                 >
                   <option value="productId">productId</option>
                   <option value="productName">productName</option>
+                  <option value="shopName">shopName</option>
                 </SelectBox>
                 &nbsp;
                 <InputBox

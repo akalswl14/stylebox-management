@@ -100,6 +100,7 @@ const ProductListTable = ({ data }) => {
       page: 1,
       id: queryInput.id ?? undefined,
       productname: queryInput.productname ?? undefined,
+      shopname: queryInput.shopname ?? undefined,
     };
 
     if (name === "productId") {
