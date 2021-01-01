@@ -23,6 +23,18 @@ const Table = styled.table`
   th:last-child {
     width: 5%;
   }
+  th:nth-child(2),
+  th:nth-child(4),
+  th:nth-child(5),
+  th:nth-child(6) {
+    width: 8%;
+  }
+  th:nth-child(3) {
+    width: 15%;
+  }
+  th:nth-child(7) {
+    width: 30%;
+  }
   td {
     font-size: 13px;
     vertical-align: middle;
@@ -100,6 +112,7 @@ const ProductListTable = ({ data }) => {
       page: 1,
       id: queryInput.id ?? undefined,
       productname: queryInput.productname ?? undefined,
+      shopname: queryInput.shopname ?? undefined,
     };
 
     if (name === "productId") {
@@ -161,6 +174,7 @@ const ProductListTable = ({ data }) => {
               func={(e) => SortClick(e, "productName")}
             />
           </th>
+          <th>Shop Name</th>
           <th>
             <SortText>Price</SortText>
             <SortButton
@@ -196,6 +210,7 @@ const ProductListTable = ({ data }) => {
             </td>
             <td>{product.productId}</td>
             <td>{product.productName}</td>
+            <td>{product.shopName}</td>
             <td>
               <input
                 type="text"
