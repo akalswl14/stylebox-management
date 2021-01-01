@@ -23,6 +23,18 @@ const Table = styled.table`
   th:last-child {
     width: 5%;
   }
+  th:nth-child(2),
+  th:nth-child(4),
+  th:nth-child(5),
+  th:nth-child(6) {
+    width: 8%;
+  }
+  th:nth-child(3) {
+    width: 15%;
+  }
+  th:nth-child(7) {
+    width: 30%;
+  }
   td {
     font-size: 13px;
     vertical-align: middle;
