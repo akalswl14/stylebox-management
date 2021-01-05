@@ -221,46 +221,52 @@ export default ({ loading, data, error, onSubmit }) => {
                   </tr>
                   <tr>
                     <td>Class Name</td>
-                    <td>
-                      <Input
-                        InputWidth={100}
-                        name="className"
-                        type="text"
-                        value={className}
-                        onChange={onChange}
-                        required
-                      />
-                      <CheckStatusIcon>
-                        {classState.isCheck ? (
-                          <PossibleIcon />
-                        ) : (
-                          <ImpossibleIcon />
-                        )}
-                      </CheckStatusIcon>
-                      <Button
-                        text={"Check"}
-                        isButtonType={true}
-                        ClickEvent={onClick}
-                      ></Button>
-                    </td>
+                    {category === "Style" || category === "Price" ? (
+                      <td>{className}</td>
+                    ) : (
+                      <td>
+                        <Input
+                          InputWidth={100}
+                          name="className"
+                          type="text"
+                          value={className}
+                          onChange={onChange}
+                          required
+                        />
+                        <CheckStatusIcon>
+                          {classState.isCheck ? (
+                            <PossibleIcon />
+                          ) : (
+                            <ImpossibleIcon />
+                          )}
+                        </CheckStatusIcon>
+                        <Button
+                          text={"Check"}
+                          isButtonType={true}
+                          ClickEvent={onClick}
+                        ></Button>
+                      </td>
+                    )}
                     <td>Posts</td>
                     <td>{postNum} posts</td>
                   </tr>
                   <tr>
                     <td>Tag Type</td>
-                    <td>
-                      <select
-                        name="category"
-                        value={category}
-                        onChange={onChange}
-                      >
-                        <option value="Style">Style</option>
-                        <option value="Location">Location</option>
-                        <option value="ProductClass">ProductClass</option>
-                        <option value="Price">Price</option>
-                        <option value="Feature">Feature</option>
-                      </select>
-                    </td>
+                    {category === "Style" || category === "Price" ? (
+                      <td>{category}</td>
+                    ) : (
+                      <td>
+                        <select
+                          name="category"
+                          value={category}
+                          onChange={onChange}
+                        >
+                          <option value="Location">Location</option>
+                          <option value="ProductClass">ProductClass</option>
+                          <option value="Feature">Feature</option>
+                        </select>
+                      </td>
+                    )}
                     <td>Products</td>
                     <td>{productNum} products</td>
                   </tr>

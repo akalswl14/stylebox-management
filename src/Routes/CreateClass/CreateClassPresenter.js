@@ -140,10 +140,8 @@ export default ({ onSubmit }) => {
                     ) : (
                       <></>
                     )}
-                    <option value="Style">Style</option>
                     <option value="Location">Location</option>
                     <option value="ProductClass">ProductClass</option>
-                    <option value="Price">Price</option>
                     <option value="Feature">Feature</option>
                   </select>
                 </td>
