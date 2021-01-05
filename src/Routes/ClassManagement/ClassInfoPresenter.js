@@ -221,7 +221,7 @@ export default ({ loading, data, error, onSubmit }) => {
                   </tr>
                   <tr>
                     <td>Class Name</td>
-                    {category === "Style" || category === "Price" ? (
+                    {category === "Price" ? (
                       <td>{className}</td>
                     ) : (
                       <td>
@@ -252,7 +252,7 @@ export default ({ loading, data, error, onSubmit }) => {
                   </tr>
                   <tr>
                     <td>Tag Type</td>
-                    {category === "Style" || category === "Price" ? (
+                    {category === "Price" ? (
                       <td>{category}</td>
                     ) : (
                       <td>
@@ -261,6 +261,7 @@ export default ({ loading, data, error, onSubmit }) => {
                           value={category}
                           onChange={onChange}
                         >
+                          <option value="Style">Style</option>
                           <option value="Location">Location</option>
                           <option value="ProductClass">ProductClass</option>
                           <option value="Feature">Feature</option>
