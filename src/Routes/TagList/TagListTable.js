@@ -184,17 +184,25 @@ const TagListTable = ({ data }) => {
         {data.getTagList.tags.map((tag) => (
           <tr key={tag.tagId}>
             <td>
-              {tag.category !== "ShopName" && (
-                <input
-                  type="checkbox"
-                  name="tagId"
-                  onChange={() => onCheckBoxChange(tag.tagId)}
-                  checked={
-                    tagState.selectedTagIdList.includes(tag.tagId)
-                      ? true
-                      : false
-                  }
-                />
+              {tag.category !== "ShopName" ? (
+                tag.isClass &&
+                (tag.category === "Location" ||
+                  tag.category === "ProductClass") ? (
+                  <></>
+                ) : (
+                  <input
+                    type="checkbox"
+                    name="tagId"
+                    onChange={() => onCheckBoxChange(tag.tagId)}
+                    checked={
+                      tagState.selectedTagIdList.includes(tag.tagId)
+                        ? true
+                        : false
+                    }
+                  />
+                )
+              ) : (
+                <></>
               )}
             </td>
             <td>{tag.tagId}</td>
