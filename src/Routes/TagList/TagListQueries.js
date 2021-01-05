@@ -29,6 +29,7 @@ export const GET_TAGLIST = gql`
         postNum
         shopNum
         productNum
+        isClass
       }
       totalTagNum
     }
