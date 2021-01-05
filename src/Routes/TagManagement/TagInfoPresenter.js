@@ -125,6 +125,8 @@ export default ({ loading, data, error, onSubmit }) => {
       tagId,
       tagName,
       category,
+      className,
+      isClass,
       postNum,
       shopNum,
       productNum,
@@ -144,6 +146,7 @@ export default ({ loading, data, error, onSubmit }) => {
         tagImage: tagData.tagImage,
         classId: tagData.classId,
         className: tagData.className,
+        isClass: tagData.isClass,
         category: tagData.category,
         postNum: tagData.postNum,
         shopNum: tagData.shopNum,
@@ -300,28 +303,34 @@ export default ({ loading, data, error, onSubmit }) => {
                     <td>Tag Name</td>
                     <td>
                       {category !== "ShopName" ? (
-                        <>
-                          <Input
-                            InputWidth={100}
-                            name="tagName"
-                            type="text"
-                            value={tagName}
-                            onChange={onChange}
-                            required
-                          />
-                          <CheckStatusIcon>
-                            {tagState.isCheck ? (
-                              <PossibleIcon />
-                            ) : (
-                              <ImpossibleIcon />
-                            )}
-                          </CheckStatusIcon>
-                          <Button
-                            text={"Check"}
-                            isButtonType={true}
-                            ClickEvent={onCheck}
-                          ></Button>{" "}
-                        </>
+                        isClass &&
+                        (category === "Location" ||
+                          category === "ProductClass") ? (
+                          tagName
+                        ) : (
+                          <>
+                            <Input
+                              InputWidth={100}
+                              name="tagName"
+                              type="text"
+                              value={tagName}
+                              onChange={onChange}
+                              required
+                            />
+                            <CheckStatusIcon>
+                              {tagState.isCheck ? (
+                                <PossibleIcon />
+                              ) : (
+                                <ImpossibleIcon />
+                              )}
+                            </CheckStatusIcon>
+                            <Button
+                              text={"Check"}
+                              isButtonType={true}
+                              ClickEvent={onCheck}
+                            ></Button>{" "}
+                          </>
+                        )
                       ) : (
                         tagName
                       )}
@@ -331,19 +340,25 @@ export default ({ loading, data, error, onSubmit }) => {
                     <td>Tag Type</td>
                     <td>
                       {category !== "ShopName" ? (
-                        <>
-                          <select
-                            name="category"
-                            value={category}
-                            onChange={onChange}
-                          >
-                            <option value="Style">Style</option>
-                            <option value="Location">Location</option>
-                            <option value="ProductClass">ProductClass</option>
-                            <option value="Price">Price</option>
-                            <option value="Feature">Feature</option>
-                          </select>
-                        </>
+                        isClass &&
+                        (category === "Location" ||
+                          category === "ProductClass") ? (
+                          category
+                        ) : (
+                          <>
+                            <select
+                              name="category"
+                              value={category}
+                              onChange={onChange}
+                            >
+                              <option value="Style">Style</option>
+                              <option value="Location">Location</option>
+                              <option value="ProductClass">ProductClass</option>
+                              <option value="Price">Price</option>
+                              <option value="Feature">Feature</option>
+                            </select>
+                          </>
+                        )
                       ) : (
                         category
                       )}
@@ -353,9 +368,15 @@ export default ({ loading, data, error, onSubmit }) => {
                     <td>Tag Class</td>
                     <td colSpan="3">
                       {category !== "ShopName" ? (
-                        <TagTdTable category={category} />
+                        isClass &&
+                        (category === "Location" ||
+                          category === "ProductClass") ? (
+                          className
+                        ) : (
+                          <TagTdTable category={category} />
+                        )
                       ) : (
-                        tagName
+                        className
                       )}
                     </td>
                   </tr>

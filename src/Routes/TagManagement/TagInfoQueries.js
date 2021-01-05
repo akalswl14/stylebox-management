@@ -9,6 +9,7 @@ export const GET_TAG = gql`
       tagImage
       className
       classId
+      isClass
       postNum
       shopNum
       productNum
