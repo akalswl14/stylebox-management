@@ -209,8 +209,8 @@ const TagListTable = ({ data }) => {
             <td>{tag.tagName}</td>
             <td>{tag.category}</td>
             <td>{tag.className}</td>
-            <td>{tag.postNum}</td>
             <td>{tag.shopNum}</td>
+            <td>{tag.postNum}</td>
             <td>{tag.productNum}</td>
             <td>
               <PageChangeButton
