@@ -252,22 +252,7 @@ export default ({ loading, data, error, onSubmit }) => {
                   </tr>
                   <tr>
                     <td>Tag Type</td>
-                    {category === "Price" ? (
-                      <td>{category}</td>
-                    ) : (
-                      <td>
-                        <select
-                          name="category"
-                          value={category}
-                          onChange={onChange}
-                        >
-                          <option value="Style">Style</option>
-                          <option value="Location">Location</option>
-                          <option value="ProductClass">ProductClass</option>
-                          <option value="Feature">Feature</option>
-                        </select>
-                      </td>
-                    )}
+                    <td>{category}</td>
                     <td>Products</td>
                     <td>{productNum} products</td>
                   </tr>
