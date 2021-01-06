@@ -338,31 +338,7 @@ export default ({ loading, data, error, onSubmit }) => {
                   </tr>
                   <tr>
                     <td>Tag Type</td>
-                    <td>
-                      {category !== "ShopName" ? (
-                        isClass &&
-                        (category === "Location" ||
-                          category === "ProductClass") ? (
-                          category
-                        ) : (
-                          <>
-                            <select
-                              name="category"
-                              value={category}
-                              onChange={onChange}
-                            >
-                              <option value="Style">Style</option>
-                              <option value="Location">Location</option>
-                              <option value="ProductClass">ProductClass</option>
-                              <option value="Price">Price</option>
-                              <option value="Feature">Feature</option>
-                            </select>
-                          </>
-                        )
-                      ) : (
-                        category
-                      )}
-                    </td>
+                    <td>{category}</td>
                   </tr>
                   <tr>
                     <td>Tag Class</td>
