@@ -1,5 +1,8 @@
 import { IAM_ID, IAM_SECRETKEY, BUCKET_NAME } from "../../AWS_IAM";
 import AWS, { Credentials } from "aws-sdk";
+import imagemin from "imagemin";
+import imageminJpegtran from "imagemin-jpegtran";
+import imageminMozjpeg from "imagemin-mozjpeg";
 
 const access = new Credentials({
   accessKeyId: IAM_ID,
@@ -37,11 +40,18 @@ const uploadToBucket = async (preSignedUrl, file, fileType) => {
   return;
 };
 
+const compressImage = async (fileBuffer) => {
+  return imagemin.buffer(fileBuffer, {
+    plugins: [imageminMozjpeg()],
+  });
+};
+
 export default async ({ file, fileName }) => {
   try {
     const fileType = file.type.substring(6);
+    const compressedFile = await compressImage(file);
     const preSignedUrl = await getPreSignedUrl(fileName, fileType);
-    await uploadToBucket(preSignedUrl, file, fileType);
+    await uploadToBucket(preSignedUrl, compressedFile, fileType);
     return { data: true, error: false };
   } catch (e) {
     return { data: false, error: e };
