@@ -17,7 +17,12 @@ const initialState = {
     productName: { value: "" },
     price: { value: 0 },
     externalLink: { value: "" },
-    productImage: { File: "", PreviewUrl: "" },
+    productImage: {
+      File: "",
+      PreviewUrl: "",
+      CompressdFile: "",
+      CompressedPreviewUrl: "",
+    },
   },
   BasicStatus: {
     TotalNumberofPosts: 0,
