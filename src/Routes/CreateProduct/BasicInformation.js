@@ -176,6 +176,9 @@ export default () => {
           productImage: {
             File: "",
             PreviewUrl: "",
+            CompressedFile: "",
+            CompressedPreviewUrl: "",
+            CompressedPercentage: 0,
           },
         },
       },
