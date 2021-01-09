@@ -37,6 +37,9 @@ const Table = styled.table`
   #checkCell {
     width: 21%;
   }
+  .productImageInfoCell {
+    width: 50%;
+  }
 `;
 
 const ImageInputBox = styled.div`
@@ -94,14 +97,11 @@ export default () => {
       );
     }
   }
-  }
 
   const ChangeImage = async (e) => {
     e.preventDefault();
     let file = e.target.files[0];
     await compressImage(file);
-  };
-    reader.readAsDataURL(file);
   };
 
   const onChange = (e) => {
@@ -310,7 +310,7 @@ export default () => {
             <th colSpan="1" rowSpan="5">
               Product Image
             </th>
-            <td colSpan="2" rowSpan="1">
+            <td colSpan="2" rowSpan="1" className="productImageInfoCell">
               <ImageInputBox>
                 <Input
                   type="file"
@@ -327,14 +327,14 @@ export default () => {
             </td>
           </tr>
           <tr>
-            <td colSpan="1" rowSpan="1">
+            <td colSpan="1" rowSpan="1" className="productImageInfoCell">
               {"Before "}
               {ProductInfoState.BasicInformation.productImage.PreviewUrl !==
               "" ? (
-                <OpenPageButton func={enlargeClickEvent} />
+                <OpenPageButton func={(e) => enlargeClickEvent(e, false)} />
               ) : null}
             </td>
-            <td colSpan="1" rowSpan="1">
+            <td colSpan="1" rowSpan="1" className="productImageInfoCell">
               {"After "}
               {ProductInfoState.BasicInformation.productImage
                 .CompressedPreviewUrl !== "" ? (
@@ -370,10 +370,10 @@ export default () => {
             </td>
           </tr>
           <tr>
-            <td colSpan="1" rowSpan="1">
+            <td colSpan="1" rowSpan="1" className="productImageInfoCell">
               {productImage_Preview}
             </td>
-            <td colSpan="1" rowSpan="1">
+            <td colSpan="1" rowSpan="1" className="productImageInfoCell">
               {compressedProductImage_Preview}
             </td>
           </tr>
