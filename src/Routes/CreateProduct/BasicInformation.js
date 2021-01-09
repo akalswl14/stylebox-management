@@ -358,8 +358,15 @@ export default () => {
                   ).toFixed(2) + " MB"
                 : "0 MB"}
             </td>
-            <td colSpan="1" rowSpan="1">
-              MB
+            <td colSpan="1" rowSpan="1" className="productImageInfoCell">
+              {ProductInfoState.BasicInformation.productImage.CompressedFile
+                ? (
+                    ProductInfoState.BasicInformation.productImage
+                      .CompressedFile.size /
+                    1024 /
+                    1024
+                  ).toFixed(2) + " MB"
+                : "0 MB"}
             </td>
           </tr>
           <tr>
