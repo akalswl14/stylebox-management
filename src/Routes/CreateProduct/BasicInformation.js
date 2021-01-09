@@ -64,12 +64,6 @@ const Input = styled.input`
   font-size: 15px;
 `;
 
-const AddressCellWrapper = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-`;
-
 export default () => {
   const { ProductInfoState, ProductInfoDispatch } = useContext(
     ProductInfoContext
