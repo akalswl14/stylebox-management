@@ -34,9 +34,6 @@ const Table = styled.table`
     border-top: 0.5px solid lightgrey;
     border-bottom: 0.5px solid lightgrey;
   }
-  .linkInputCell {
-    width: 69%;
-  }
   .productImageInfoCell {
     width: 45%;
   }
@@ -62,6 +59,16 @@ const Input = styled.input`
   }};
   height: 35px;
   font-size: 15px;
+`;
+
+const LinkCellWrapper = styled.div`
+  display: flex;
+  justify-content: left;
+  align-items: center;
+`;
+
+const LinkCheckButtonWrapper = styled.div`
+  margin-inline: 6.37%;
 `;
 
 export default () => {
@@ -283,28 +290,30 @@ export default () => {
           </tr>
           <tr>
             <th>Link URL</th>
-            <td colSpan="1" className="linkInputCell">
-              <Input
-                InputWidth={"100%"}
-                type="text"
-                name="ShopLinkInput"
-                value={ProductInfoState.BasicInformation.externalLink.value}
-                onChange={(e) => onChange(e)}
-              />
-            </td>
-            <td colSpan="1">
-              <Button
-                text={"Check"}
-                isButtonType={true}
-                ClickEvent={CheckLink}
-              />
+            <td colSpan="2" className="linkInputCell">
+              <LinkCellWrapper>
+                <Input
+                  InputWidth={"76.3%"}
+                  type="text"
+                  name="ShopLinkInput"
+                  value={ProductInfoState.BasicInformation.externalLink.value}
+                  onChange={(e) => onChange(e)}
+                />
+                <LinkCheckButtonWrapper>
+                  <Button
+                    text={"Check"}
+                    isButtonType={true}
+                    ClickEvent={CheckLink}
+                  />
+                </LinkCheckButtonWrapper>
+              </LinkCellWrapper>
             </td>
           </tr>
           <tr>
             <th colSpan="1" rowSpan="5">
               Product Image
             </th>
-            <td colSpan="2" rowSpan="1" className="productImageInfoCell">
+            <td colSpan="2" rowSpan="1">
               <ImageInputBox>
                 <Input
                   type="file"
@@ -337,7 +346,7 @@ export default () => {
             </td>
           </tr>
           <tr>
-            <td colSpan="2" rowSpan="1" className="productImageInfoCell">
+            <td colSpan="2" rowSpan="1">
               {ProductInfoState.BasicInformation.productImage
                 .CompressedPercentage + " %"}
             </td>
