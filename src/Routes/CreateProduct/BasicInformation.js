@@ -34,11 +34,11 @@ const Table = styled.table`
     border-top: 0.5px solid lightgrey;
     border-bottom: 0.5px solid lightgrey;
   }
-  #checkCell {
-    width: 21%;
+  .linkInputCell {
+    width: 69%;
   }
   .productImageInfoCell {
-    width: 50%;
+    width: 45%;
   }
 `;
 
@@ -289,7 +289,7 @@ export default () => {
           </tr>
           <tr>
             <th>Link URL</th>
-            <td colSpan="1">
+            <td colSpan="1" className="linkInputCell">
               <Input
                 InputWidth={"100%"}
                 type="text"
@@ -298,7 +298,7 @@ export default () => {
                 onChange={(e) => onChange(e)}
               />
             </td>
-            <td colSpan="1" id="checkCell">
+            <td colSpan="1">
               <Button
                 text={"Check"}
                 isButtonType={true}
