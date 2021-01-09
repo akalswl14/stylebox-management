@@ -22,6 +22,7 @@ const initialState = {
       PreviewUrl: "",
       CompressdFile: "",
       CompressedPreviewUrl: "",
+      CompressedPercentage: 0,
     },
   },
   BasicStatus: {

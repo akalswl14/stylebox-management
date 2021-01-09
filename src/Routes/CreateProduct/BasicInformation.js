@@ -5,6 +5,7 @@ import Button from "../../Components/Button";
 import OpenPageButton from "../../Components/OpenPageButton";
 import SectionTitle from "../../Components/SectionTitle";
 import { ProductInfoContext } from "./CreateProductContainer";
+import imageCompression from "browser-image-compression";
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -205,6 +206,44 @@ export default () => {
       toast.error("Image is Invalid.");
       return;
     }
+  };
+
+  const compressImage = async (inputFile) => {
+    var options = {
+      maxSizeMB: (inputFile.size / 1024 / 1024).toFixed(2) * 0.7,
+      onProgress: (CompressedPercentage) => onProgress(CompressedPercentage),
+    };
+    const output = await imageCompression(inputFile, options);
+    ProductInfoDispatch({
+      type: "UPDATE_BASICINFO",
+      data: {
+        BasicInformation: {
+          ...ProductInfoState.BasicInformation,
+          productImage: {
+            File: inputFile,
+            PreviewUrl: URL.createObjectURL(inputFile),
+            CompressedFile: output,
+            CompressedPreviewUrl: URL.createObjectURL(output),
+            CompressedPercentage: 100,
+          },
+        },
+      },
+    });
+  };
+
+  const onProgress = (CompressedPercentage) => {
+    ProductInfoDispatch({
+      type: "UPDATE_BASICINFO",
+      data: {
+        BasicInformation: {
+          ...ProductInfoState.BasicInformation,
+          productImage: {
+            ...ProductInfoState.BasicInformation.productImage,
+            CompressedPercentage,
+          },
+        },
+      },
+    });
   };
 
   return (
