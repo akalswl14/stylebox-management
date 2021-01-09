@@ -96,24 +96,11 @@ export default () => {
   }
   }
 
-  const ChangeImage = (e) => {
+  const ChangeImage = async (e) => {
     e.preventDefault();
-    let reader = new FileReader();
     let file = e.target.files[0];
-    reader.onloadend = () => {
-      ProductInfoDispatch({
-        type: "UPDATE_BASICINFO",
-        data: {
-          BasicInformation: {
-            ...ProductInfoState.BasicInformation,
-            productImage: {
-              File: file,
-              PreviewUrl: reader.result,
-            },
-          },
-        },
-      });
-    };
+    await compressImage(file);
+  };
     reader.readAsDataURL(file);
   };
 
