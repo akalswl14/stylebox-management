@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import Button from "../../Components/Button";
+import OpenPageButton from "../../Components/OpenPageButton";
 import SectionTitle from "../../Components/SectionTitle";
 import { ProductInfoContext } from "./CreateProductContainer";
 
@@ -23,13 +24,17 @@ const Table = styled.table`
     background-color: #f2f2f2;
     font-weight: 500;
     border-right: 0.5px solid black;
+    width: 10%;
   }
   .smallerCell {
-    width: 400px;
+    text-align: left;
   }
   tbody > tr:nth-child(2n) {
     border-top: 0.5px solid lightgrey;
     border-bottom: 0.5px solid lightgrey;
+  }
+  #checkCell {
+    width: 21%;
   }
 `;
 
@@ -46,7 +51,7 @@ const PreviewImage = styled.img`
 const Input = styled.input`
   width: ${(props) => {
     if (props.InputWidth) {
-      return props.InputWidth.toString() + "px";
+      return props.InputWidth;
     } else {
       return null;
     }
@@ -209,32 +214,15 @@ export default () => {
         <tbody>
           <tr>
             <th>Product ID</th>
-            <td className="smallerCell">
+            <td colSpan="2" className="smallerCell">
               {ProductInfoState.BasicInformation.productId}
-            </td>
-            <th rowSpan="3">Product Image</th>
-            <td rowSpan="3">
-              <ImageInputBox>
-                <Input
-                  type="file"
-                  accept="image/jpg,image/png,image/jpeg"
-                  name="ProductImageInput"
-                  onChange={(e) => ChangeImage(e)}
-                />
-                {productImage_Preview}
-              </ImageInputBox>
-              <Button
-                text={"Delete Photo"}
-                isButtonType={true}
-                ClickEvent={(e) => DeleteImage(e)}
-              />
             </td>
           </tr>
           <tr>
             <th>Product Name</th>
-            <td className="smallerCell">
+            <td colSpan="2" className="smallerCell">
               <Input
-                InputWidth={300}
+                InputWidth={"76.3%"}
                 type="text"
                 name="ProductNameInput"
                 value={ProductInfoState.BasicInformation.productName.value}
@@ -244,9 +232,9 @@ export default () => {
           </tr>
           <tr>
             <th>Price</th>
-            <td className="smallerCell">
+            <td colSpan="2" className="smallerCell">
               <Input
-                InputWidth={300}
+                InputWidth={"76.3%"}
                 type="text"
                 name="PriceInput"
                 value={ProductInfoState.BasicInformation.price.value}
@@ -256,21 +244,73 @@ export default () => {
           </tr>
           <tr>
             <th>Link URL</th>
-            <td colSpan="3" id="AddressCell">
-              <AddressCellWrapper>
+            <td colSpan="1">
+              <Input
+                InputWidth={"100%"}
+                type="text"
+                name="ShopLinkInput"
+                value={ProductInfoState.BasicInformation.externalLink.value}
+                onChange={(e) => onChange(e)}
+              />
+            </td>
+            <td colSpan="1" id="checkCell">
+              <Button
+                text={"Check"}
+                isButtonType={true}
+                ClickEvent={CheckLink}
+              />
+            </td>
+          </tr>
+          <tr>
+            <th colSpan="1" rowSpan="4">
+              Product Image
+            </th>
+            <td colSpan="2" rowSpan="1">
+              <ImageInputBox>
                 <Input
-                  InputWidth={900}
-                  type="text"
-                  name="ShopLinkInput"
-                  value={ProductInfoState.BasicInformation.externalLink.value}
-                  onChange={(e) => onChange(e)}
+                  type="file"
+                  accept="image/jpg,image/png,image/jpeg"
+                  name="ProductImageInput"
+                  onChange={(e) => ChangeImage(e)}
                 />
                 <Button
-                  text={"Check"}
+                  text={"Delete Photo"}
                   isButtonType={true}
-                  ClickEvent={CheckLink}
+                  ClickEvent={(e) => DeleteImage(e)}
                 />
-              </AddressCellWrapper>
+              </ImageInputBox>
+            </td>
+          </tr>
+          <tr>
+            <td colSpan="1" rowSpan="1">
+              {"Before "}
+              {ProductInfoState.BasicInformation.productImage.PreviewUrl !==
+              "" ? (
+                <OpenPageButton func={enlargeClickEvent} />
+              ) : null}
+            </td>
+            <td colSpan="1" rowSpan="1">
+              {"After "}
+              {ProductInfoState.BasicInformation.productImage.PreviewUrl !==
+              "" ? (
+                <OpenPageButton func={enlargeClickEvent} />
+              ) : null}
+            </td>
+          </tr>
+          <tr>
+            <td colSpan="1" rowSpan="1">
+              MB
+            </td>
+            <td colSpan="1" rowSpan="1">
+              MB
+            </td>
+          </tr>
+          <tr>
+            <td colSpan="1" rowSpan="1">
+              {productImage_Preview}
+            </td>
+            <td colSpan="1" rowSpan="1">
+              {productImage_Preview}
             </td>
           </tr>
         </tbody>
