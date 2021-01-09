@@ -177,6 +177,31 @@ export default () => {
     document.getElementsByName("ProductImageInput")[0].value = null;
   };
 
+  const enlargeClickEvent = (e) => {
+    e.preventDefault();
+    try {
+      const url = ProductInfoState.BasicInformation.productImage.PreviewUrl;
+      if (url === "") {
+        toast.error("You have to select Image.");
+        return;
+      }
+      const img = new Image();
+      img.src = url;
+      const ImageWidth = img.width;
+      const ImageHeight = img.height;
+      const features = "width=" + ImageWidth + ",height=" + ImageHeight;
+      var Window = window.open(url, "", features);
+      Window.document.write(
+        "<!DOCTYPE html><html style='height:100%'><body style='margin:0px;height:100%;'><div style='height:100%;overflow:scroll'>" +
+          img.outerHTML +
+          "</div><body/><html>"
+      );
+    } catch {
+      toast.error("Image is Invalid.");
+      return;
+    }
+  };
+
   return (
     <>
       <SectionTitle text="Basic Information" />
