@@ -187,10 +187,12 @@ export default () => {
     document.getElementsByName("ProductImageInput")[0].value = null;
   };
 
-  const enlargeClickEvent = (e) => {
+  const enlargeClickEvent = (e, isCompressed) => {
     e.preventDefault();
     try {
-      const url = ProductInfoState.BasicInformation.productImage.PreviewUrl;
+      const url = isCompressed
+        ? ProductInfoState.BasicInformation.productImage.CompressedPreviewUrl
+        : ProductInfoState.BasicInformation.productImage.PreviewUrl;
       if (url === "") {
         toast.error("You have to select Image.");
         return;
