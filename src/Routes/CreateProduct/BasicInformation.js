@@ -73,6 +73,7 @@ export default () => {
   );
 
   let productImage_Preview = null;
+  let compressedProductImage_Preview = null;
   if (ProductInfoState.BasicInformation.productImage.PreviewUrl !== "") {
     productImage_Preview = (
       <PreviewImage
@@ -80,6 +81,19 @@ export default () => {
         src={ProductInfoState.BasicInformation.productImage.PreviewUrl}
       />
     );
+    if (
+      ProductInfoState.BasicInformation.productImage.CompressedPreviewUrl !== ""
+    ) {
+      compressedProductImage_Preview = (
+        <PreviewImage
+          className="productImage_Preview"
+          src={
+            ProductInfoState.BasicInformation.productImage.CompressedPreviewUrl
+          }
+        />
+      );
+    }
+  }
   }
 
   const ChangeImage = (e) => {
@@ -330,9 +344,9 @@ export default () => {
             </td>
             <td colSpan="1" rowSpan="1">
               {"After "}
-              {ProductInfoState.BasicInformation.productImage.PreviewUrl !==
-              "" ? (
-                <OpenPageButton func={enlargeClickEvent} />
+              {ProductInfoState.BasicInformation.productImage
+                .CompressedPreviewUrl !== "" ? (
+                <OpenPageButton func={(e) => enlargeClickEvent(e, true)} />
               ) : null}
             </td>
           </tr>
@@ -349,7 +363,7 @@ export default () => {
               {productImage_Preview}
             </td>
             <td colSpan="1" rowSpan="1">
-              {productImage_Preview}
+              {compressedProductImage_Preview}
             </td>
           </tr>
         </tbody>
