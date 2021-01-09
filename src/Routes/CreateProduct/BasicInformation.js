@@ -307,7 +307,7 @@ export default () => {
             </td>
           </tr>
           <tr>
-            <th colSpan="1" rowSpan="4">
+            <th colSpan="1" rowSpan="5">
               Product Image
             </th>
             <td colSpan="2" rowSpan="1">
@@ -343,8 +343,20 @@ export default () => {
             </td>
           </tr>
           <tr>
-            <td colSpan="1" rowSpan="1">
-              MB
+            <td colSpan="2" rowSpan="1" className="productImageInfoCell">
+              {ProductInfoState.BasicInformation.productImage
+                .CompressedPercentage + " %"}
+            </td>
+          </tr>
+          <tr>
+            <td colSpan="1" rowSpan="1" className="productImageInfoCell">
+              {ProductInfoState.BasicInformation.productImage.File
+                ? (
+                    ProductInfoState.BasicInformation.productImage.File.size /
+                    1024 /
+                    1024
+                  ).toFixed(2) + " MB"
+                : "0 MB"}
             </td>
             <td colSpan="1" rowSpan="1">
               MB
