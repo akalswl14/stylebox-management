@@ -172,7 +172,7 @@ export default () => {
       return;
     }
     let rtnShopImage = {
-      File: ProductInfoState.BasicInformation.productImage.File,
+      File: ProductInfoState.BasicInformation.productImage.CompressedFile,
       fileName: null,
     };
     if (rtnShopImage.File || rtnShopImage.File !== "") {
