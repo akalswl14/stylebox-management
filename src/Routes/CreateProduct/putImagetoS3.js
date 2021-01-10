@@ -37,16 +37,11 @@ const uploadToBucket = async (preSignedUrl, file, fileType) => {
   return;
 };
 
-const compressImage = async (fileBuffer) => {
-  return fileBuffer;
-};
-
 export default async ({ file, fileName }) => {
   try {
     const fileType = file.type.substring(6);
-    const compressedFile = await compressImage(file);
     const preSignedUrl = await getPreSignedUrl(fileName, fileType);
-    await uploadToBucket(preSignedUrl, compressedFile, fileType);
+    await uploadToBucket(preSignedUrl, file, fileType);
     return { data: true, error: false };
   } catch (e) {
     return { data: false, error: e };
