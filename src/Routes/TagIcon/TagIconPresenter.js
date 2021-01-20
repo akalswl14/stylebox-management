@@ -147,7 +147,7 @@ export default ({
               </ButtonBox>
             </TitleBox>
             <SectionWrapper>
-              <MainTagIcon categories={["Style"]} />
+              <MainTagIcon categories={["Style","ProductClass"]} />
             </SectionWrapper>
             <SectionWrapper>
               <BestTagIcon categories={["ProductClass"]} />
