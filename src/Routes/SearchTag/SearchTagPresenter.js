@@ -122,8 +122,8 @@ export default ({ loading, data, error, onSubmit }) => {
     const addRow = (e) => {
       e.preventDefault();
       const PrevMainRowData = searchTagState.SearchTagRowData;
-      if (PrevMainRowData.length >= 10) {
-        toast.error("Up to 10 is possible.");
+      if (PrevMainRowData.length >= 30) {
+        toast.error("Up to 30 is possible.");
         return;
       }
       const newData = {
